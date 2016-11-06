@@ -301,6 +301,12 @@ function sb_instagram_custom_js() {
     if( !empty($sb_instagram_custom_js) ) echo "\r\n";    
 }
 
+// Load plugin textdomain
+add_action( 'init', 'sb_instagram_load_textdomain' );
+function sb_instagram_load_textdomain() {
+    load_plugin_textdomain( 'instagram-feed' );
+}
+
 //Run function on plugin activate
 function sb_instagram_activate() {
     $options = get_option('sb_instagram_settings');
