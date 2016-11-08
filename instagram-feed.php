@@ -165,11 +165,11 @@ function display_instagram($atts, $content = null) {
     //Error messages
     $sb_instagram_error = false;
     if( empty($sb_instagram_user_id) || !isset($sb_instagram_user_id) ){
-        $sb_instagram_content .= '<div class="sb_instagram_error"><p>Please enter a User ID on the Instagram Feed plugin Settings page</p></div>';
+        $sb_instagram_content .= '<div class="sb_instagram_error"><p>' . __( 'Please enter a User ID on the Instagram Feed plugin Settings page.', 'instagram-feed' ) . '</p></div>';
         $sb_instagram_error = true;
     }
     if( empty($options[ 'sb_instagram_at' ]) || !isset($options[ 'sb_instagram_at' ]) ){
-        $sb_instagram_content .= '<div class="sb_instagram_error"><p>Please enter an Access Token on the Instagram Feed plugin Settings page</p></div>';
+        $sb_instagram_content .= '<div class="sb_instagram_error"><p>' . __( 'Please enter an Access Token on the Instagram Feed plugin Settings page.', 'instagram-feed' ) . '</p></div>';
         $sb_instagram_error = true;
     }
 
@@ -301,6 +301,12 @@ function sb_instagram_custom_js() {
     if( !empty($sb_instagram_custom_js) ) echo "\r\n";    
 }
 
+// Load plugin textdomain
+add_action( 'init', 'sb_instagram_load_textdomain' );
+function sb_instagram_load_textdomain() {
+    load_plugin_textdomain( 'instagram-feed' );
+}
+
 //Run function on plugin activate
 function sb_instagram_activate() {
     $options = get_option('sb_instagram_settings');
@@ -326,5 +332,3 @@ function sb_instagram_uninstall()
     delete_option( 'sb_instagram_settings' );
 }
 register_uninstall_hook( __FILE__, 'sb_instagram_uninstall' );
-
-?>
