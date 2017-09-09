@@ -75,6 +75,12 @@ function display_instagram($atts, $content = null) {
     //User ID
     $sb_instagram_user_id = trim($atts['id']);
 
+	if ( empty( $sb_instagram_user_id ) ) {
+		$sb_instagram_settings = get_option( 'sb_instagram_settings' );
+		$at_arr = isset( $sb_instagram_settings[ 'sb_instagram_at' ] ) ? explode( '.', trim( $sb_instagram_settings[ 'sb_instagram_at' ] ), 2) : array();
+		$sb_instagram_user_id = $at_arr[0];
+	}
+
     //Container styles
     $sb_instagram_width = $atts['width'];
     $sb_instagram_width_unit = $atts['widthunit'];
@@ -216,7 +222,7 @@ function sb_instagram_styles_enqueue() {
 
     $options = get_option('sb_instagram_settings');
     if(isset($options['sb_instagram_disable_awesome'])){
-        if( !$options['sb_instagram_disable_awesome'] || !isset($options['sb_instagram_disable_awesome']) ) wp_enqueue_style( 'sb_instagram_icons', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css', array(), '4.6.3' );
+        if( !$options['sb_instagram_disable_awesome'] || !isset($options['sb_instagram_disable_awesome']) ) wp_enqueue_style( 'sb-font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', array(), '4.7.0' );
     }
     
 }
@@ -225,7 +231,7 @@ function sb_instagram_styles_enqueue() {
 add_action( 'wp_enqueue_scripts', 'sb_instagram_scripts_enqueue' );
 function sb_instagram_scripts_enqueue() {
     //Register the script to make it available
-    wp_register_script( 'sb_instagram_scripts', plugins_url( '/js/sb-instagram.min.js' , __FILE__ ), array('jquery'), SBIVER, true ); //http://www.minifier.org/
+    wp_register_script( 'sb_instagram_scripts', plugins_url( '/js/sb-instagram.js' , __FILE__ ), array('jquery'), SBIVER, true ); //http://www.minifier.org/
 
     //Options to pass to JS file
     $sb_instagram_settings = get_option('sb_instagram_settings');
@@ -299,6 +305,20 @@ function sb_instagram_custom_js() {
     if( !empty($sb_instagram_custom_js) ) echo "\r\n";
     if( !empty($sb_instagram_custom_js) ) echo '</script>';
     if( !empty($sb_instagram_custom_js) ) echo "\r\n";    
+}
+
+if ( ! function_exists( 'sb_remove_style_version' ) ) {
+	function sb_remove_style_version( $src, $handle ){
+
+		if ( $handle === 'sb-font-awesome' ) {
+			$parts = explode( '?ver', $src );
+			return $parts[0];
+		} else {
+			return $src;
+		}
+
+	}
+	add_filter( 'style_loader_src', 'sb_remove_style_version', 15, 2 );
 }
 
 // Load plugin textdomain
