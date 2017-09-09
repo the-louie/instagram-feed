@@ -1116,8 +1116,12 @@ function sb_instagram_admin_style() {
 add_action( 'admin_enqueue_scripts', 'sb_instagram_admin_style' );
 
 function sb_instagram_admin_scripts() {
-    wp_enqueue_script( '', plugins_url( 'js/sb-instagram-admin.js' , __FILE__ ), array(), SBIVER );
-
+    wp_enqueue_script( 'sb_instagram_admin_js', plugins_url( 'js/sb-instagram-admin.js' , __FILE__ ), array(), SBIVER );
+    wp_localize_script( 'sb_instagram_admin_js', 'sbiA', array(
+            'ajax_url' => admin_url( 'admin-ajax.php' ),
+            'sbi_nonce' => wp_create_nonce( 'sbi-smash-balloon' )
+        )
+    );
     if( !wp_script_is('jquery-ui-draggable') ) { 
         wp_enqueue_script(
             array(
@@ -1249,6 +1253,24 @@ function sbi_rating_notice_html() {
 
     }
 }
+
+/**
+ * Called via ajax to automatically save access token and access token secret
+ * retrieved with the big blue button
+ */
+function sbi_auto_save_tokens() {
+    if ( current_user_can( 'edit_posts' ) ) {
+        wp_cache_delete ( 'alloptions', 'options' );
+
+        $options = get_option( 'sb_instagram_settings', array() );
+        $options['sb_instagram_at'] = isset( $_POST['access_token'] ) ? sanitize_text_field( $_POST['access_token'] ) : '';
+
+        update_option( 'sb_instagram_settings', $options );
+        echo $_POST['access_token'];
+    }
+    die();
+}
+add_action( 'wp_ajax_sbi_auto_save_tokens', 'sbi_auto_save_tokens' );
 
 // variables to define certain terms
 $transient = 'instagram_feed_rating_notice_waiting';

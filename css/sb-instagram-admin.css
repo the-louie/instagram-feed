@@ -73,6 +73,25 @@
   -o-transition: all 0.1s ease-in-out;
   transition: all 0.1s ease-in-out;
 }
+.sb_get_token .submit {
+ 	display: inline-block;
+ 	margin: 0 0 0 10px;
+ 	padding: 0;
+}
+#sbi_admin .sbi-success {
+ 		position: relative;
+     top: -1px;
+ 
+     background: #68a30b;
+     color: #fff;
+     font-size: 16px;
+     padding: 6px;
+     font-size: 13px;
+     text-transform: capitalize;
+     padding: 4px 8px 5px 8px;
+     margin-left: 5px;
+     border-radius: 3px;
+ }
 #sbi_admin .sbi_note{
 	font-size: 12px;
 	font-style: italic;
