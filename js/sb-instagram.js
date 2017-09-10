@@ -93,7 +93,7 @@ if(!sbi_js_exists){
                 success: function(data) {
                     var sbiErrorResponse = data.meta.error_message;
                     if (typeof sbiErrorResponse === 'undefined') {
-                        $header = '<a href="http://instagram.com/' + data.data.username + '" target="_blank" title="@' + data.data.username + '" class="sbi_header_link">';
+                        $header = '<a href="https://instagram.com/' + data.data.username + '" target="_blank" title="@' + data.data.username + '" class="sbi_header_link">';
                         $header += '<div class="sbi_header_text">';
                         $header += '<h3 ' + headerStyles;
                         if (data.data.bio.length == 0 || feedOptions.showbio !== "true") $header += ' class="sbi_no_bio"';
@@ -108,7 +108,7 @@ if(!sbi_js_exists){
                         //Add the header
                         $self.find('.sb_instagram_header').prepend($header);
                         //Change the URL of the follow button
-                        if ($self.find('.sbi_follow_btn').length) $self.find('.sbi_follow_btn a').attr('href', 'http://instagram.com/' + data.data.username)
+                        if ($self.find('.sbi_follow_btn').length) $self.find('.sbi_follow_btn a').attr('href', 'https://instagram.com/' + data.data.username)
 
                     }
                 }
