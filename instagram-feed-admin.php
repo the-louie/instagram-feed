@@ -91,6 +91,7 @@ function sb_instagram_settings_page() {
     $sb_instagram_image_res = $options[ 'sb_instagram_image_res' ];
     //Header
     $sb_instagram_show_header = $options[ 'sb_instagram_show_header' ];
+    $sb_instagram_show_bio = $options[ 'sb_instagram_show_bio' ];
     $sb_instagram_header_color = $options[ 'sb_instagram_header_color' ];
     //Follow button
     $sb_instagram_show_follow_btn = $options[ 'sb_instagram_show_follow_btn' ];
@@ -168,6 +169,8 @@ function sb_instagram_settings_page() {
                 $sb_instagram_image_res = sanitize_text_field( $_POST[ 'sb_instagram_image_res' ] );
                 //Header
                 isset($_POST[ 'sb_instagram_show_header' ]) ? $sb_instagram_show_header = sanitize_text_field( $_POST[ 'sb_instagram_show_header' ] ) : $sb_instagram_show_header = '';
+                isset($_POST[ 'sb_instagram_show_bio' ]) ? $sb_instagram_show_bio = sanitize_text_field( $_POST[ 'sb_instagram_show_bio' ] ) : $sb_instagram_show_bio = '';
+
                 $sb_instagram_header_color = sanitize_text_field( $_POST[ 'sb_instagram_header_color' ] );
                 //Follow button
                 isset($_POST[ 'sb_instagram_show_follow_btn' ]) ? $sb_instagram_show_follow_btn = sanitize_text_field( $_POST[ 'sb_instagram_show_follow_btn' ] ) : $sb_instagram_show_follow_btn = '';
@@ -198,6 +201,7 @@ function sb_instagram_settings_page() {
                 $options[ 'sb_instagram_image_res' ] = $sb_instagram_image_res;
                 //Header
                 $options[ 'sb_instagram_show_header' ] = $sb_instagram_show_header;
+                $options[ 'sb_instagram_show_bio' ] = $sb_instagram_show_bio;
                 $options[ 'sb_instagram_header_color' ] = $sb_instagram_header_color;
                 //Follow button
                 $options[ 'sb_instagram_show_follow_btn' ] = $sb_instagram_show_follow_btn;
@@ -510,6 +514,14 @@ function sb_instagram_settings_page() {
                         Eg: showheader=false</code></th>
                     <td>
                         <input type="checkbox" name="sb_instagram_show_header" id="sb_instagram_show_header" <?php if($sb_instagram_show_header == true) echo 'checked="checked"' ?> />
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><label><?php _e("Show Bio Text"); ?></label><code class="sbi_shortcode"> showbio
+                        Eg: showbio=false</code></th>
+                    <td>
+                        <input type="checkbox" name="sb_instagram_show_bio" id="sb_instagram_show_bio" <?php if($sb_instagram_show_bio == true) echo 'checked="checked"' ?> />
+                        <span class="sbi_note"><?php _e("This only applies for User IDs with bios"); ?></span>
                     </td>
                 </tr>
                 <tr valign="top">
@@ -885,12 +897,16 @@ function sb_instagram_settings_page() {
                     <td><code>[instagram-feed carouseltime=8000]</code></td>
                 </tr>
 
-
                 <tr class="sbi_table_header"><td colspan=3><?php _e("Header Options", 'instagram-feed'); ?></td></tr>
                 <tr>
                     <td>showheader</td>
                     <td><?php _e("Whether to show the feed Header. 'true' or 'false'.", 'instagram-feed'); ?></td>
                     <td><code>[instagram-feed showheader=false]</code></td>
+                </tr>
+                <tr>
+                    <td>showbio</td>
+                    <td><?php _e("Display the bio in the header. 'true' or 'false'."); ?></td>
+                    <td><code>[instagram-feed showbio=true]</code></td>
                 </tr>
                 <tr>
                     <td>headercolor</td>
@@ -1107,7 +1123,7 @@ if ( $url !== 'no_at' ) {
     if ( isset( $data->data->id ) ) {
         echo 'id: ' . $data->data->id . "\n";
         echo 'username: ' . $data->data->username . "\n";
-        echo 'counts->media: ' . $data->data->counts->media . "\n";
+        echo 'posts: ' . $data->data->counts->media . "\n";
 
         $url = 'https://api.instagram.com/v1/users/13460080?access_token=' . $sbi_options['sb_instagram_at'];
         $args = array(

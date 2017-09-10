@@ -96,9 +96,9 @@ if(!sbi_js_exists){
                         $header = '<a href="http://instagram.com/' + data.data.username + '" target="_blank" title="@' + data.data.username + '" class="sbi_header_link">';
                         $header += '<div class="sbi_header_text">';
                         $header += '<h3 ' + headerStyles;
-                        if (data.data.bio.length == 0) $header += ' class="sbi_no_bio"';
+                        if (data.data.bio.length == 0 || feedOptions.showbio !== "true") $header += ' class="sbi_no_bio"';
                         $header += '>@' + data.data.username + '</h3>';
-                        if (data.data.bio.length) $header += '<p class="sbi_bio" ' + headerStyles + '>' + data.data.bio + '</p>';
+                        if (data.data.bio.length && feedOptions.showbio === "true") $header += '<p class="sbi_bio" ' + headerStyles + '>' + data.data.bio + '</p>';
                         $header += '</div>';
                         $header += '<div class="sbi_header_img">';
                         $header += '<div class="sbi_header_img_hover"><i></i></div>';
