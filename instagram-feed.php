@@ -57,6 +57,7 @@ function display_instagram($atts, $content = null) {
         'showbutton' => isset($options[ 'sb_instagram_show_btn' ]) ? $options[ 'sb_instagram_show_btn' ] : '',
         'buttoncolor' => isset($options[ 'sb_instagram_btn_background' ]) ? $options[ 'sb_instagram_btn_background' ] : '',
         'buttontextcolor' => isset($options[ 'sb_instagram_btn_text_color' ]) ? $options[ 'sb_instagram_btn_text_color' ] : '',
+        'translations' => isset($options[ 'sb_instagram_use_translations' ]) ? $options[ 'sb_instagram_use_translations' ] : false,
         'buttontext' => isset($options[ 'sb_instagram_btn_text' ]) ? $options[ 'sb_instagram_btn_text' ] : '',
         'imageres' => isset($options[ 'sb_instagram_image_res' ]) ? $options[ 'sb_instagram_image_res' ] : '',
         'showfollow' => isset($options[ 'sb_instagram_show_follow_btn' ]) ? $options[ 'sb_instagram_show_follow_btn' ] : '',
@@ -117,6 +118,15 @@ function display_instagram($atts, $content = null) {
 	( $sb_instagram_show_bio == 'on' || $sb_instagram_show_bio == 'true' || $sb_instagram_show_bio ) ? $sb_instagram_show_bio = 'true' : $sb_instagram_show_bio = 'false';
 	if( $atts[ 'showbio' ] === 'false' ) $sb_instagram_show_bio = false;
 
+	// button text
+	$using_translations = isset( $atts['translations'] ) && ( $atts['translations'] === 'true' || $atts['translations'] === true || $atts['translations'] === 'on' ) ? true : false;
+	$sb_instagram_follow_btn_text = __( 'Follow on Instagram', 'instagram-feed' );
+	$sb_instagram_load_btn_text = __( 'Load More...', 'instagram-feed' );
+	if ( ! $using_translations ) {
+		$sb_instagram_follow_btn_text = $atts['followtext'];
+		$sb_instagram_load_btn_text = $atts['buttontext'];
+	}
+
 	//As this is a new option in the update then set it to be true if it doesn't exist yet
 	if ( !array_key_exists( 'sb_instagram_show_bio', $options ) ) $sb_instagram_show_bio = 'true';
     //Load more button
@@ -137,7 +147,6 @@ function display_instagram($atts, $content = null) {
     if( $atts[ 'showfollow' ] === 'false' ) $sb_instagram_show_follow_btn = false;
     $sb_instagram_follow_btn_background = str_replace('#', '', $atts['followcolor']);
     $sb_instagram_follow_btn_text_color = str_replace('#', '', $atts['followtextcolor']);
-    $sb_instagram_follow_btn_text = $atts['followtext'];
     //Follow button styles
     $sb_instagram_follow_btn_styles = 'style="';
     if ( !empty($sb_instagram_follow_btn_background) ) $sb_instagram_follow_btn_styles .= 'background: #'.$sb_instagram_follow_btn_background.'; ';
@@ -196,7 +205,7 @@ function display_instagram($atts, $content = null) {
     $sb_instagram_content .= '>';
 
     //Load More button
-    if( $sb_instagram_show_btn && !$sb_instagram_error ) $sb_instagram_content .= '<a class="sbi_load_btn" href="javascript:void(0);" '.$sb_instagram_button_styles.'>'.$atts['buttontext'].'</a>';
+    if( $sb_instagram_show_btn && !$sb_instagram_error ) $sb_instagram_content .= '<a class="sbi_load_btn" href="javascript:void(0);" '.$sb_instagram_button_styles.'>' . $sb_instagram_load_btn_text .'</a>';
 
     //Follow button
     if( $sb_instagram_show_follow_btn && !$sb_instagram_error ) $sb_instagram_content .= $sb_instagram_follow_btn_html;
@@ -332,7 +341,7 @@ if ( ! function_exists( 'sb_remove_style_version' ) ) {
 // Load plugin textdomain
 add_action( 'init', 'sb_instagram_load_textdomain' );
 function sb_instagram_load_textdomain() {
-    load_plugin_textdomain( 'instagram-feed' );
+	load_plugin_textdomain('instagram-feed', false, basename( dirname(__FILE__) ) . '/languages');
 }
 
 //Run function on plugin activate

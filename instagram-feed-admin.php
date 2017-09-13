@@ -49,6 +49,7 @@ function sb_instagram_settings_page() {
         'sb_instagram_btn_background'       => '',
         'sb_instagram_btn_text_color'       => '',
         'sb_instagram_btn_text'             => __( 'Load More...', 'instagram-feed' ),
+	    'sb_instagram_use_translations'     => false,
         'sb_instagram_image_res'            => 'auto',
         //Header
         'sb_instagram_show_header'          => true,
@@ -87,6 +88,8 @@ function sb_instagram_settings_page() {
     $sb_instagram_show_btn = $options[ 'sb_instagram_show_btn' ];
     $sb_instagram_btn_background = $options[ 'sb_instagram_btn_background' ];
     $sb_instagram_btn_text_color = $options[ 'sb_instagram_btn_text_color' ];
+	$sb_instagram_use_translations = $options[ 'sb_instagram_use_translations' ];
+
     $sb_instagram_btn_text = $options[ 'sb_instagram_btn_text' ];
     $sb_instagram_image_res = $options[ 'sb_instagram_image_res' ];
     //Header
@@ -165,7 +168,8 @@ function sb_instagram_settings_page() {
                 isset($_POST[ 'sb_instagram_show_btn' ]) ? $sb_instagram_show_btn = sanitize_text_field( $_POST[ 'sb_instagram_show_btn' ] ) : $sb_instagram_show_btn = '';
                 $sb_instagram_btn_background = sanitize_text_field( $_POST[ 'sb_instagram_btn_background' ] );
                 $sb_instagram_btn_text_color = sanitize_text_field( $_POST[ 'sb_instagram_btn_text_color' ] );
-                $sb_instagram_btn_text = sanitize_text_field( $_POST[ 'sb_instagram_btn_text' ] );
+	            $sb_instagram_use_translations = sanitize_text_field( $_POST[ 'sb_instagram_use_translations' ] );
+	            $sb_instagram_btn_text = sanitize_text_field( $_POST[ 'sb_instagram_btn_text' ] );
                 $sb_instagram_image_res = sanitize_text_field( $_POST[ 'sb_instagram_image_res' ] );
                 //Header
                 isset($_POST[ 'sb_instagram_show_header' ]) ? $sb_instagram_show_header = sanitize_text_field( $_POST[ 'sb_instagram_show_header' ] ) : $sb_instagram_show_header = '';
@@ -197,7 +201,8 @@ function sb_instagram_settings_page() {
                 $options[ 'sb_instagram_show_btn' ] = $sb_instagram_show_btn;
                 $options[ 'sb_instagram_btn_background' ] = $sb_instagram_btn_background;
                 $options[ 'sb_instagram_btn_text_color' ] = $sb_instagram_btn_text_color;
-                $options[ 'sb_instagram_btn_text' ] = $sb_instagram_btn_text;
+	            $options[ 'sb_instagram_use_translations' ] = $sb_instagram_use_translations;
+	            $options[ 'sb_instagram_btn_text' ] = $sb_instagram_btn_text;
                 $options[ 'sb_instagram_image_res' ] = $sb_instagram_image_res;
                 //Header
                 $options[ 'sb_instagram_show_header' ] = $sb_instagram_show_header;
@@ -569,6 +574,14 @@ function sb_instagram_settings_page() {
                     </td>
                 </tr>
                 <tr valign="top">
+	                <th scope="row"><label><?php _e("Use translations for button text", 'instagram-feed'); ?></label><code class="sbi_shortcode"> translations
+			                Eg: translations=false</code></th>
+	                <td>
+		                <input type="checkbox" name="sb_instagram_use_translations" id="sb_instagram_use_translations" <?php if($sb_instagram_use_translations == true) echo 'checked="checked"' ?> />
+		                <span class="sbi_note"><?php _e("Includes \"Load More...\" and \"Follow on Instagram\" button text. Defaults to English if translation not available"); ?></span>
+	                </td>
+                </tr>
+                <tr valign="top">
                     <th scope="row"><label><?php _e('Button Text', 'instagram-feed'); ?></label><code class="sbi_shortcode"> buttontext
                         Eg: buttontext="Show more.."</code></th>
                     <td>
@@ -615,9 +628,6 @@ function sb_instagram_settings_page() {
                 </tr>
             </tbody>
         </table>
-
-
-
 
         <hr id="filtering" />
         <h3><?php _e('Post Filtering', 'instagram-feed'); ?></h3>
