@@ -168,7 +168,7 @@ function sb_instagram_settings_page() {
                 isset($_POST[ 'sb_instagram_show_btn' ]) ? $sb_instagram_show_btn = sanitize_text_field( $_POST[ 'sb_instagram_show_btn' ] ) : $sb_instagram_show_btn = '';
                 $sb_instagram_btn_background = sanitize_text_field( $_POST[ 'sb_instagram_btn_background' ] );
                 $sb_instagram_btn_text_color = sanitize_text_field( $_POST[ 'sb_instagram_btn_text_color' ] );
-	            $sb_instagram_use_translations = sanitize_text_field( $_POST[ 'sb_instagram_use_translations' ] );
+	            $sb_instagram_use_translations = isset($_POST[ 'sb_instagram_use_translations' ]) ? sanitize_text_field( $_POST[ 'sb_instagram_use_translations' ] ) : false;
 	            $sb_instagram_btn_text = sanitize_text_field( $_POST[ 'sb_instagram_btn_text' ] );
                 $sb_instagram_image_res = sanitize_text_field( $_POST[ 'sb_instagram_image_res' ] );
                 //Header
