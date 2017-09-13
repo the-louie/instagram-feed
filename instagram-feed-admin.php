@@ -91,7 +91,7 @@ function sb_instagram_settings_page() {
     $sb_instagram_image_res = $options[ 'sb_instagram_image_res' ];
     //Header
     $sb_instagram_show_header = $options[ 'sb_instagram_show_header' ];
-    $sb_instagram_show_bio = $options[ 'sb_instagram_show_bio' ];
+    $sb_instagram_show_bio = isset( $options[ 'sb_instagram_show_bio' ] ) ? $options[ 'sb_instagram_show_bio' ] : true;
     $sb_instagram_header_color = $options[ 'sb_instagram_header_color' ];
     //Follow button
     $sb_instagram_show_follow_btn = $options[ 'sb_instagram_show_follow_btn' ];
@@ -520,6 +520,7 @@ function sb_instagram_settings_page() {
                     <th scope="row"><label><?php _e("Show Bio Text"); ?></label><code class="sbi_shortcode"> showbio
                         Eg: showbio=false</code></th>
                     <td>
+                        <?php $sb_instagram_show_bio = isset( $sb_instagram_show_bio ) ? $sb_instagram_show_bio  : true; ?>
                         <input type="checkbox" name="sb_instagram_show_bio" id="sb_instagram_show_bio" <?php if($sb_instagram_show_bio == true) echo 'checked="checked"' ?> />
                         <span class="sbi_note"><?php _e("This only applies for User IDs with bios"); ?></span>
                     </td>

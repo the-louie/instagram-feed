@@ -3,7 +3,7 @@
 Plugin Name: Instagram Feed
 Plugin URI: https://smashballoon.com/instagram-feed
 Description: Display beautifully clean, customizable, and responsive Instagram feeds
-Version: 1.4.8
+Version: 1.5
 Author: Smash Balloon
 Author URI: https://smashballoon.com/
 License: GPLv2 or later
@@ -23,7 +23,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-define( 'SBIVER', '1.4.8' );
+define( 'SBIVER', '1.5' );
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 //Include admin
@@ -191,7 +191,7 @@ function display_instagram($atts, $content = null) {
 
     //Load section
     $sb_instagram_content .= '</div><div id="sbi_load"';
-	var_dump(($sb_instagram_image_padding == 0 || !isset($sb_instagram_image_padding)) && ($sb_instagram_show_btn || $sb_instagram_show_follow_btn));
+
     if(($sb_instagram_image_padding == 0 || !isset($sb_instagram_image_padding)) && ($sb_instagram_show_btn || $sb_instagram_show_follow_btn)) $sb_instagram_content .= ' style="padding-top: 5px"';
     $sb_instagram_content .= '>';
 
@@ -340,7 +340,7 @@ function sb_instagram_activate() {
     $options = get_option('sb_instagram_settings');
     $options[ 'sb_instagram_show_btn' ] = true;
     $options[ 'sb_instagram_show_header' ] = true;
-    $options[ 'sb_instagram_show_follow_btn' ] = true;
+	$options[ 'sb_instagram_show_follow_btn' ] = true;
     update_option( 'sb_instagram_settings', $options );
 }
 register_activation_hook( __FILE__, 'sb_instagram_activate' );
