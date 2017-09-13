@@ -561,6 +561,20 @@ No Waiver of Rights by Instagram: Instagram's failure to exercise or enforce any
 **Important:** Due to the recent Instagram API changes, in order for the Instagram Feed plugin to continue working after **June 1st** you must update the plugin and obtain a new Access Token on the plugin's Settings page.
 
 == Changelog ==
+= 1.5 =
+* New: Improved tool for retrieving access tokens
+* New: Added option to show/hide bio text in feed header
+* New: Feeds that include IDs from "private" accounts will now ignore the private data and add a message to explain what happened to logged-in admins.
+* New: Feeds without any posts yet will display a message informing logged-in admins to make a post to view the feed
+* Tweak: Optimized several images used in the feed including loader.png
+* Tweak: Font Awesome stylesheet handle has been renamed so it will only be loaded once if Custom Facebook Feed is also active
+* Fix: Updated the Font Awesome icon font to the latest version: 4.7.0
+* Fix: Padding removed from "Load More" button if no buttons used in the feed
+* Fix: All links now https
+* Fix: JavaScript errors being caused if access token has expired or user ID was incorrect, private, or had no posts
+
+= 1.4.9 =
+* Compatible with WordPress 4.8
 
 = 1.4.8 =
 * Tweak: Updated plugin links for new WordPress.org repo
