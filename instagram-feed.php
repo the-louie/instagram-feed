@@ -33,7 +33,6 @@ include dirname( __FILE__ ) .'/instagram-feed-admin.php';
 add_shortcode('instagram-feed', 'display_instagram');
 function display_instagram($atts, $content = null) {
 
-
     /******************* SHORTCODE OPTIONS ********************/
 
     $options = get_option('sb_instagram_settings');
@@ -57,7 +56,6 @@ function display_instagram($atts, $content = null) {
         'showbutton' => isset($options[ 'sb_instagram_show_btn' ]) ? $options[ 'sb_instagram_show_btn' ] : '',
         'buttoncolor' => isset($options[ 'sb_instagram_btn_background' ]) ? $options[ 'sb_instagram_btn_background' ] : '',
         'buttontextcolor' => isset($options[ 'sb_instagram_btn_text_color' ]) ? $options[ 'sb_instagram_btn_text_color' ] : '',
-        'translations' => isset($options[ 'sb_instagram_use_translations' ]) ? $options[ 'sb_instagram_use_translations' ] : false,
         'buttontext' => isset($options[ 'sb_instagram_btn_text' ]) ? $options[ 'sb_instagram_btn_text' ] : '',
         'imageres' => isset($options[ 'sb_instagram_image_res' ]) ? $options[ 'sb_instagram_image_res' ] : '',
         'showfollow' => isset($options[ 'sb_instagram_show_follow_btn' ]) ? $options[ 'sb_instagram_show_follow_btn' ] : '',
@@ -119,13 +117,8 @@ function display_instagram($atts, $content = null) {
 	if( $atts[ 'showbio' ] === 'false' ) $sb_instagram_show_bio = false;
 
 	// button text
-	$using_translations = isset( $atts['translations'] ) && ( $atts['translations'] === 'true' || $atts['translations'] === true || $atts['translations'] === 'on' ) ? true : false;
-	$sb_instagram_follow_btn_text = __( 'Follow on Instagram', 'instagram-feed' );
-	$sb_instagram_load_btn_text = __( 'Load More...', 'instagram-feed' );
-	if ( ! $using_translations ) {
-		$sb_instagram_follow_btn_text = $atts['followtext'];
-		$sb_instagram_load_btn_text = $atts['buttontext'];
-	}
+	$sb_instagram_follow_btn_text = __( $atts['followtext'], 'instagram-feed' );
+	$sb_instagram_load_btn_text = __( $atts['buttontext'], 'instagram-feed' );
 
 	//As this is a new option in the update then set it to be true if it doesn't exist yet
 	if ( !array_key_exists( 'sb_instagram_show_bio', $options ) ) $sb_instagram_show_bio = 'true';

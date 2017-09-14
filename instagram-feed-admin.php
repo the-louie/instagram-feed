@@ -49,7 +49,6 @@ function sb_instagram_settings_page() {
         'sb_instagram_btn_background'       => '',
         'sb_instagram_btn_text_color'       => '',
         'sb_instagram_btn_text'             => __( 'Load More...', 'instagram-feed' ),
-	    'sb_instagram_use_translations'     => false,
         'sb_instagram_image_res'            => 'auto',
         //Header
         'sb_instagram_show_header'          => true,
@@ -88,8 +87,6 @@ function sb_instagram_settings_page() {
     $sb_instagram_show_btn = $options[ 'sb_instagram_show_btn' ];
     $sb_instagram_btn_background = $options[ 'sb_instagram_btn_background' ];
     $sb_instagram_btn_text_color = $options[ 'sb_instagram_btn_text_color' ];
-	$sb_instagram_use_translations = $options[ 'sb_instagram_use_translations' ];
-
     $sb_instagram_btn_text = $options[ 'sb_instagram_btn_text' ];
     $sb_instagram_image_res = $options[ 'sb_instagram_image_res' ];
     //Header
@@ -168,7 +165,6 @@ function sb_instagram_settings_page() {
                 isset($_POST[ 'sb_instagram_show_btn' ]) ? $sb_instagram_show_btn = sanitize_text_field( $_POST[ 'sb_instagram_show_btn' ] ) : $sb_instagram_show_btn = '';
                 $sb_instagram_btn_background = sanitize_text_field( $_POST[ 'sb_instagram_btn_background' ] );
                 $sb_instagram_btn_text_color = sanitize_text_field( $_POST[ 'sb_instagram_btn_text_color' ] );
-	            $sb_instagram_use_translations = isset($_POST[ 'sb_instagram_use_translations' ]) ? sanitize_text_field( $_POST[ 'sb_instagram_use_translations' ] ) : false;
 	            $sb_instagram_btn_text = sanitize_text_field( $_POST[ 'sb_instagram_btn_text' ] );
                 $sb_instagram_image_res = sanitize_text_field( $_POST[ 'sb_instagram_image_res' ] );
                 //Header
@@ -201,7 +197,6 @@ function sb_instagram_settings_page() {
                 $options[ 'sb_instagram_show_btn' ] = $sb_instagram_show_btn;
                 $options[ 'sb_instagram_btn_background' ] = $sb_instagram_btn_background;
                 $options[ 'sb_instagram_btn_text_color' ] = $sb_instagram_btn_text_color;
-	            $options[ 'sb_instagram_use_translations' ] = $sb_instagram_use_translations;
 	            $options[ 'sb_instagram_btn_text' ] = $sb_instagram_btn_text;
                 $options[ 'sb_instagram_image_res' ] = $sb_instagram_image_res;
                 //Header
