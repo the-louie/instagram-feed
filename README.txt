@@ -557,6 +557,7 @@ No Waiver of Rights by Instagram: Instagram's failure to exercise or enforce any
 
 == Changelog ==
 = 1.5 =
+* New: Added translation files for French (fr_FR), German (de_DE), English (en_EN), Spanish (es_ES), Italian (it_IT), and Russian (ru_RU) to translate "Load More..." and "Follow on Instagram"
 * New: Improved tool for retrieving access tokens
 * New: Added option to show/hide bio text in feed header
 * New: Feeds that include IDs from "private" accounts will now ignore the private data and add a message to explain what happened to logged-in admins.
