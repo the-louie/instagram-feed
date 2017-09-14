@@ -572,7 +572,7 @@ function sb_instagram_settings_page() {
                     <th scope="row"><label><?php _e('Button Text', 'instagram-feed'); ?></label><code class="sbi_shortcode"> buttontext
                         Eg: buttontext="Show more.."</code></th>
                     <td>
-                        <input name="sb_instagram_btn_text" type="text" value="<?php echo esc_attr( $sb_instagram_btn_text ); ?>" size="20" />
+                        <input name="sb_instagram_btn_text" type="text" value="<?php echo esc_attr( stripslashes( $sb_instagram_btn_text ) ); ?>" size="20" />
                     </td>
                 </tr>
             </tbody>
@@ -610,7 +610,7 @@ function sb_instagram_settings_page() {
                     <th scope="row"><label><?php _e('Button Text', 'instagram-feed'); ?></label><code class="sbi_shortcode"> followtext
                         Eg: followtext="Follow me"</code></th>
                     <td>
-                        <input name="sb_instagram_follow_btn_text" type="text" value="<?php echo esc_attr( $sb_instagram_follow_btn_text ); ?>" size="30" />
+                        <input name="sb_instagram_follow_btn_text" type="text" value="<?php echo esc_attr( stripslashes( $sb_instagram_follow_btn_text ) ); ?>" size="30" />
                     </td>
                 </tr>
             </tbody>
