@@ -1,6 +1,6 @@
 === Instagram Feed ===
 Contributors: smashballoon
-Tags: Instagram, Instagram feed, Instagram photos, Custom Instagram Feed, responsive Instagram, mobile Instagram, Instagram wall, Instagram gallery, Instagram galleries, Instagram widget, beautiful Instagram
+Tags: Instagram, Instagram feed, Instagram photos, Instagram widget, Instagram gallery
 Requires at least: 3.0
 Tested up to: 4.8
 Stable tag: 1.5
@@ -554,11 +554,6 @@ Hold Harmless and Indemnify: To the maximum extent permitted by applicable law, 
 Relationship of the Parties: Notwithstanding any provision hereof, for all purposes of the Instagram API Terms, you and Instagram shall be and act independently and not as partner, joint venturer, agent, employee or employer of the other. You don't have any authority to assume or create any obligation for or on behalf of Instagram, express or implied, and you must not attempt to bind Instagram to any contract.
 Invalidity of Specific Terms: If any provision of the Instagram API Terms is found by a court of competent jurisdiction to be invalid, the parties nevertheless agree that the court should endeavor to give effect to the parties' intentions as reflected in the provision and that the other provisions remain in full force and effect.
 No Waiver of Rights by Instagram: Instagram's failure to exercise or enforce any right or provision of the Instagram API Terms shall not constitute a waiver of such right or provision.
-
-== Upgrade Notice ==
-
-= 1.4.6 =
-**Important:** Due to the recent Instagram API changes, in order for the Instagram Feed plugin to continue working after **June 1st** you must update the plugin and obtain a new Access Token on the plugin's Settings page.
 
 == Changelog ==
 = 1.5 =

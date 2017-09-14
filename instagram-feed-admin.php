@@ -574,14 +574,6 @@ function sb_instagram_settings_page() {
                     </td>
                 </tr>
                 <tr valign="top">
-	                <th scope="row"><label><?php _e("Use translations for button text", 'instagram-feed'); ?></label><code class="sbi_shortcode"> translations
-			                Eg: translations=false</code></th>
-	                <td>
-		                <input type="checkbox" name="sb_instagram_use_translations" id="sb_instagram_use_translations" <?php if($sb_instagram_use_translations == true) echo 'checked="checked"' ?> />
-		                <span class="sbi_note"><?php _e("Includes \"Load More...\" and \"Follow on Instagram\" button text. Defaults to English if translation not available"); ?></span>
-	                </td>
-                </tr>
-                <tr valign="top">
                     <th scope="row"><label><?php _e('Button Text', 'instagram-feed'); ?></label><code class="sbi_shortcode"> buttontext
                         Eg: buttontext="Show more.."</code></th>
                     <td>
@@ -1030,60 +1022,67 @@ function sb_instagram_settings_page() {
 
     <?php if( $sbi_active_tab == 'support' ) { //Start Support tab ?>
 
-        <div class="sbi_support">
+	    <div class="sbi_support">
 
-            <br />
-            <h3 style="padding-bottom: 10px;">Need help?</h3>
+		    <br/>
+		    <h3 style="padding-bottom: 10px;">Need help?</h3>
 
-            <p>
-                <span class="sbi-support-title"><i class="fa fa-life-ring" aria-hidden="true"></i>&nbsp; <a href="https://smashballoon.com/instagram-feed/free/" target="_blank"><?php _e('Setup Directions'); ?></a></span>
-                <?php _e('A step-by-step guide on how to setup and use the plugin.'); ?>
-            </p>
+		    <p>
+			    <span class="sbi-support-title"><i class="fa fa-life-ring" aria-hidden="true"></i>&nbsp; <a
+					    href="https://smashballoon.com/instagram-feed/free/"
+					    target="_blank"><?php _e( 'Setup Directions' ); ?></a></span>
+			    <?php _e( 'A step-by-step guide on how to setup and use the plugin.' ); ?>
+		    </p>
 
-            <p>
-                <span class="sbi-support-title"><i class="fa fa-youtube-play" aria-hidden="true"></i>&nbsp; <a href="https://www.youtube.com/embed/V_fJ_vhvQXM" target="_blank" id="sbi-play-support-video"><?php _e('Watch a Video'); ?></a></span>
-                <?php _e('<b>Please note</b> that the video shows the set up and use of the <b><a href="https://smashballoon.com/instagram-feed/" target="_blank">PRO version</a></b> of the plugin, but the process is the same for this free version. The only difference is some of the features available.', 'instagram-feed'); ?>
+		    <p>
+			    <span class="sbi-support-title"><i class="fa fa-youtube-play" aria-hidden="true"></i>&nbsp; <a
+					    href="https://www.youtube.com/embed/V_fJ_vhvQXM" target="_blank"
+					    id="sbi-play-support-video"><?php _e( 'Watch a Video' ); ?></a></span>
+			    <?php _e( "Watch a short video demonstrating how to set up, customize and use the plugin.<br /><b>Please note</b> that the video shows the set up and use of the <b><a href='https://smashballoon.com/instagram-feed/' target='_blank'>PRO version</a></b> of the plugin, but the process is the same for this free version. The only difference is some of the features available." ); ?>
 
-                <iframe id="sbi-support-video" src="//www.youtube.com/embed/V_fJ_vhvQXM?theme=light&amp;showinfo=0&amp;controls=2" width="960" height="540" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
-            </p>
+			    <iframe id="sbi-support-video"
+			            src="//www.youtube.com/embed/V_fJ_vhvQXM?theme=light&amp;showinfo=0&amp;controls=2" width="960"
+			            height="540" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+		    </p>
 
-            <p>
-                <span class="sbi-support-title"><i class="fa fa-question-circle" aria-hidden="true"></i>&nbsp; <a href="https://smashballoon.com/instagram-feed/support/faq/" target="_blank"><?php _e('FAQs and Docs'); ?></a></span>
-                <?php _e('View our expansive library of FAQs and documentation to help solve your problem as quickly as possible.'); ?>
-            </p>
+		    <p>
+			    <span class="sbi-support-title"><i class="fa fa-question-circle" aria-hidden="true"></i>&nbsp; <a
+					    href="https://smashballoon.com/instagram-feed/support/faq/"
+					    target="_blank"><?php _e( 'FAQs and Docs' ); ?></a></span>
+			    <?php _e( 'View our expansive library of FAQs and documentation to help solve your problem as quickly as possible.' ); ?>
+		    </p>
 
-            <div class="sbi-support-faqs">
+		    <div class="sbi-support-faqs">
 
-                <ul>
-                    <li><b>FAQs</b></li>
-                    <li>&bull;&nbsp; <?php _e('<a href="https://smashballoon.com/my-instagram-access-token-keep-expiring/" target="_blank">My Access Token Keeps Expiring</a>'); ?></li>
-                    <li>&bull;&nbsp; <?php _e('<a href="https://smashballoon.com/my-photos-wont-load/" target="_blank">My Instagram Feed Won\'t Load</a>'); ?></li>
-                    <li>&bull;&nbsp; <?php _e('<a href="https://smashballoon.com/get-access-token-from-another-account/" target="_blank">Access Token from Another Account</a>'); ?></li>
-                    <li style="margin-top: 8px; font-size: 12px;"><a href="https://smashballoon.com/instagram-feed/support/faq/" target="_blank">See All<i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
-                </ul>
+			    <ul>
+				    <li><b>FAQs</b></li>
+				    <li>&bull;&nbsp; <?php _e( '<a href="https://smashballoon.com/instagram-feed/find-instagram-user-id/" target="_blank">How to find an Instagram User ID</a>' ); ?></li>
+				    <li>&bull;&nbsp; <?php _e( '<a href="https://smashballoon.com/my-instagram-access-token-keep-expiring/" target="_blank">My Access Token Keeps Expiring</a>' ); ?></li>
+				    <li>&bull;&nbsp; <?php _e( '<a href="https://smashballoon.com/my-photos-wont-load/" target="_blank">My Instagram Feed Won\'t Load</a>' ); ?></li>
+				    <li style="margin-top: 8px; font-size: 12px;"><a
+						    href="https://smashballoon.com/instagram-feed/support/faq/" target="_blank">See All<i
+							    class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+			    </ul>
 
-                <ul>
-                    <li><b>Documentation</b></li>
-                    <li>&bull;&nbsp; <?php _e('<a href="https://smashballoon.com/instagram-feed/docs/" target="_blank">Installation and Configuration</a>'); ?></li>
-                    <li>&bull;&nbsp; <?php _e('<a href="https://smashballoon.com/display-multiple-instagram-feeds/" target="_blank">Displaying multiple feeds</a>'); ?></li>
-                    <li>&bull;&nbsp; <?php _e('<a href="https://smashballoon.com/instagram-feed-faq/customization/" target="_blank">Customizing your Feed</a>'); ?></li>
-                </ul>
-            </div>
-<!--
-            <p>
-                <span class="sbi-support-title"><i class="fa fa-rocket" aria-hidden="true"></i>&nbsp; <a href="admin.php?page=sbi-welcome-new"><?php _e('Welcome Page'); ?></a></span>
-                <?php _e("View the plugin welcome page to see what's new in the latest update."); ?>
-            </p>
--->
-            <p>
-                <span class="sbi-support-title"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp; <a href="https://smashballoon.com/instagram-feed/support/" target="_blank"><?php _e('Request Support'); ?></a></span>
-                <?php _e('Still need help? Submit a ticket and one of our support experts will get back to you as soon as possible.<br /><b>Important:</b> Please include your <b>System Info</b> below with all support requests.'); ?>
-            </p>
-        </div>
+			    <ul>
+				    <li><b>Documentation</b></li>
+				    <li>&bull;&nbsp; <?php _e( '<a href="https://smashballoon.com/instagram-feed/free" target="_blank">Installation and Configuration</a>' ); ?></li>
+				    <li>&bull;&nbsp; <?php _e( '<a href="https://smashballoon.com/display-multiple-instagram-feeds/" target="_blank">Displaying multiple feeds</a>' ); ?></li>
+				    <li>&bull;&nbsp; <?php _e( '<a href="https://smashballoon.com/instagram-feed-faq/customization/" target="_blank">Customizing your Feed</a>' ); ?></li>
+			    </ul>
+		    </div>
 
-        <hr />
+		    <p>
+			    <span class="sbi-support-title"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp; <a
+					    href="https://smashballoon.com/instagram-feed/support/"
+					    target="_blank"><?php _e( 'Request Support' ); ?></a></span>
+			    <?php _e( 'Still need help? Submit a ticket and one of our support experts will get back to you as soon as possible.<br /><b>Important:</b> Please include your <b>System Info</b> below with all support requests.' ); ?>
+		    </p>
+	    </div>
 
-        <h3><?php _e('System Info &nbsp; <i style="color: #666; font-size: 11px; font-weight: normal;">Click the text below to select all</i>'); ?></h3>
+	    <hr />
+
+	    <h3><?php _e('System Info &nbsp; <i style="color: #666; font-size: 11px; font-weight: normal;">Click the text below to select all</i>'); ?></h3>
 
 
 
