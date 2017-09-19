@@ -265,7 +265,7 @@ function sb_instagram_settings_page() {
                         </td>
                     </tr>
 
-                    <tr valign="top">
+                    <tr valign="top" class="sbi_feed_type">
                         <th scope="row"><label><?php _e('Show Photos From:', 'instagram-feed'); ?></label><code class="sbi_shortcode"> type
                             Eg: type=user id=12986477
                         </code></th>
@@ -297,6 +297,14 @@ function sb_instagram_settings_page() {
                                 <input readonly type="text" size="25" />
                                     &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed' ); ?></a><span class="sbi_note"> - <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to show posts that you've Liked</a></span>
                                 <p class="sbi_tooltip"><?php _e("Display posts that your user account has liked."); ?></p>
+                            </div>
+
+                            <div class="sbi_pro sbi_row">
+                                <input disabled type="radio" />
+                                <label class="sbi_radio_label"><?php _e( 'Single:', 'instagram-feed' ); ?></label>
+                                <input readonly type="text" size="25" />
+                                    &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed' ); ?></a><span class="sbi_note"> - <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to show single posts</a></span>
+                                <p class="sbi_tooltip"><?php _e("Display a feed comprised of specific single posts."); ?></p>
                             </div>
 
                             <span class="sbi_pro sbi_row">
@@ -351,6 +359,7 @@ function sb_instagram_settings_page() {
     <p class="sb_instagram_contents_links" id="general">
         <span><?php _e( 'Quick links:', 'instagram-feed' ); ?> </span>
         <a href="#general"><?php _e( 'General', 'instagram-feed' ); ?></a>
+        <a href="#layout"><?php _e( 'Layout', 'instagram-feed' ); ?></a>
         <a href="#photos"><?php _e( 'Photos', 'instagram-feed' ); ?></a>
         <a href="#headeroptions"><?php _e( 'Header', 'instagram-feed' ); ?></a>
         <a href="#loadmore"><?php _e( "'Load More' Button", 'instagram-feed' ); ?></a>
@@ -361,7 +370,7 @@ function sb_instagram_settings_page() {
 
     <input type="hidden" name="<?php echo $sb_instagram_customize_hidden_field; ?>" value="Y">
 
-        <h3><?php _e( 'Customize', 'instagram-feed' ); ?></h3>
+        <h3><?php _e( 'General', 'instagram-feed' ); ?></h3>
 
         <table class="form-table">
             <tbody>
@@ -402,33 +411,11 @@ function sb_instagram_settings_page() {
             </tbody>
         </table>
 
-        <hr id="photos" />
-        <h3><?php _e('Photos', 'instagram-feed'); ?></h3>
+        <hr id="layout" />
+        <h3><?php _e('Layout', 'instagram-feed'); ?></h3>
 
         <table class="form-table">
             <tbody>
-                <tr valign="top">
-                    <th scope="row"><label><?php _e('Sort Photos By', 'instagram-feed'); ?></label><code class="sbi_shortcode"> sortby
-                        Eg: sortby=random</code></th>
-                    <td>
-                        <select name="sb_instagram_sort">
-                            <option value="none" <?php if($sb_instagram_sort == "none") echo 'selected="selected"' ?> ><?php _e('Newest to oldest', 'instagram-feed'); ?></option>
-                            <!-- <option value="most-recent" <?php if($sb_instagram_sort == "most-recent") echo 'selected="selected"' ?> ><?php _e('Newest to Oldest', 'instagram-feed'); ?></option>
-                            <option value="least-recent" <?php if($sb_instagram_sort == "least-recent") echo 'selected="selected"' ?> ><?php _e('Oldest to newest', 'instagram-feed'); ?></option>
-                            <option value="most-liked" <?php if($sb_instagram_sort == "most-liked") echo 'selected="selected"' ?> ><?php _e('Most liked first', 'instagram-feed'); ?></option>
-                            <option value="least-liked" <?php if($sb_instagram_sort == "least-liked") echo 'selected="selected"' ?> ><?php _e('Least liked first', 'instagram-feed'); ?></option>
-                            <option value="most-commented" <?php if($sb_instagram_sort == "most-commented") echo 'selected="selected"' ?> ><?php _e('Most commented first', 'instagram-feed'); ?></option>
-                            <option value="least-commented" <?php if($sb_instagram_sort == "least-commented") echo 'selected="selected"' ?> ><?php _e('Least commented first', 'instagram-feed'); ?></option> -->
-                            <option value="random" <?php if($sb_instagram_sort == "random") echo 'selected="selected"' ?> ><?php _e('Random', 'instagram-feed'); ?></option>
-                        </select>
-                    </td>
-                </tr>
-                <tr valign="top" class="sbi_pro">
-                    <th scope="row"><label><?php _e("Enable Pop-up Lightbox", 'instagram-feed'); ?></label></th>
-                    <td>
-                        <span class="sbi_note"><a href="https://smashballoon.com/instagram-feed/" target="_blank"><?php _e('Upgrade to Pro to enable the Pop-up Lightbox.', 'instagram-feed'); ?></a></span>
-                    </td>
-                </tr>
                 <tr valign="top">
                     <th scope="row"><label><?php _e('Number of Photos', 'instagram-feed'); ?></label><code class="sbi_shortcode"> num
                         Eg: num=6</code></th>
@@ -443,7 +430,6 @@ function sb_instagram_settings_page() {
                     <th scope="row"><label><?php _e('Number of Columns', 'instagram-feed'); ?></label><code class="sbi_shortcode"> cols
                         Eg: cols=3</code></th>
                     <td>
-
                         <select name="sb_instagram_cols">
                             <option value="1" <?php if($sb_instagram_cols == "1") echo 'selected="selected"' ?> ><?php _e('1', 'instagram-feed'); ?></option>
                             <option value="2" <?php if($sb_instagram_cols == "2") echo 'selected="selected"' ?> ><?php _e('2', 'instagram-feed'); ?></option>
@@ -456,9 +442,47 @@ function sb_instagram_settings_page() {
                             <option value="9" <?php if($sb_instagram_cols == "9") echo 'selected="selected"' ?> ><?php _e('9', 'instagram-feed'); ?></option>
                             <option value="10" <?php if($sb_instagram_cols == "10") echo 'selected="selected"' ?> ><?php _e('10', 'instagram-feed'); ?></option>
                         </select>
-
                     </td>
                 </tr>
+                <tr valign="top">
+                    <th scope="row"><label><?php _e('Padding around Images', 'instagram-feed'); ?></label><code class="sbi_shortcode"> imagepadding  imagepaddingunit</code></th>
+                    <td>
+                        <input name="sb_instagram_image_padding" type="text" value="<?php echo esc_attr( $sb_instagram_image_padding ); ?>" size="4" maxlength="4" />
+                        <select name="sb_instagram_image_padding_unit">
+                            <option value="px" <?php if($sb_instagram_image_padding_unit == "px") echo 'selected="selected"' ?> ><?php _e('px', 'instagram-feed'); ?></option>
+                            <option value="%" <?php if($sb_instagram_image_padding_unit == "%") echo 'selected="selected"' ?> ><?php _e('%', 'instagram-feed'); ?></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><label><?php _e("Disable mobile layout", 'instagram-feed'); ?></label><code class="sbi_shortcode"> disablemobile
+                        Eg: disablemobile=true</code></th>
+                    <td>
+                        <input type="checkbox" name="sb_instagram_disable_mobile" id="sb_instagram_disable_mobile" <?php if($sb_instagram_disable_mobile == true) echo 'checked="checked"' ?> />
+                        &nbsp;<a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e( 'What does this mean?', 'instagram-feed' ); ?></a>
+                            <p class="sbi_tooltip"><?php _e("By default on mobile devices the layout automatically changes to use fewer columns. Checking this setting disables the mobile layout.", 'instagram-feed'); ?></p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <?php submit_button(); ?>
+
+        <hr id="photos" />
+        <h3><?php _e('Photos', 'instagram-feed'); ?></h3>
+
+        <table class="form-table">
+            <tbody>
+                <tr valign="top">
+                    <th scope="row"><label><?php _e('Sort Photos By', 'instagram-feed'); ?></label><code class="sbi_shortcode"> sortby
+                        Eg: sortby=random</code></th>
+                    <td>
+                        <select name="sb_instagram_sort">
+                            <option value="none" <?php if($sb_instagram_sort == "none") echo 'selected="selected"' ?> ><?php _e('Newest to oldest', 'instagram-feed'); ?></option>
+                            <option value="random" <?php if($sb_instagram_sort == "random") echo 'selected="selected"' ?> ><?php _e('Random', 'instagram-feed'); ?></option>
+                        </select>
+                    </td>
+                </tr>                
                 <tr valign="top">
                     <th scope="row"><label><?php _e('Image Resolution', 'instagram-feed'); ?></label><code class="sbi_shortcode"> imageres
                         Eg: imageres=thumb</code></th>
@@ -476,34 +500,157 @@ function sb_instagram_settings_page() {
 
                     </td>
                 </tr>
-                <tr valign="top">
-                    <th scope="row"><label><?php _e('Padding around Images', 'instagram-feed'); ?></label><code class="sbi_shortcode"> imagepadding  imagepaddingunit</code></th>
-                    <td>
-                        <input name="sb_instagram_image_padding" type="text" value="<?php echo esc_attr( $sb_instagram_image_padding ); ?>" size="4" maxlength="4" />
-                        <select name="sb_instagram_image_padding_unit">
-                            <option value="px" <?php if($sb_instagram_image_padding_unit == "px") echo 'selected="selected"' ?> ><?php _e('px', 'instagram-feed'); ?></option>
-                            <option value="%" <?php if($sb_instagram_image_padding_unit == "%") echo 'selected="selected"' ?> ><?php _e('%', 'instagram-feed'); ?></option>
-                        </select>
-                    </td>
-                </tr>
-
-                <tr valign="top">
-                    <th scope="row"><label><?php _e("Disable mobile layout", 'instagram-feed'); ?></label><code class="sbi_shortcode"> disablemobile
-                        Eg: disablemobile=true</code></th>
-                    <td>
-                        <input type="checkbox" name="sb_instagram_disable_mobile" id="sb_instagram_disable_mobile" <?php if($sb_instagram_disable_mobile == true) echo 'checked="checked"' ?> />
-                        &nbsp;<a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e( 'What does this mean?', 'instagram-feed' ); ?></a>
-                            <p class="sbi_tooltip"><?php _e("By default on mobile devices the layout automatically changes to use fewer columns. Checking this setting disables the mobile layout.", 'instagram-feed'); ?></p>
-                    </td>
-                </tr>
             </tbody>
         </table>
 
-        <?php submit_button(); ?>
+        <span><a href="javascript:void(0);" class="button button-secondary sbi-show-pro"><b>+</b> Show Pro Options</a></span>
+
+        <div class="sbi-pro-options">
+            <p class="sbi-upgrade-link">
+                <i class="fa fa-rocket" aria-hidden="true"></i>&nbsp; <a href="https://smashballoon.com/instagram-feed/" target="_blank"><?php _e('Upgrade to Pro to enable these settings', 'instagram-feed'); ?></a>
+            </p>
+            <table class="form-table">
+                <tbody>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e('Media Type to Display'); ?></label></th>
+                        <td>
+                            <select name="sb_instagram_media_type" disabled>
+                                <option value="all"><?php _e('All'); ?></option>
+                                <option value="photos"><?php _e('Photos only'); ?></option>
+                                <option value="videos"><?php _e('Videos only'); ?></option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e("Enable Pop-up Lightbox", 'instagram-feed'); ?></label></th>
+                        <td>
+                            <input type="checkbox" name="sb_instagram_captionlinks" id="sb_instagram_captionlinks" disabled />
+                        </td>
+                    </tr>
+
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e("Link Posts to URL in Caption (Shoppable feed)"); ?></label></th>
+                        <td>
+                            <input type="checkbox" name="sb_instagram_captionlinks" id="sb_instagram_captionlinks" disabled />
+                            &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e("What will this do?"); ?></a>
+                            <p class="sbi_tooltip"><?php _e("Checking this box will change the link for each post to any url included in the caption for that Instagram post. The lightbox will be disabled. Visit <a href='https://smashballoon.com/make-a-shoppable-feed'>this link</a> to learn how this works."); ?></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <hr />
+        <h3><?php _e('Photo Hover Style'); ?></h3>
+
+        <p style="padding-bottom: 18px;">
+            <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to enable Photo Hover styles</a><br />
+            <a href="javascript:void(0);" class="button button-secondary sbi-show-pro"><b>+</b> Show Pro Options</a>
+        </p>
+
+        <div class="sbi-pro-options" style="margin-top: -15px;">
+            <table class="form-table">
+                <tbody>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e('Hover Background Color'); ?></label></th>
+                        <td>
+                            <input name="sb_hover_background" type="text" disabled class="sbi_colorpick" />
+                        </td>
+                    </tr>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e('Hover Text Color'); ?></label></th>
+                        <td>
+                            <input name="sb_hover_text" type="text" disabled class="sbi_colorpick" />
+                        </td>
+                    </tr>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e('Information to display'); ?></label></th>
+                        <td>
+                            <div>
+                                <input name="sbi_hover_inc_username" type="checkbox" disabled />
+                                <label for="sbi_hover_inc_username"><?php _e('Username'); ?></label>
+                            </div>
+                            <div>
+                                <input name="sbi_hover_inc_icon" type="checkbox" disabled />
+                                <label for="sbi_hover_inc_icon"><?php _e('Expand Icon'); ?></label>
+                            </div>
+                            <div>
+                                <input name="sbi_hover_inc_date" type="checkbox" disabled />
+                                <label for="sbi_hover_inc_date"><?php _e('Date'); ?></label>
+                            </div>
+                            <div>
+                                <input name="sbi_hover_inc_instagram" type="checkbox" disabled />
+                                <label for="sbi_hover_inc_instagram"><?php _e('Instagram Icon/Link'); ?></label>
+                            </div>
+                            <div>
+                                <input name="sbi_hover_inc_location" type="checkbox" disabled />
+                                <label for="sbi_hover_inc_location"><?php _e('Location'); ?></label>
+                            </div>
+                            <div>
+                                <input name="sbi_hover_inc_caption" type="checkbox" disabled />
+                                <label for="sbi_hover_inc_caption"><?php _e('Caption'); ?></label>
+                            </div>
+                            <div>
+                                <input name="sbi_hover_inc_likes" type="checkbox" disabled />
+                                <label for="sbi_hover_inc_likes"><?php _e('Like/Comment Icons'); ?></label>
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
 
         <hr />
         <h3><?php _e( 'Carousel', 'instagram-feed' ); ?></h3>
-        <p style="padding-bottom: 18px;"><a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to enable Carousels</a></p>
+        <p style="padding-bottom: 18px;">
+            <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to enable Carousels</a><br />
+            <a href="javascript:void(0);" class="button button-secondary sbi-show-pro"><b>+</b> Show Pro Options</a>
+        </p>
+
+        <div class="sbi-pro-options" style="margin-top: -15px;">
+            <table class="form-table">
+                <tbody>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e("Enable Carousel"); ?></label></th>
+                        <td>
+                            <input type="checkbox" disabled />
+                            &nbsp;<a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e("What is this?"); ?></a>
+                                <p class="sbi_tooltip"><?php _e("Enable this setting to create a carousel slider out of your photos."); ?></p>
+                        </td>
+                    </tr>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e("Show Navigation Arrows"); ?></label></th>
+                        <td>
+                            <input type="checkbox" disabled />
+                        </td>
+                    </tr>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e("Show Pagination"); ?></label></th>
+                        <td>
+                            <input type="checkbox" disabled />
+                        </td>
+                    </tr>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e("Enable Autoplay"); ?></label></th>
+                        <td>
+                            <input type="checkbox" disabled />
+                        </td>
+                    </tr>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e("Interval Time"); ?></label></th>
+                        <td>
+                            <input name="sb_instagram_carousel_interval" type="text" disabled size="6" /><?php _e("miliseconds"); ?>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
 
         <hr id="headeroptions" />
         <h3><?php _e("Header", 'instagram-feed'); ?></h3>
@@ -535,13 +682,188 @@ function sb_instagram_settings_page() {
             </tbody>
         </table>
 
+        <span><a href="javascript:void(0);" class="button button-secondary sbi-show-pro"><b>+</b> Show Pro Options</a></span>
+
+        <div class="sbi-pro-options">
+            <p class="sbi-upgrade-link">
+                <i class="fa fa-rocket" aria-hidden="true"></i>&nbsp; <a href="https://smashballoon.com/instagram-feed/" target="_blank"><?php _e('Upgrade to Pro to enable these settings', 'instagram-feed'); ?></a>
+            </p>
+            <table class="form-table">
+                <tbody>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e('Header Style'); ?></label></th>
+                        <td>
+                            <select name="sb_instagram_header_style" style="float: left;" disabled>
+                                <option value="circle"><?php _e('Circle'); ?></option>
+                                <option value="boxed"><?php _e('Boxed'); ?></option>
+                            </select>
+                            <div id="sb_instagram_header_style_boxed_options">
+                                <div class="sbi_row">
+                                    <div class="sbi_col sbi_one">
+                                        <label><?php _e('Primary Color'); ?></label>
+                                        <input name="sb_instagram_header_primary_color" type="text" class="sbi_colorpick" />
+                                    </div>
+                                    <div class="sbi_col sbi_one">
+                                        <label><?php _e('Secondary Color'); ?></label>
+                                        <input name="sb_instagram_header_secondary_color" type="text" class="sbi_colorpick" />
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e("Show Number of Followers"); ?></label></th>
+                        <td>
+                            <input type="checkbox" disabled />
+                            <span class="sbi_note"><?php _e("This only applies when displaying photos from a User ID"); ?></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <?php submit_button(); ?>
+
+
         <hr />
         <h3><?php _e("Caption", 'instagram-feed'); ?></h3>
-        <p style="padding-bottom: 18px;"><a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to enable Photo Captions</a></p>
+        <p style="padding-bottom: 18px;">
+            <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to enable Photo Captions</a><br />
+            <a href="javascript:void(0);" class="button button-secondary sbi-show-pro"><b>+</b> Show Pro Options</a>
+        </p>
+
+        <div class="sbi-pro-options" style="margin-top: -15px;">
+            <table class="form-table">
+                <tbody>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e("Show Caption"); ?></label></th>
+                        <td>
+                            <input type="checkbox" disabled />
+                        </td>
+                    </tr>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e("Maximum Text Length"); ?></label></th>
+                        <td>
+                            <input disabled size="4" />Characters
+                            &nbsp;<a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e("What is this?"); ?></a>
+                                <p class="sbi_tooltip"><?php _e("The number of characters of text to display in the caption. An elipsis link will be added to allow the user to reveal more text if desired."); ?></p>
+                        </td>
+                    </tr>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e('Text Color'); ?></label></th>
+                        <td>
+                            <input type="text" disabled class="sbi_colorpick" />
+                        </td>
+                    </tr>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e('Text Size'); ?></label></th>
+                        <td>
+                            <select name="sb_instagram_caption_size" style="width: 180px;" disabled>
+                                <option value="inherit"  ><?php _e('Inherit from theme'); ?></option>
+                                <option value="10" ><?php _e('10px'); ?></option>
+                                <option value="11" ><?php _e('11px'); ?></option>
+                                <option value="12" ><?php _e('12px'); ?></option>
+                                <option value="13" ><?php _e('13px'); ?></option>
+                                <option value="14" ><?php _e('14px'); ?></option>
+                                <option value="16" ><?php _e('16px'); ?></option>
+                                <option value="18" ><?php _e('18px'); ?></option>
+                                <option value="20" ><?php _e('20px'); ?></option>
+                                <option value="24" ><?php _e('24px'); ?></option>
+                                <option value="28" ><?php _e('28px'); ?></option>
+                                <option value="32" ><?php _e('32px'); ?></option>
+                                <option value="36" ><?php _e('36px'); ?></option>
+                                <option value="40" ><?php _e('40px'); ?></option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
 
         <hr />
         <h3><?php _e("Likes &amp; Comments", 'instagram-feed'); ?></h3>
-        <p style="padding-bottom: 18px;"><a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to enable Likes &amp; Comments</a></p>
+        <p style="padding-bottom: 18px;">
+            <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to enable Likes &amp; Comments</a><br />
+            <a href="javascript:void(0);" class="button button-secondary sbi-show-pro"><b>+</b> Show Pro Options</a>
+        </p>
+
+        <div class="sbi-pro-options" style="margin-top: -15px;">
+            <table class="form-table">
+                <tbody>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e("Show Icons"); ?></label></th>
+                        <td>
+                            <input type="checkbox" disabled />
+                        </td>
+                    </tr>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e('Icon Color'); ?></label></th>
+                        <td>
+                            <input type="text" disabled class="sbi_colorpick" />
+                        </td>
+                    </tr>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e('Icon Size'); ?></label></th>
+                        <td>
+                            <select disabled name="sb_instagram_meta_size" style="width: 180px;">
+                                <option value="inherit"><?php _e('Inherit from theme'); ?></option>
+                                <option value="10" ><?php _e('10px'); ?></option>
+                                <option value="11" ><?php _e('11px'); ?></option>
+                                <option value="12" ><?php _e('12px'); ?></option>
+                                <option value="13" ><?php _e('13px'); ?></option>
+                                <option value="14" ><?php _e('14px'); ?></option>
+                                <option value="16" ><?php _e('16px'); ?></option>
+                                <option value="18" ><?php _e('18px'); ?></option>
+                                <option value="20" ><?php _e('20px'); ?></option>
+                                <option value="24" ><?php _e('24px'); ?></option>
+                                <option value="28" ><?php _e('28px'); ?></option>
+                                <option value="32" ><?php _e('32px'); ?></option>
+                                <option value="36" ><?php _e('36px'); ?></option>
+                                <option value="40" ><?php _e('40px'); ?></option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <hr />
+        <h3><?php _e('Comments'); ?></h3>
+
+        <p style="padding-bottom: 18px;">
+            <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to enable Comments</a><br />
+            <a href="javascript:void(0);" class="button button-secondary sbi-show-pro"><b>+</b> Show Pro Options</a>
+        </p>
+
+        <div class="sbi-pro-options" style="margin-top: -15px;">
+            <table class="form-table">
+                <tbody>
+
+                <tr valign="top" class="sbi_pro">
+                    <th scope="row"><label><?php _e('Show Comments in Lightbox'); ?></label></th>
+                    <td style="padding: 5px 10px 0 10px;">
+                        <input type="checkbox" disabled style="margin-right: 15px;" />
+                        <input class="button-secondary" style="margin-top: -5px;" disabled />
+                        &nbsp;<a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e("What is this?"); ?></a>
+                        <p class="sbi_tooltip"><?php _e("This will remove the cached comments saved in the database"); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top" class="sbi_pro">
+                    <th scope="row"><label><?php _e('Number of Comments'); ?></label></th>
+                    <td>
+                        <input name="sb_instagram_num_comments" type="text" disabled size="4" />
+                        <span class="sbi_note"><?php _e('Max number of latest comments.'); ?></span>
+                        &nbsp;<a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e("What is this?"); ?></a>
+                        <p class="sbi_tooltip"><?php _e("This is the maximum number of comments that will be shown in the lightbox. If there are more comments available than the number set, only the latest comments will be shown"); ?></p>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
 
         <hr id="loadmore" />
         <h3><?php _e("'Load More' Button", 'instagram-feed'); ?></h3>
@@ -618,63 +940,102 @@ function sb_instagram_settings_page() {
 
         <hr id="filtering" />
         <h3><?php _e('Post Filtering', 'instagram-feed'); ?></h3>
-        <table class="form-table">
-            <tbody>
-                <tr valign="top" class="sbi_pro">
-                    <th scope="row"><label><?php _e('Remove photos containing these words or hashtags', 'instagram-feed'); ?></label></th>
-                    <td>
-                       <input disabled name="sb_instagram_exclude_words" id="sb_instagram_exclude_words" type="text" style="width: 70%;" value="" />
-                        <br />
-                        <span class="sbi_note" style="margin-left: 0;"><?php _e('Separate words/hashtags using commas', 'instagram-feed'); ?></span>
-                        &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed'); ?></a>
-                            <p class="sbi_tooltip"><?php _e("You can use this setting to remove photos which contain certain words or hashtags in the caption. Separate multiple words or hashtags using commas.", 'instagram-feed'); ?></p>
-                    </td>
-                </tr>
 
-                <tr valign="top" class="sbi_pro">
-                    <th scope="row"><label><?php _e('Show photos containing these words or hashtags', 'instagram-feed'); ?></label></th>
-                    <td>
-                        <input disabled name="sb_instagram_include_words" id="sb_instagram_include_words" type="text" style="width: 70%;" value="" />
-                        <br />
-                        <span class="sbi_note" style="margin-left: 0;"><?php _e('Separate words/hashtags using commas', 'instagram-feed'); ?></span>
-                        &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed'); ?></a>
-                            <p class="sbi_tooltip"><?php _e("You can use this setting to only show photos which contain certain words or hashtags in the caption. For example, adding <code>sheep, cow, dog</code> will show any photos which contain either the word sheep, cow, or dog. Separate multiple words or hashtags using commas.", 'instagram-feed'); ?></p>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <p style="padding-bottom: 18px;"><a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to enable Post Filtering options</a></p>
+        <p style="padding-bottom: 18px;">
+            <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to enable Post Filtering options</a><br />
+            <a href="javascript:void(0);" class="button button-secondary sbi-show-pro"><b>+</b> Show Pro Options</a>
+        </p>
+
+        <div class="sbi-pro-options" style="margin-top: -15px;">
+
+            <table class="form-table">
+                <tbody>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e('Remove photos containing these words or hashtags', 'instagram-feed'); ?></label></th>
+                        <td>
+                            <div class="sb_instagram_apply_labels">
+                                <p>Apply to:</p>
+                                <input class="sb_instagram_incex_one_all" type="radio" value="all" disabled /><label>All feeds</label>
+                                <input class="sb_instagram_incex_one_all" type="radio" value="one" disabled /><label>One feed</label>
+                            </div>
+
+                           <input disabled name="sb_instagram_exclude_words" id="sb_instagram_exclude_words" type="text" style="width: 70%;" value="" />
+                            <br />
+                            <span class="sbi_note" style="margin-left: 0;"><?php _e('Separate words/hashtags using commas', 'instagram-feed'); ?></span>
+                            &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed'); ?></a>
+                                <p class="sbi_tooltip"><?php _e("You can use this setting to remove photos which contain certain words or hashtags in the caption. Separate multiple words or hashtags using commas.", 'instagram-feed'); ?></p>
+                        </td>
+                    </tr>
+
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e('Show photos containing these words or hashtags', 'instagram-feed'); ?></label></th>
+                        <td>
+                            <div class="sb_instagram_apply_labels">
+                                <p>Apply to:</p>
+                                <input class="sb_instagram_incex_one_all" type="radio" value="all" disabled /><label>All feeds</label>
+                                <input class="sb_instagram_incex_one_all" type="radio" value="one" disabled /><label>One feed</label>
+                            </div>
+
+                            <input disabled name="sb_instagram_include_words" id="sb_instagram_include_words" type="text" style="width: 70%;" value="" />
+                            <br />
+                            <span class="sbi_note" style="margin-left: 0;"><?php _e('Separate words/hashtags using commas', 'instagram-feed'); ?></span>
+                            &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed'); ?></a>
+                                <p class="sbi_tooltip"><?php _e("You can use this setting to only show photos which contain certain words or hashtags in the caption. For example, adding <code>sheep, cow, dog</code> will show any photos which contain either the word sheep, cow, or dog. Separate multiple words or hashtags using commas.", 'instagram-feed'); ?></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
 
         <hr id="moderation" />
         <h3><?php _e('Moderation', 'instagram-feed'); ?></h3>
-        <table class="form-table">
-            <tbody>
-                <tr valign="top" class="sbi_pro">
-                    <th scope="row"><label><?php _e('Hide specific photos', 'instagram-feed'); ?></label></th>
-                    <td>
-                        <textarea disabled name="sb_instagram_hide_photos" id="sb_instagram_hide_photos" style="width: 70%;" rows="3"></textarea>
-                        <br />
-                        <span class="sbi_note" style="margin-left: 0;"><?php _e('Separate IDs using commas', 'instagram-feed'); ?></span>
-                        &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed' ); ?></a>
-                            <p class="sbi_tooltip"><?php _e("You can use this setting to hide specific photos in your feed. Just click the 'Hide Photo' link in the photo pop-up in your feed to get the ID of the photo, then copy and paste it into this text box.", 'instagram-feed'); ?></p>
-                    </td>
-                </tr>
 
-                <tr valign="top" class="sbi_pro">
-                    <th scope="row"><label><?php _e('Block users', 'instagram-feed'); ?></label></th>
-                    <td>
-                        <input disabled name="sb_instagram_block_users" id="sb_instagram_block_users" type="text" style="width: 70%;" value="" />
-                        <br />
-                        <span class="sbi_note" style="margin-left: 0;"><?php _e('Separate usernames using commas', 'instagram-feed'); ?></span>
-                        &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed' ); ?></a>
-                            <p class="sbi_tooltip"><?php _e("You can use this setting to block photos from certain users in your feed. Just enter the usernames here which you want to block. Separate multiple usernames using commas.", 'instagram-feed'); ?></p>
-                    </td>
-                </tr>
+        <p style="padding-bottom: 18px;">
+            <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to enable Moderation options</a><br />
+            <a href="javascript:void(0);" class="button button-secondary sbi-show-pro"><b>+</b> Show Pro Options</a>
+        </p>
 
-            </tbody>
-        </table>
-        <p style="padding-bottom: 18px;"><a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to enable Moderation options</a></p>
+        <div class="sbi-pro-options" style="margin-top: -15px;">
+            <table class="form-table">
+                <tbody>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e('Moderation Type'); ?></label></th>
+                        <td>
+                            <input class="sb_instagram_moderation_mode" checked="checked" disabled type="radio" value="visual" style="margin-top: 0;" /><label>Visual</label>
+                            <input class="sb_instagram_moderation_mode" disabled type="radio" value="manual" style="margin-top: 0; margin-left: 10px;"/><label>Manual</label>
+
+                            <p class="sbi_tooltip" style="display: block;"><?php _e("<b>Visual Moderation Mode</b><br />This adds a button to each feed that will allow you to hide posts, block users, and create white lists from the front end using a visual interface. Visit <a href='https://smashballoon.com/guide-to-moderation-mode/' target='_blank'>this page</a> for details"); ?></p>
+
+                        </td>
+                    </tr>
+
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e('Only show posts by these users'); ?></label></th>
+                        <td>
+                            <input type="text" style="width: 70%;" disabled /><br />
+                            <span class="sbi_note" style="margin-left: 0;"><?php _e('Separate usernames using commas'); ?></span>
+
+                            &nbsp;<a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e("What is this?"); ?></a>
+                            <p class="sbi_tooltip"><?php _e("You can use this setting to show photos only from certain users in your feed. Just enter the usernames here which you want to show. Separate multiple usernames using commas."); ?></p>
+                        </td>
+                    </tr>
+                    <tr valign="top" class="sbi_pro">
+                        <th scope="row"><label><?php _e('White lists'); ?></label></th>
+                        <td>
+                            <div class="sbi_white_list_names_wrapper">
+                                <?php _e("No white lists currently created"); ?>
+                            </div>
+                            
+                            <input disabled class="button-secondary" type="submit" value="<?php esc_attr_e( 'Clear White Lists' ); ?>" />
+                            &nbsp;<a class="sbi_tooltip_link" href="JavaScript:void(0);" style="display: inline-block; margin-top: 5px;"><?php _e("What is this?"); ?></a>
+                            <p class="sbi_tooltip"><?php _e("This will remove all of the white lists from the database"); ?></p>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
 
 
 
@@ -1164,9 +1525,13 @@ if ( $url !== 'no_at' ) {
 ?>
 
 
-    <hr />
+    <div class="sbi_quickstart">
+        <h3><i class="fa fa-rocket" aria-hidden="true"></i>&nbsp; Display your feed</h3>
+        <p>Copy and paste this shortcode directly into the page, post or widget where you'd like to display the feed:        <input type="text" value="[instagram-feed]" size="15" readonly="readonly" style="text-align: center;" onclick="this.focus();this.select()" title="To copy, click the field then press Ctrl + C (PC) or Cmd + C (Mac)."></p>
+        <p>Find out how to display <a href="?page=sb-instagram-feed&amp;tab=display">multiple feeds</a>.</p>
+    </div>
 
-    <a href="https://smashballoon.com/instagram-feed/demo" target="_blank" style="display: block; margin: 20px 0 0 0; clear: both;">
+    <a href="https://smashballoon.com/instagram-feed/demo" target="_blank" class="sbi-pro-notice">
         <img src="<?php echo plugins_url( 'img/instagram-pro-promo.png' , __FILE__ ) ?>" alt="<?php esc_attr_e( 'Instagram Feed Pro', 'instagram-feed' ); ?>">
     </a>
 
@@ -1253,46 +1618,6 @@ function sbi_add_settings_link( $links, $file ) {
  
     return $links;
 }
-
-/* Display a notice that can be dismissed regarding updating the Instagram Access Token */
-add_action('admin_notices', 'sbi_new_token_notice_2016');
-function sbi_new_token_notice_2016() {
-
-    //Only show to admins
-    if( current_user_can('manage_options') ){
-
-        global $current_user;
-            $user_id = $current_user->ID;
-
-        // Use this to show notice again
-        // delete_user_meta($user_id, 'sb_instagram_ignore_notice_2016');
-
-        /* Check that the user hasn't already clicked to ignore the message */
-        if ( ! get_user_meta($user_id, 'sb_instagram_ignore_notice_2016') ) {
-
-			?>
-            <div class='sb_instagram_notice'>
-                <p class='sb_instagram_notice_title'><i class='fa fa-exclamation-circle' aria-hidden='true'></i> <strong><?php _e( 'Important', 'instagram-feed' ); ?></strong></p>
-                <p><strong><?php _e( 'Just installed the plugin?', 'instagram-feed' ); ?></strong> <?php _e( 'You can ignore this notice and hide it using the "Dismiss" button in the top right corner.', 'instagram-feed' ); ?></p>
-                <p><strong><?php _e( 'Just updated the plugin?', 'instagram-feed' ); ?></strong> <?php printf( __( "Due to the recent Instagram API changes, in order for the Instagram Feed plugin to continue working after <b><u>June 1st</u></b> you must obtain and save a new Access Token by using the Instagram button on the plugin's <a href='%s'>Settings page</a>. This is required even if you recently already obtained a new token. Apologies for any inconvenience.", 'instagram-feed' ), get_admin_url().'admin.php?page=sb-instagram-feed' ); ?></p>
-                <a class='sb_instagram_dismiss' href='<?php echo esc_url( add_query_arg( 'sb_instagram_token_nag_ignore_2016', '0' ) ); ?>'><i class='fa fa-times-circle' aria-hidden='true'></i> <?php _e( 'Dismiss', 'instagram-feed' ); ?></a>
-            </div>
-			<?php
-
-        }
-
-    }
-
-}
-add_action('admin_init', 'sb_instagram_token_nag_ignore_2016');
-function sb_instagram_token_nag_ignore_2016() {
-    global $current_user;
-        $user_id = $current_user->ID;
-        if ( isset($_GET['sb_instagram_token_nag_ignore_2016']) && '0' == $_GET['sb_instagram_token_nag_ignore_2016'] ) {
-             add_user_meta($user_id, 'sb_instagram_ignore_notice_2016', 'true', true);
-    }
-}
-
 
 
 //REVIEW REQUEST NOTICE

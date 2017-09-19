@@ -123,4 +123,8 @@ jQuery(document).ready(function($) {
 		jQuery('#sbi-support-video').show().attr('src', jQuery('#sbi-support-video').attr('src')+'&amp;autoplay=1' );
 	});
 
+	jQuery('#sbi_admin .sbi-show-pro').on('click', function(){
+		jQuery(this).parent().next('.sbi-pro-options').toggle();
+	});
+
 });
