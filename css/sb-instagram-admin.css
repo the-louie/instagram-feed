@@ -261,7 +261,9 @@
 
 /* Quick start */
 #sbi_admin .sbi_quickstart{
-    display: inline-block;
+    display: block;
+    float: left;
+    clear: both;
     margin: 15px 0 0 0;
     padding: 15px 20px;
     min-width: 808px;
