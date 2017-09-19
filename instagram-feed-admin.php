@@ -830,7 +830,7 @@ function sb_instagram_settings_page() {
 
 
         <hr />
-        <h3><?php _e('Comments'); ?></h3>
+        <h3><?php _e('Lightbox Comments'); ?></h3>
 
         <p style="padding-bottom: 18px;">
             <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to enable Comments</a><br />
@@ -845,7 +845,7 @@ function sb_instagram_settings_page() {
                     <th scope="row"><label><?php _e('Show Comments in Lightbox'); ?></label></th>
                     <td style="padding: 5px 10px 0 10px;">
                         <input type="checkbox" disabled style="margin-right: 15px;" />
-                        <input class="button-secondary" style="margin-top: -5px;" disabled />
+                        <input class="button-secondary" style="margin-top: -5px;" disabled value="<?php esc_attr_e( 'Clear Comment Cache' ); ?>" />
                         &nbsp;<a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e("What is this?"); ?></a>
                         <p class="sbi_tooltip"><?php _e("This will remove the cached comments saved in the database"); ?></p>
                     </td>
