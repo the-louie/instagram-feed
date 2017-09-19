@@ -1,5 +1,5 @@
 === Instagram Feed ===
-Contributors: smashballoon
+Contributors: smashballoon, craig-at-smash-balloon
 Tags: Instagram, Instagram feed, Instagram photos, Instagram widget, Instagram gallery
 Requires at least: 3.0
 Tested up to: 4.8
