@@ -14,7 +14,6 @@ Display beautifully clean, customizable, and responsive feeds from multiple Inst
 Display Instagram photos from any non-private Instagram accounts, either in the same single feed or in multiple different ones.
 
 = Features =
-* **Compatible with the June 1st Instagram API changes**
 * Super **simple to set up**
 * Display photos from **multiple Instagram accounts** in the same feed or in separate feeds
 * Completely **responsive** and mobile ready - layout looks great on any screen size and in any container width
@@ -312,8 +311,8 @@ We understand that sometimes you need help, have issues or just have questions. 
 
 == Changelog ==
 = 1.5.1 =
-* New: Added config file for WPML compatibility. Use multiple translations for your feeds on your multi-language sites [WPML website](https://wpml.org/)
-* New: Added translation files for Danish (da_DK), Finnish (fi_FL), Japanese (ja_JP), Norwegian (nn_NO), Portuguese (pt_PT), and Swedish (sv_SE) to translate "Load More..." and "Follow on Instagram"
+* New: The plugin is now compatible with the [WPML plugin](https://wpml.org/) allowing you to use multiple translations for your feeds on your multi-language sites
+* New: Added translation files for Danish (da_DK), Finnish (fi_FL), Japanese (ja_JP), Norwegian (nn_NO), Portuguese (pt_PT), and Swedish (sv_SE) to translate the "Load More" and "Follow on Instagram" text
 
 = 1.5 =
 * New: Improved tool for retrieving Instagram Access Tokens
