@@ -26,8 +26,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 define( 'SBIVER', '1.5.1' );
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 //Include admin
-include dirname( __FILE__ ) .'/instagram-feed-admin.php';
+if ( is_admin() ) include dirname( __FILE__ ) .'/instagram-feed-admin.php';
 
 // Add shortcodes
 add_shortcode('instagram-feed', 'display_instagram');
