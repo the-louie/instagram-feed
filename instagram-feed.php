@@ -37,8 +37,16 @@ function display_instagram($atts, $content = null) {
     /******************* SHORTCODE OPTIONS ********************/
 
     $options = get_option('sb_instagram_settings');
-    
-    //Pass in shortcode attrbutes
+
+	isset($sb_instagram_settings[ 'sb_instagram_ajax_theme' ]) ? $sb_instagram_ajax_theme = trim($options['sb_instagram_ajax_theme']) : $sb_instagram_ajax_theme = '';
+	( $sb_instagram_ajax_theme == 'on' || $sb_instagram_ajax_theme == 'true' || $sb_instagram_ajax_theme == true ) ? $sb_instagram_ajax_theme = true : $sb_instagram_ajax_theme = false;
+
+	//Enqueue it to load it onto the page
+	if( !$sb_instagram_ajax_theme ) wp_enqueue_script('sb_instagram_scripts');
+	wp_enqueue_style( 'sb_instagram_styles' );
+	wp_enqueue_style( 'sb-font-awesome' );
+
+	//Pass in shortcode attrbutes
     $atts = shortcode_atts(
     array(
         'id' => isset($options[ 'sb_instagram_user_id' ]) ? $options[ 'sb_instagram_user_id' ] : '',
@@ -229,11 +237,10 @@ add_filter('widget_text', 'do_shortcode');
 add_action( 'wp_enqueue_scripts', 'sb_instagram_styles_enqueue' );
 function sb_instagram_styles_enqueue() {
     wp_register_style( 'sb_instagram_styles', plugins_url('css/sb-instagram.min.css', __FILE__), array(), SBIVER );
-    wp_enqueue_style( 'sb_instagram_styles' );
 
     $options = get_option('sb_instagram_settings');
     if(isset($options['sb_instagram_disable_awesome'])){
-        if( !$options['sb_instagram_disable_awesome'] || !isset($options['sb_instagram_disable_awesome']) ) wp_enqueue_style( 'sb-font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', array(), '4.7.0' );
+        if( !$options['sb_instagram_disable_awesome'] || !isset($options['sb_instagram_disable_awesome']) ) wp_register_style( 'sb-font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', array(), '4.7.0' );
     }
     
 }
@@ -253,12 +260,6 @@ function sb_instagram_scripts_enqueue() {
     $data = array(
         'sb_instagram_at' => $sb_instagram_at
     );
-
-    isset($sb_instagram_settings[ 'sb_instagram_ajax_theme' ]) ? $sb_instagram_ajax_theme = trim($sb_instagram_settings['sb_instagram_ajax_theme']) : $sb_instagram_ajax_theme = '';
-    ( $sb_instagram_ajax_theme == 'on' || $sb_instagram_ajax_theme == 'true' || $sb_instagram_ajax_theme == true ) ? $sb_instagram_ajax_theme = true : $sb_instagram_ajax_theme = false;
-
-    //Enqueue it to load it onto the page
-    if( !$sb_instagram_ajax_theme ) wp_enqueue_script('sb_instagram_scripts');
 
     //Pass option to JS file
     wp_localize_script('sb_instagram_scripts', 'sb_instagram_js_options', $data);
