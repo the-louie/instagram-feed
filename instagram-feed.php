@@ -199,7 +199,7 @@ function display_instagram($atts, $content = null) {
     $sb_instagram_content .= '>';
 
     //Load More button
-    if( $sb_instagram_show_btn && !$sb_instagram_error ) $sb_instagram_content .= '<a class="sbi_load_btn" href="javascript:void(0);" '.$sb_instagram_button_styles.'>' . esc_html( stripslashes( $sb_instagram_load_btn_text ) ).'</a>';
+    if( $sb_instagram_show_btn && !$sb_instagram_error ) $sb_instagram_content .= '<a class="sbi_load_btn" href="javascript:void(0);" '.$sb_instagram_button_styles.'><span class="sbi_btn_text">' . esc_html( stripslashes( $sb_instagram_load_btn_text ) ).'</span><i class="fa fa-spinner fa-pulse" aria-hidden="true" style="display:none;"></i></a>';
 
     //Follow button
     if( $sb_instagram_show_follow_btn && !$sb_instagram_error ) $sb_instagram_content .= $sb_instagram_follow_btn_html;
