@@ -176,7 +176,8 @@ function display_instagram($atts, $content = null) {
     if( $sb_instagram_show_header ) $sb_instagram_content .= '<div class="sb_instagram_header" style="padding: '.(2*intval($sb_instagram_image_padding)) . $sb_instagram_image_padding_unit .'; padding-bottom: 0;"></div>';
 
     //Images container
-    $sb_instagram_content .= '<div id="sbi_images" style="padding: '.$sb_instagram_image_padding . $sb_instagram_image_padding_unit .';">';
+	$padding_style = (int)$sb_instagram_image_padding > 0 ? ' style="padding: '.$sb_instagram_image_padding . $sb_instagram_image_padding_unit . ';"' : '';
+	$sb_instagram_content .= '<div id="sbi_images"' . $padding_style .'>';
 
     //Error messages
     $sb_instagram_error = false;
