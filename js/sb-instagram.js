@@ -45,12 +45,7 @@ if(!sbi_js_exists){
                 this.options.success != null && typeof this.options.success == "function" && this.options.success.call(this, e), this.context.nextUrl = "", e.pagination != null && (this.context.nextUrl = e.pagination.next_url);
                 var lastVisiblePost = typeof e.data[Math.min(this.options.limit - 1,e.data.length-1)] !== 'undefined' ? e.data[Math.min(this.options.limit - 1,e.data.length-1)] : e.data[e.data.length],
                     lastRetrievedPost = e.data[e.data.length-1];
-                console.log(lastVisiblePost, 'last visible');
-                console.log(lastRetrievedPost, 'last retrieved');
-                console.log(lastRetrievedPost, 'last retrieved');
-                console.log(e.data, 'posts retrieved');
                 if (typeof e.pagination.next_url !== 'undefined') {
-                    console.log(e.pagination.next_url.replace(lastRetrievedPost.id, lastVisiblePost.id), 'next url');
                     this.context.nextUrl = e.pagination.next_url.replace(lastRetrievedPost.id, lastVisiblePost.id);
                 }
                 if (e.data.length > this.options.limit) {
@@ -160,6 +155,7 @@ if(!sbi_js_exists){
             }, e
         }(), t = typeof exports != "undefined" && exports !== null ? exports : window, t.instagramfeed = e
     }).call(this);
+
     //Shim for "fixing" IE's lack of support (IE < 9) for applying slice on host objects like NamedNodeMap, NodeList, and HTMLCollection) https://github.com/stevenschobert/instafeed.js/issues/84
     (function(){"use strict";var e=Array.prototype.slice;try{e.call(document.documentElement)}catch(t){Array.prototype.slice=function(t,n){n=typeof n!=="undefined"?n:this.length;if(Object.prototype.toString.call(this)==="[object Array]"){return e.call(this,t,n)}var r,i=[],s,o=this.length;var u=t||0;u=u>=0?u:o+u;var a=n?n:o;if(n<0){a=o+n}s=a-u;if(s>0){i=new Array(s);if(this.charAt){for(r=0;r<s;r++){i[r]=this.charAt(u+r)}}else{for(r=0;r<s;r++){i[r]=this[u+r]}}}return i}}})()
 
