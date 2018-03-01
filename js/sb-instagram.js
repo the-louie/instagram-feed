@@ -43,6 +43,19 @@ if(!sbi_js_exists){
                     throw new Error("No images were returned from Instagram")
                 }
                 this.options.success != null && typeof this.options.success == "function" && this.options.success.call(this, e), this.context.nextUrl = "", e.pagination != null && (this.context.nextUrl = e.pagination.next_url);
+                var lastVisiblePost = typeof e.data[Math.min(this.options.limit - 1,e.data.length-1)] !== 'undefined' ? e.data[Math.min(this.options.limit - 1,e.data.length-1)] : e.data[e.data.length],
+                    lastRetrievedPost = e.data[e.data.length-1];
+                console.log(lastVisiblePost, 'last visible');
+                console.log(lastRetrievedPost, 'last retrieved');
+                console.log(lastRetrievedPost, 'last retrieved');
+                console.log(e.data, 'posts retrieved');
+                if (typeof e.pagination.next_url !== 'undefined') {
+                    console.log(e.pagination.next_url.replace(lastRetrievedPost.id, lastVisiblePost.id), 'next url');
+                    this.context.nextUrl = e.pagination.next_url.replace(lastRetrievedPost.id, lastVisiblePost.id);
+                }
+                if (e.data.length > this.options.limit) {
+                    e.data = e.data.slice(0,this.options.limit);
+                }
                 if (this.options.sortBy !== "none") {
                     this.options.sortBy === "random" ? d = ["", "random"] : d = this.options.sortBy.split("-"), p = d[0] === "least" ? !0 : !1;
                     switch (d[1]) {
@@ -111,7 +124,7 @@ if(!sbi_js_exists){
                     default:
                         throw new Error("Invalid option for get: '" + this.options.get + "'.")
                 }
-                return n = "" + e + "/" + t, this.options.accessToken != null ? n += "?access_token=" + this.options.accessToken : n += "?client_id=" + this.options.clientId, this.options.limit != null && (n += "&count=" + this.options.limit), n += "&callback=instafeedCache" + this.unique + ".parse", n
+                return n = "" + e + "/" + t, this.options.accessToken != null ? n += "?access_token=" + this.options.accessToken : n += "?client_id=" + this.options.clientId, this.options.limit != null && (n += "&count=33"), n += "&callback=instafeedCache" + this.unique + ".parse", n
             }, e.prototype._genKey = function() {
                 var e;
                 return e = function() {
@@ -147,11 +160,11 @@ if(!sbi_js_exists){
             }, e
         }(), t = typeof exports != "undefined" && exports !== null ? exports : window, t.instagramfeed = e
     }).call(this);
-	//Shim for "fixing" IE's lack of support (IE < 9) for applying slice on host objects like NamedNodeMap, NodeList, and HTMLCollection) https://github.com/stevenschobert/instafeed.js/issues/84
-	(function(){"use strict";var e=Array.prototype.slice;try{e.call(document.documentElement)}catch(t){Array.prototype.slice=function(t,n){n=typeof n!=="undefined"?n:this.length;if(Object.prototype.toString.call(this)==="[object Array]"){return e.call(this,t,n)}var r,i=[],s,o=this.length;var u=t||0;u=u>=0?u:o+u;var a=n?n:o;if(n<0){a=o+n}s=a-u;if(s>0){i=new Array(s);if(this.charAt){for(r=0;r<s;r++){i[r]=this.charAt(u+r)}}else{for(r=0;r<s;r++){i[r]=this[u+r]}}}return i}}})()
+    //Shim for "fixing" IE's lack of support (IE < 9) for applying slice on host objects like NamedNodeMap, NodeList, and HTMLCollection) https://github.com/stevenschobert/instafeed.js/issues/84
+    (function(){"use strict";var e=Array.prototype.slice;try{e.call(document.documentElement)}catch(t){Array.prototype.slice=function(t,n){n=typeof n!=="undefined"?n:this.length;if(Object.prototype.toString.call(this)==="[object Array]"){return e.call(this,t,n)}var r,i=[],s,o=this.length;var u=t||0;u=u>=0?u:o+u;var a=n?n:o;if(n<0){a=o+n}s=a-u;if(s>0){i=new Array(s);if(this.charAt){for(r=0;r<s;r++){i[r]=this.charAt(u+r)}}else{for(r=0;r<s;r++){i[r]=this[u+r]}}}return i}}})()
 
-	//IE8 also doesn't offer the .bind() method triggered by the 'sortBy' property. Copy and paste the polyfill offered here:
-	if(!Function.prototype.bind){Function.prototype.bind=function(e){if(typeof this!=="function"){throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable")}var t=Array.prototype.slice.call(arguments,1),n=this,r=function(){},i=function(){return n.apply(this instanceof r&&e?this:e,t.concat(Array.prototype.slice.call(arguments)))};r.prototype=this.prototype;i.prototype=new r;return i}}
+    //IE8 also doesn't offer the .bind() method triggered by the 'sortBy' property. Copy and paste the polyfill offered here:
+    if(!Function.prototype.bind){Function.prototype.bind=function(e){if(typeof this!=="function"){throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable")}var t=Array.prototype.slice.call(arguments,1),n=this,r=function(){},i=function(){return n.apply(this instanceof r&&e?this:e,t.concat(Array.prototype.slice.call(arguments)))};r.prototype=this.prototype;i.prototype=new r;return i}}
 
     function sbi_init(){
         // used to track multiple feeds on the page
@@ -313,8 +326,8 @@ if(!sbi_js_exists){
                             // Use imagefill to set the images as backgrounds so they can be square
                             !function () {
                                 var css = sbi_imgLiquid.injectCss,
-                                head = document.getElementsByTagName('head')[0],
-                                style = document.createElement('style');
+                                    head = document.getElementsByTagName('head')[0],
+                                    style = document.createElement('style');
                                 style.type = 'text/css';
                                 if (style.styleSheet) {
                                     style.styleSheet.cssText = css;
@@ -329,7 +342,7 @@ if(!sbi_js_exists){
                         //Only check the width once the resize event is over
                         var sbi_delay = (function(){
                             var sbi_timer = 0;
-                                return function(sbi_callback, sbi_ms){
+                            return function(sbi_callback, sbi_ms){
                                 clearTimeout (sbi_timer);
                                 sbi_timer = setTimeout(sbi_callback, sbi_ms);
                             };
@@ -355,7 +368,7 @@ if(!sbi_js_exists){
                                     if( sbiWindowWidth < 640 && (parseInt(cols) > 2 && parseInt(cols) < 7 ) ) sbi_num_cols = 2;
                                     if( sbiWindowWidth < 640 && (parseInt(cols) > 6 && parseInt(cols) < 11 ) ) sbi_num_cols = 4;
                                     if( sbiWindowWidth <= 480 && parseInt(cols) > 2 ) sbi_num_cols = 1;
-                                  }
+                                }
 
                                 //Figure out what the width should be using the number of cols
                                 var sbi_photo_width_manual = ( $self.find('#sbi_images').width() / sbi_num_cols ) - (feedOptions.imagepadding*2);
@@ -375,7 +388,7 @@ if(!sbi_js_exists){
                         //If the feed is initially hidden (in a tab for example) then check for when it becomes visible and set then set the height
                         jQuery(".sbi").filter(':hidden').sbiVisibilityChanged({
                             callback: function(element, visible) {
-                               sbiSetPhotoHeight();
+                                sbiSetPhotoHeight();
                             },
                             runOnLoad: false
                         });
@@ -420,13 +433,13 @@ if(!sbi_js_exists){
                         }, 500);
 
                         function sbiGetItemSize(){
-                          $self.removeClass('sbi_small sbi_medium');
-                          var sbiItemWidth = $self.find('.sbi_item').innerWidth();
-                          if( sbiItemWidth > 120 && sbiItemWidth < 240 ){
-                              $self.addClass('sbi_medium');
-                          } else if( sbiItemWidth <= 120 ){
-                              $self.addClass('sbi_small');
-                          }
+                            $self.removeClass('sbi_small sbi_medium');
+                            var sbiItemWidth = $self.find('.sbi_item').innerWidth();
+                            if( sbiItemWidth > 120 && sbiItemWidth < 240 ){
+                                $self.addClass('sbi_medium');
+                            } else if( sbiItemWidth <= 120 ){
+                                $self.addClass('sbi_small');
+                            }
                         }
                         sbiGetItemSize();
 
@@ -474,7 +487,7 @@ if(!sbi_js_exists){
                 userFeed.run();
 
             }); //End User ID array loop
-        
+
         });
 
     }
