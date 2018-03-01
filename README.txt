@@ -313,6 +313,7 @@ We understand that sometimes you need help, have issues or just have questions. 
 = 1.6.1 =
 * Fix: Fixed Font Awesome 5.0 causing Instagram icon to appear as a question mark with a circle.
 * Fix: Fixed inline padding style for sbi_images element causing validation error when set to "0" or blank space.
+* Fix: Some feeds would show fewer posts than was set as the "number of posts" setting.
 
 = 1.6 =
 * New: Loading icon appears when waiting for new posts after clicking the "Load More..." button
