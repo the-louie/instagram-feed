@@ -44,9 +44,14 @@ if(!sbi_js_exists){
                 }
                 this.options.success != null && typeof this.options.success == "function" && this.options.success.call(this, e), this.context.nextUrl = "", e.pagination != null && (this.context.nextUrl = e.pagination.next_url);
                 var lastVisiblePost = typeof e.data[Math.min(this.options.limit - 1,e.data.length-1)] !== 'undefined' ? e.data[Math.min(this.options.limit - 1,e.data.length-1)] : e.data[e.data.length],
-                    lastRetrievedPost = e.data[e.data.length-1];
+                    lastRetrievedPost = e.data[e.data.length-1],
+                    hasMorePosts = (typeof e.data[this.options.limit] !== 'undefined');
                 if (typeof e.pagination.next_url !== 'undefined') {
                     this.context.nextUrl = e.pagination.next_url.replace(lastRetrievedPost.id, lastVisiblePost.id);
+                } else if (hasMorePosts) {
+                    this.context.nextUrl = "https://api.instagram.com/v1/users/"+this.options.userId+"/media/recent?access_token="+this.options.accessToken+"&count=33&callback=instafeedCache"+this.unique+".parse&max_id=" + lastVisiblePost.id;
+                    e.pagination.next_url = this.context.nextUrl;
+                    e.pagination.next_max_id = lastVisiblePost.id;
                 }
                 if (e.data.length > this.options.limit) {
                     e.data = e.data.slice(0,this.options.limit);
