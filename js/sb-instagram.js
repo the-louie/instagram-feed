@@ -39,8 +39,6 @@ if(!sbi_js_exists){
     };
 
     function sbSVGify(elem) {
-        console.log(sb_instagram_js_options.font_method );
-
         if (sb_instagram_js_options.font_method != 'fontfile') {
 
             if (typeof elem === 'undefined') {
@@ -59,6 +57,81 @@ if(!sbi_js_exists){
                     }
                 })
             });
+            sbiSizeSVG(elem);
+        }
+    }
+
+    function sbiSizeSVG(elem) {
+        if (elem.find('svg').innerWidth() > 48 || elem.find('.fa-clone').last().innerWidth() > 24 || elem.find('.fa-play').last().innerWidth() > 48) {
+            console.log('too big');
+            jQuery('.sbi_follow_btn svg').css({
+                'margin-bottom': '-4px',
+                'margin-right': '7px',
+                'font-size': '15px',
+                'width': '15px'
+            });
+            elem.find('.fa-spinner').css({
+                'font-size': '15px',
+                'width': '15px'
+            });
+            if (elem.find('.sbi_type_carousel .fa-clone').length){
+                elem.find('.sbi_type_carousel .fa-clone').each(function() {
+                    var size = '24px',
+                        offset = '8px';
+                    if (elem.hasClass('sbi_small')) {
+                        size = '12px';
+                        offset = '5px';
+                    } else if (elem.hasClass('sbi_medium')){
+                        size = '18px';
+                        offset = '5px';
+                    }
+
+                    jQuery(this).css({
+                        'top': offset,
+                        'right': offset,
+                        'position': 'absolute',
+                        'font-size': size,
+                        'width': size,
+                        'color': '#fff',
+                        '-webkit-filter' : 'drop-shadow( 0px 0px 2px rgba(0,0,0,.4) )',
+                        'filter' : 'drop-shadow( 0px 0px 2px rgba(0,0,0,.4) )'
+                    });
+                });
+            }
+            if (elem.find('.sbi_item .fa-play').length){
+                elem.find('.sbi_item .fa-play').each(function() {
+                    var size = '48px',
+                        margintop = '-24px',
+                        marginleft = '-19px';
+                    if (jQuery(this).closest('.sbi').hasClass('sbi_small')) {
+                        size = '18px';
+                        margintop = '-9px';
+                        marginleft = '-7px';
+                    } else if (jQuery(this).closest('.sbi').hasClass('sbi_medium')){
+                        size = '23px';
+                        margintop = '-12px';
+                        marginleft = '-10px';
+                    }
+
+                    jQuery(this).css({
+                        'top': '50%',
+                        'right': '50%',
+                        'position': 'absolute',
+                        'font-size': size,
+                        'width': size,
+                        'margin-top': margintop,
+                        'margin-left': marginleft,
+                        'color': '#fff',
+                        '-webkit-filter' : 'drop-shadow( 0px 0px 2px rgba(0,0,0,.4) )',
+                        'filter' : 'drop-shadow( 0px 0px 2px rgba(0,0,0,.4) )'
+                    });
+                });
+            }
+            //sbi_small
+            //margin-bottom: -3px;margin-right: 7px;font-size: 15px; width: 15px;
+        } else {
+            console.log(jQuery('.sbi_follow_btn svg').innerWidth());
+            console.log('not too big');
         }
     }
 
@@ -517,9 +590,9 @@ if(!sbi_js_exists){
                             var carouselPadding = (carousel == true) ? ' style="padding: '+imagepadding+imagepaddingunit+' !important;"' : '';
 */
                             var videoIsFirstCarouselItemClass = videoIsFirstCarouselItem ? ' sbi_carousel_vid_first' : '',
-                                carouselTypeIcon = item.type === 'carousel' ? '<i class="fa fa-clone sbi_carousel_icon" aria-hidden="true" style="right: 8px; top: 8px; position: absolute; max-width: 24px; color: #fff;"></i>': '';
+                                carouselTypeIcon = item.type === 'carousel' ? '<i class="fa fa-clone sbi_carousel_icon" aria-hidden="true"></i>': '';
 
-                            var playBtnHtml = item.type === 'video' || videoIsFirstCarouselItemClass ? '<i class="fa fa-play sbi_playbtn" style="left: 50%; top: 50%; position: absolute; margin-top: -12px; margin-left: -10px; max-width: 24px; color: #fff;"></i>' : '';
+                            var playBtnHtml = item.type === 'video' || videoIsFirstCarouselItemClass ? '<i class="fa fa-play sbi_playbtn"></i>' : '';
 
                             //TEMPLATE:
 
@@ -572,7 +645,7 @@ if(!sbi_js_exists){
                         //AFTER:
                         //Things to add after the photos have been added
                         function sbiAfterImagesLoaded(imagesArr,transientName){
-
+                            sbiSizeSVG($self);
                             /* Scripts for each feed */
                             $self.find('.sbi_item').each(function(){
 
@@ -699,6 +772,7 @@ if(!sbi_js_exists){
                                 sbi_delay(function(){
                                     sbiSetPhotoHeight();
                                     sbiGetItemSize();
+                                    sbiSizeSVG();
 
                                     jQuery('.sbi').each(function() {
                                         var $sbiSelf = jQuery(this),
@@ -792,7 +866,6 @@ if(!sbi_js_exists){
                             photosAvailable = 'finished';
 
                             sbSVGify($self);
-
                         } // End sbiAfterImagesLoaded() function
 
 

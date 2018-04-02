@@ -242,7 +242,7 @@ function sb_instagram_settings_page() {
 	            $options[ 'sb_instagram_disable_awesome' ] = $sb_instagram_disable_awesome;
 
 	            //Delete all SBI transients
-	            /*global $wpdb;
+	            global $wpdb;
 	            $table_name = $wpdb->prefix . "options";
 	            $wpdb->query( "
                     DELETE
@@ -282,8 +282,8 @@ function sb_instagram_settings_page() {
 
 		            wp_schedule_event(time(), $sb_instagram_cron_schedule, 'sb_instagram_cron_job');
 
-		            //sb_instagram_clear_page_caches();
-	            }*/
+		            sb_instagram_clear_page_caches();
+	            }
                 
             } //End customize tab post
             
@@ -1814,7 +1814,27 @@ function sbi_rating_notice_html() {
 
     }
 }
+function sb_instagram_clear_page_caches() {
+	if ( isset( $GLOBALS['wp_fastest_cache'] ) && method_exists( $GLOBALS['wp_fastest_cache'], 'deleteCache' ) ){
+		/* Clear WP fastest cache*/
+		$GLOBALS['wp_fastest_cache']->deleteCache();
+	}
 
+	if ( function_exists( 'wp_cache_clear_cache' ) ) {
+		wp_cache_clear_cache();
+	}
+
+	if ( class_exists('W3_Plugin_TotalCacheAdmin') ) {
+		$plugin_totalcacheadmin = & w3_instance('W3_Plugin_TotalCacheAdmin');
+
+		$plugin_totalcacheadmin->flush_all();
+	}
+
+	if ( class_exists( 'autoptimizeCache' ) ) {
+		/* Clear autoptimize */
+		autoptimizeCache::clearall();
+	}
+}
 /**
  * Called via ajax to automatically save access token and access token secret
  * retrieved with the big blue button
