@@ -39,6 +39,24 @@ jQuery(document).ready(function($) {
 		jQuery('#sb_instagram_at').val(token);
 		sbSaveToken(token);
 	});
+
+    //clear backup caches
+    jQuery('#sbi_clear_backups').click(function(event) {
+        jQuery('.sbi-success').remove();
+        event.preventDefault();
+        jQuery.ajax({
+            url: sbiA.ajax_url,
+            type: 'post',
+            data: {
+                action: 'sbi_clear_backups',
+                access_token: token,
+                just_tokens: true
+            },
+            success: function (data) {
+                jQuery('#sbi_clear_backups').after('<span class="sbi-success"><i class="fa fa-check-circle"></i></span>');
+            }
+        });
+    });
 	
 	//Tooltips
 	jQuery('#sbi_admin .sbi_tooltip_link').click(function(){
