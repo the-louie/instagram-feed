@@ -311,8 +311,8 @@ We understand that sometimes you need help, have issues or just have questions. 
 
 == Changelog ==
 = 1.7 =
-* New: Added feed caching to limit the number of API requests. Use the setting on the "Configure" tab "Check for new posts every" to set how long feed data will be cached before refreshing
-* New: Added backup caching for all feeds. If the feed is unable to display or too many posts are being filtered out, a backup feed will be shown to visitors if a backup cache is available
+* New: Added feed caching to limit the number of API requests. Use the setting on the "Configure" tab "Check for new posts every" to set how long feed data will be cached before refreshing.
+* New: Added backup caching for all feeds. If the feed is unable to display then a backup feed will be shown to visitors if one is available. The backup cache can be disabled or cleared by using the following setting: `Customize > Misc > Enable Backup Caching`.
 * New: Icons are now generated as SVGs for a sharper look and more semantic markup
 * New: Carousel posts include an icon to indicate that they are carousel posts
 * Tweak: Using the "sort posts by random" feature will include the most recent 33 posts instead of just the posts shown in the feed

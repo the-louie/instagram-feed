@@ -1190,7 +1190,7 @@ function sb_instagram_settings_page() {
                     <th><label><?php _e("Enable Backup Caching"); ?></label></th>
                     <td class="sbi-customize-tab-opt">
                         <input name="sb_instagram_backup" type="checkbox" id="sb_instagram_backup" <?php if($sb_instagram_backup == true) echo "checked"; ?> />
-                        <input id="sbi_clear_backups" class="button-secondary" type="submit" value="<?php esc_attr_e( 'Clear Backup/Permanent Caches' ); ?>" />
+                        <input id="sbi_clear_backups" class="button-secondary" type="submit" style="position: relative; top: -4px;" value="<?php esc_attr_e( 'Clear Backup Cache' ); ?>" />
                         <a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e('What does this mean?'); ?></a>
                         <p class="sbi_tooltip"><?php _e('Every feed will save a duplicate version of itself in the database to be used if the normal cache is not available.'); ?></p>
                     </td>
