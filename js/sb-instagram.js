@@ -61,9 +61,9 @@ if(!sbi_js_exists){
         }
     }
 
+    // backup for themes/plugins that won't clear CSS cache
     function sbiSizeSVG(elem) {
-        if (elem.find('svg').innerWidth() > 48 || elem.find('.fa-clone').last().innerWidth() > 24 || elem.find('.fa-play').last().innerWidth() > 48) {
-            console.log('too big');
+        if (elem.find('svg').innerWidth() > 48 || elem.find('.sbi_follow_btn svg').innerWidth() > 30 || elem.find('.fa-clone').last().innerWidth() > 24 || elem.find('.fa-play').last().innerWidth() > 48) {
             jQuery('.sbi_follow_btn svg').css({
                 'margin-bottom': '-4px',
                 'margin-right': '7px',
@@ -127,11 +127,6 @@ if(!sbi_js_exists){
                     });
                 });
             }
-            //sbi_small
-            //margin-bottom: -3px;margin-right: 7px;font-size: 15px; width: 15px;
-        } else {
-            console.log(jQuery('.sbi_follow_btn svg').innerWidth());
-            console.log('not too big');
         }
     }
 
@@ -416,108 +411,56 @@ if(!sbi_js_exists){
                         if( $self.find('.sbi_header_link').length == 0 ){
 
                             //Get page info for first User ID
-                            if(getType == 'user'){
+                            var sbi_page_url = 'https://api.instagram.com/v1/users/' + looparray[0] + '?access_token=' + sb_instagram_js_options.sb_instagram_at;
+                            if(isNaN(looparray[0])){
+                                sbiSetUserApiUrl(looparray[0], sb_instagram_js_options.sb_instagram_at, '', '', function(apiURL){
+                                    sbi_page_url = apiURL;
 
-                                var sbi_page_url = 'https://api.instagram.com/v1/users/' + looparray[0] + '?access_token=' + sb_instagram_js_options.sb_instagram_at;
-                                if(isNaN(looparray[0])){
-                                    sbiSetUserApiUrl(looparray[0], sb_instagram_js_options.sb_instagram_at, '', '', function(apiURL){
-                                        sbi_page_url = apiURL;
-
-                                        if(sbiHeaderCache == 'true' && !feedOptions.disablecache){
-                                            //Use ajax to get the cache
-                                            //sbiGetCache(headerTransientName, sbiSettings, $self, 'header');
-                                        } else {
-                                            // Make the ajax request here
-                                            jQuery.ajax({
-                                                method: "GET",
-                                                url: sbi_page_url,
-                                                dataType: "jsonp",
-                                                success: function(data) {
-                                                    sbiBuildHeader(data, sbiSettings);
-                                                    if(!feedOptions.disablecache && window.sbiCacheStatuses[feedOptions.feedIndex].header !== 'cached' && typeof data.data.username !== 'undefined' && typeof data.data.pagination === 'undefined')  {
-                                                        window.sbiCacheStatuses[feedOptions.feedIndex].header = 'cached';
-                                                        sbiCachePhotos(data, headerTransientName);
-                                                    }
-                                                }
-                                            });
-                                        }
-                                    });
-                                } else {
-                                    //Create header transient name
-                                    var headerTransientName = 'sbi_header_' + looparray[0];
-                                    headerTransientName = headerTransientName.substring(0, 45);
-
-                                    //Check whether header cache exists
                                     if(sbiHeaderCache == 'true' && !feedOptions.disablecache){
                                         //Use ajax to get the cache
                                         //sbiGetCache(headerTransientName, sbiSettings, $self, 'header');
-                                    } else if ($self.find('.sb_instagram_header').length) {
+                                    } else {
                                         // Make the ajax request here
                                         jQuery.ajax({
                                             method: "GET",
                                             url: sbi_page_url,
                                             dataType: "jsonp",
-                                            success: function (data) {
+                                            success: function(data) {
                                                 sbiBuildHeader(data, sbiSettings);
-
-                                                if(!feedOptions.disablecache && window.sbiCacheStatuses[feedOptions.feedIndex].header !== 'cached' && typeof data.data !== 'undefined' && typeof data.data.username !== 'undefined' && typeof data.data.pagination === 'undefined')  {
+                                                if(!feedOptions.disablecache && window.sbiCacheStatuses[feedOptions.feedIndex].header !== 'cached' && typeof data.data.username !== 'undefined' && typeof data.data.pagination === 'undefined')  {
                                                     window.sbiCacheStatuses[feedOptions.feedIndex].header = 'cached';
                                                     sbiCachePhotos(data, headerTransientName);
                                                 }
                                             }
                                         });
                                     }
-                                }
-
-                            } else {
-
-                                var headerStyles = '';
-                                if(feedOptions.headercolor.length) headerStyles = 'style="color: #'+feedOptions.headercolor+'"';
-
-                                $header = '<div class="sbi_header_link" '+headerStyles+'>';
-
-                                $header += '<div class="sbi_header_text">';
-                                $header += '<h3 class="sbi_no_bio" '+headerStyles+'>';
-                                $header += 'Instagram';
-                                $header += '</h3>';
-                                $header += '</div>';
-
-                                $header += '<div class="sbi_header_img"';
-                                if(headerstyle == 'boxed') $header += ' style="background: #'+headersecondarycolor+';"';
-                                $header += '>';
-
-
-                                $header += '<div class="sbi_header_hashtag_icon"';
-                                if(headerstyle == 'boxed') $header += ' style="color: #'+headerprimarycolor+';"';
-                                $header += '><i class="sbi_new_logo"></i></div>';
-                                $header += '</div>';
-
-                                $header += '</div>';
-                                //Add the header
-                                if( $self.find('.sbi_header_link').length == 0 ) $self.find('.sb_instagram_header').prepend( $header );
-
-
-                                //Header profile pic hover
-                                $self.find('.sb_instagram_header .sbi_header_link').hover(function(){
-                                    //Change the color of the hashtag circle for hashtag headers to match the color of the header text. This is then faded in in the CSS file.
-                                    $self.find('.sbi_feed_type_user .sbi_header_hashtag_icon, .sbi_feed_type_hashtag .sbi_header_hashtag_icon').attr('style', 'background: ' +$self.find('h3').css('color') );
-
-                                    $self.find('.sbi_feed_type_hashtag.sbi_header_style_boxed .sbi_header_hashtag_icon').css({
-                                        'background' : '#000',
-                                        'color' : '#fff'
-                                    });
-
-                                }, function(){
-                                    $self.find('.sbi_feed_type_user .sbi_header_hashtag_icon, .sbi_feed_type_hashtag .sbi_header_hashtag_icon').removeAttr('style');
-
-                                    $self.find('.sbi_feed_type_hashtag.sbi_header_style_boxed .sbi_header_hashtag_icon').css({
-                                        'background' : '#'+feedOptions.headersecondarycolor,
-                                        'color' : '#'+feedOptions.headerprimarycolor
-                                    });
-
                                 });
+                            } else {
+                                //Create header transient name
+                                var headerTransientName = 'sbi_header_' + looparray[0];
+                                headerTransientName = headerTransientName.substring(0, 45);
 
-                            } // End get page info
+                                //Check whether header cache exists
+                                if(sbiHeaderCache == 'true' && !feedOptions.disablecache){
+                                    //Use ajax to get the cache
+                                    //sbiGetCache(headerTransientName, sbiSettings, $self, 'header');
+                                } else if ($self.find('.sb_instagram_header').length) {
+                                    // Make the ajax request here
+                                    jQuery.ajax({
+                                        method: "GET",
+                                        url: sbi_page_url,
+                                        dataType: "jsonp",
+                                        success: function (data) {
+                                            sbiBuildHeader(data, sbiSettings);
+
+                                            if(!feedOptions.disablecache && window.sbiCacheStatuses[feedOptions.feedIndex].header !== 'cached' && typeof data.data !== 'undefined' && typeof data.data.username !== 'undefined' && typeof data.data.pagination === 'undefined')  {
+                                                window.sbiCacheStatuses[feedOptions.feedIndex].header = 'cached';
+                                                sbiCachePhotos(data, headerTransientName);
+                                            }
+                                        }
+                                    });
+                                }
+                            }
                         } // End header
 
                         //LOOP THROUGH ITEMS:
@@ -772,11 +715,11 @@ if(!sbi_js_exists){
                                 sbi_delay(function(){
                                     sbiSetPhotoHeight();
                                     sbiGetItemSize();
-                                    sbiSizeSVG();
 
                                     jQuery('.sbi').each(function() {
                                         var $sbiSelf = jQuery(this),
                                             $i = jQuery(this).attr('data-sbi-index');
+                                        sbiSizeSVG($sbiSelf);
                                         if ($sbiSelf.attr('data-res') ==='autocustom') {
                                             var oldRes = window.sbiFeedMeta[$i].minRes;
                                             var imageSize = sbiGetResolutionSettings($sbiSelf, 'autocustom', cols, colsmobile, $i),
@@ -886,12 +829,11 @@ if(!sbi_js_exists){
                             headerStyles = '';
                         if(feedOptions.headercolor.length) headerStyles = 'style="color: #'+feedOptions.headercolor+'"';
 
-                        $header = '<a href="https://instagram.com/'+data.data.username+'" target="_blank" title="@'+data.data.username+'" class="sbi_header_link" '+headerStyles+'>';
-                        $header += '<div class="sbi_header_text';
-                        if( ( typeof data.data.bio !== 'undefined' && data.data.bio.length < 1 ) || feedOptions.showbio != 'true' ) $header += ' sbi_no_bio';
-                        if( ( ( typeof data.data.bio !== 'undefined' && data.data.bio.length == 0 ) || feedOptions.showbio != 'true' ) && feedOptions.showfollowers != 'true' ) $header += ' sbi_no_info';
-                        $header += '">';
-                        $header += '<h3 '+headerStyles+'>'+data.data.username+'</h3>';
+                        $header = '<a href="https://www.instagram.com/'+data.data.username+'" target="_blank" title="@'+data.data.username+'" class="sbi_header_link" '+headerStyles+'>';
+                        $header += '<div class="sbi_header_text">';
+                        var classheader = '';
+                        if( ( typeof data.data.bio !== 'undefined' && data.data.bio.length < 1 ) || feedOptions.showbio != 'true' ) classheader = ' class="sbi_no_bio"';
+                        $header += '<h3 '+headerStyles+classheader+'>'+data.data.username+'</h3>';
 
                         //Compile and add the header info
                         var $headerInfo = '<p class="sbi_bio_info" ';
@@ -900,9 +842,6 @@ if(!sbi_js_exists){
                         } else {
                             $headerInfo += headerStyles;
                         }
-                        if ( typeof data.data.counts !== 'undefined') $headerInfo += '><span class="sbi_posts_count"><i class="fa fa-image"></i>'+commaSeparateNumber(data.data.counts.media)+'</span><span class="sbi_followers"><i class="fa fa-user"></i>'+commaSeparateNumber(data.data.counts.followed_by)+'</span></p>';
-
-                        if(feedOptions.showfollowers != '' && feedOptions.showfollowers != 'false' && feedOptions.headerstyle !== 'boxed') $header += $headerInfo;
 
                         //Add the bio
                         if( typeof data.data.bio !== 'undefined' && data.data.bio.length > 1 && feedOptions.showbio != '' && feedOptions.showbio != 'false' ) $header += '<p class="sbi_bio" '+headerStyles+'>'+data.data.bio+'</p>';
@@ -915,14 +854,14 @@ if(!sbi_js_exists){
                         if(feedOptions.headerstyle == 'boxed') {
                             $header += '<div class="sbi_header_bar" style="background: #'+feedOptions.headersecondarycolor+'">';
                             if(feedOptions.showbio != 'false') $header += $headerInfo;
-                            $header += '<a class="sbi_header_follow_btn" href="https://instagram.com/'+data.data.username+'" target="_blank" style="color: #'+feedOptions.headercolor+'; background: #'+feedOptions.headerprimarycolor+';"><i class="sbi_new_logo"></i><span></span></div></div>';
+                            $header += '<a class="sbi_header_follow_btn" href="https://www.instagram.com/'+data.data.username+'" target="_blank" style="color: #'+feedOptions.headercolor+'; background: #'+feedOptions.headerprimarycolor+';"><i class="sbi_new_logo"></i><span></span></div></div>';
                         }
 
                         //Add the header to the feed
                         if( $self.find('.sbi_header_link').length == 0 ) $self.find('.sb_instagram_header').prepend( $header );
 
                         //Change the URL of the follow button
-                        if( $self.find('.sbi_follow_btn').length ) $self.find('.sbi_follow_btn a').attr('href', 'https://instagram.com/' + data.data.username );
+                        if( $self.find('.sbi_follow_btn').length ) $self.find('.sbi_follow_btn a').attr('href', 'https://www.instagram.com/' + data.data.username );
                         //Change the text of the header follow button
                         if( feedOptions.headerstyle == 'boxed' && $self.find('.sbi_header_follow_btn').length ) $self.find('.sbi_header_follow_btn span').text( $self.find('.sb_instagram_header').attr('data-follow-text').replace(/\\/g, "") );
 
@@ -975,8 +914,32 @@ if(!sbi_js_exists){
                                                 sbiErrorMsg += '<p><b>Error: Access Token is not valid or has expired</b><br /><span>This error message is only visible to WordPress admins</span></p>';
                                                 sbiErrorDir = "<p>There's an issue with the Instagram Access Token that you are using. Please obtain a new Access Token on the plugin's Settings page.<br />If you continue to have an issue with your Access Token then please see <a href='https://smashballoon.com/my-instagram-access-token-keep-expiring/' target='_blank'>this FAQ</a> for more information.</p>";
                                                 jQuery('#sb_instagram').empty().append( '<p style="text-align: center;">Unable to show Instagram photos</p><div id="sbi_mod_error">' + sbiErrorMsg + sbiErrorDir + '</div>');
-                                                sbiAddTokenToExpiredList(sb_instagram_js_options.sb_instagram_at);
+                                                sbiAddTokenToExpiredList(sb_instagram_js_options.sb_instagram_at,transientName);
                                                 return;
+                                                //requests per hour
+                                            } else if( typeof data.code !== 'undefined' && data.code == '429' ){
+                                                window.sbiFeedMeta[$i].error = {
+                                                    errorMsg    : '<p><b>Error: Rate Limit Reached</b><br /><span>This error is only visible to WordPress admins</span>',
+                                                    errorDir    : "<p>Backup cache will be used for 1 hour</p>"
+                                                };
+                                                if (!$self.find('#sbi_mod_error').length) {
+                                                    $self.prepend('<div id="sbi_mod_error">'+window.sbiFeedMeta[$i].error.errorMsg+window.sbiFeedMeta[$i].error.errorDir+'</div>');
+                                                } else if ($self.find('.sbiErrorIds').text().indexOf(window.sbiFeedMeta[$i].idsInFeed[index]) == -1) {
+                                                    $self.find('.sbiErrorIds').append(','+window.sbiFeedMeta[$i].idsInFeed[index]);
+                                                }
+                                                var submittedData = {
+                                                    action: 'sbi_set_use_backup',
+                                                    transientName : transientName,
+                                                    context : 'falsecache'
+                                                };
+                                                jQuery.ajax({
+                                                    url: sbiajaxurl,
+                                                    type: 'post',
+                                                    data: submittedData,
+                                                    success: function (data) {
+                                                    }
+                                                }); // ajax
+                                                data = 'error';
                                             } else if( sbiErrorResponse.indexOf('user does not exist') > -1 || sbiErrorResponse.indexOf('you cannot view this resource') > -1 ){
                                                 window.sbiFeedMeta[$i].error = {
                                                     errorMsg    : '<p><b>Error: User ID <span class="sbiErrorIds">'+window.sbiFeedMeta[$i].idsInFeed[index]+'</span> does not exist, is invalid, or is private</b><br /><span>This error is only visible to WordPress admins</span>',
@@ -1235,7 +1198,7 @@ if(!sbi_js_exists){
 
     } // sb_init
 
-    function sbiAddTokenToExpiredList(access_token) {
+    function sbiAddTokenToExpiredList(access_token,transientName) {
         var accessTokenOpts = {
             url: sbiajaxurl,
             type: 'POST',
@@ -1243,7 +1206,8 @@ if(!sbi_js_exists){
             cache: false,
             data:{
                 action: 'sbi_set_expired_token',
-                access_token: access_token
+                access_token: access_token,
+                transientName: transientName
             },
             success: function(response) {
                 return;

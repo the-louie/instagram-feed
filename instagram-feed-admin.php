@@ -143,6 +143,30 @@ function sb_instagram_settings_page() {
 
 	            $options[ 'sb_instagram_cache_time' ] = $sb_instagram_cache_time;
 	            $options[ 'sb_instagram_cache_time_unit' ] = $sb_instagram_cache_time_unit;
+
+	            //Delete all SBI transients
+	            global $wpdb;
+	            $table_name = $wpdb->prefix . "options";
+	            $wpdb->query( "
+                    DELETE
+                    FROM $table_name
+                    WHERE `option_name` LIKE ('%\_transient\_sbi\_%')
+                    " );
+	            $wpdb->query( "
+                    DELETE
+                    FROM $table_name
+                    WHERE `option_name` LIKE ('%\_transient\_timeout\_sbi\_%')
+                    " );
+	            $wpdb->query( "
+			        DELETE
+			        FROM $table_name
+			        WHERE `option_name` LIKE ('%\_transient\_&sbi\_%')
+			        " );
+	            $wpdb->query( "
+			        DELETE
+			        FROM $table_name
+			        WHERE `option_name` LIKE ('%\_transient\_timeout\_&sbi\_%')
+			        " );
             } //End config tab post
 
             if( isset($_POST[ $sb_instagram_customize_hidden_field ]) && $_POST[ $sb_instagram_customize_hidden_field ] == 'Y' ) {
@@ -1197,7 +1221,6 @@ function sb_instagram_settings_page() {
                     </td>
                 </tr>
                 <tr>
-                    <?php echo $sbi_font_method ; ?>
                     <th scope="row"><label for="sbi_font_method"><?php _e("Icon Method"); ?></label></th>
                     <td>
                         <select name="sbi_font_method" id="sbi_font_method" class="default-text">

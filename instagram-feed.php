@@ -149,12 +149,12 @@ function display_instagram($atts, $content = null) {
     if ( !empty($sb_instagram_follow_btn_text_color) ) $sb_instagram_follow_btn_styles .= 'color: #'.$sb_instagram_follow_btn_text_color.';';
     $sb_instagram_follow_btn_styles .= '"';
     //Follow button HTML
-    $sb_instagram_follow_btn_html = '<div class="sbi_follow_btn"><a href="https://instagram.com/" '.$sb_instagram_follow_btn_styles.' target="_blank"><i class="fa fab fa-instagram"></i>'.esc_html( stripslashes( $sb_instagram_follow_btn_text ) ).'</a></div>';
+    $sb_instagram_follow_btn_html = '<div class="sbi_follow_btn"><a href="https://www.instagram.com/" '.$sb_instagram_follow_btn_styles.' target="_blank"><i class="fa fab fa-instagram"></i>'.esc_html( stripslashes( $sb_instagram_follow_btn_text ) ).'</a></div>';
 
     //Mobile
     $sb_instagram_disable_mobile = $atts['disablemobile'];
-    ( $sb_instagram_disable_mobile == 'on' || $sb_instagram_disable_mobile == 'true' || $sb_instagram_disable_mobile == true ) ? $sb_instagram_disable_mobile = ' sbi_disable_mobile' : $sb_instagram_disable_mobile = '';
-    if( $atts[ 'disablemobile' ] === 'false' ) $sb_instagram_disable_mobile = '';
+    ( $sb_instagram_disable_mobile == 'on' || $sb_instagram_disable_mobile == 'true' || $sb_instagram_disable_mobile == true ) ? $sb_instagram_disable_mobile = ' sbi_disable_mobile' : $sb_instagram_disable_mobile = ' sbi_mob_col_auto';
+    if( $atts[ 'disablemobile' ] === 'false' ) $sb_instagram_disable_mobile = ' sbi_mob_col_auto';
 
     //Caching
 	$sb_instagram_cache_time = trim($atts['cachetime']);
@@ -194,18 +194,15 @@ function display_instagram($atts, $content = null) {
 	($sbi_cache_exists) ? $sbi_cache_exists = 'true' : $sbi_cache_exists = 'false';
 
 	$sbiHeaderCache = 'false';
-	if( true ){
-		//If it's a user then add the header cache check to the feed
-		$sb_instagram_user_id_arr = explode(',', $sb_instagram_user_id);
-		$sbi_header_transient_name = 'sbi_header_' . trim($sb_instagram_user_id_arr[0]);
-		$sbi_header_transient_name = substr($sbi_header_transient_name, 0, 45);
+	//If it's a user then add the header cache check to the feed
+	$sb_instagram_user_id_arr = explode(',', $sb_instagram_user_id);
+	$sbi_header_transient_name = 'sbi_header_' . trim($sb_instagram_user_id_arr[0]);
+	$sbi_header_transient_name = substr($sbi_header_transient_name, 0, 45);
 
-		//Check for the header cache
-		( false === ( $sbi_header_cache_exists = get_transient( $sbi_header_transient_name ) ) ) ? $sbi_header_cache_exists = false : $sbi_header_cache_exists = true;
+	//Check for the header cache
+	( false === ( $sbi_header_cache_exists = get_transient( $sbi_header_transient_name ) ) ) ? $sbi_header_cache_exists = false : $sbi_header_cache_exists = true;
 
-		($sbi_header_cache_exists) ? $sbiHeaderCache = 'true' : $sbiHeaderCache = 'false';
-
-	}
+	($sbi_header_cache_exists) ? $sbiHeaderCache = 'true' : $sbiHeaderCache = 'false';
 
 	if ( (isset( $options['check_api'] ) && $options['check_api'] === 'on' || $options['check_api']) && ( !isset( $options['sb_instagram_cache_time'] ) || ( isset( $options['sb_instagram_cache_time'] ) && (int)$options['sb_instagram_cache_time'] > 0 ) ) ) {
 		$sbi_cache_exists = 'true';
@@ -321,6 +318,42 @@ function display_instagram($atts, $content = null) {
 //Allows shortcodes in theme
 add_filter('widget_text', 'do_shortcode');
 
+function sbi_should_use_backup_cache( $token, $cache_name, $is_filtered, $always_use_backup = false, $white_list_id = '', $backups_enabled = true ) {
+	if ( ! $backups_enabled ) {
+		return false;
+	}
+
+	$expired_tokens = get_option( 'sb_expired_tokens', array() );
+	$still_using_backup = get_transient( '&'.$cache_name, false );
+	$backup_cache_exists = get_option( '!' . $cache_name );
+	$white_list_updated = get_transient( 'sb_wlupdated_'.$white_list_id );
+
+	if ( $always_use_backup ) {
+		if ( !$backup_cache_exists || $white_list_updated ) {
+			return false;
+		}
+		return true;
+	} elseif ( $white_list_updated == 'true' ) {
+		return false;
+	}
+
+	if ( in_array( $token, $expired_tokens, true ) && $backup_cache_exists ) {
+
+		if ( !strpos( $cache_name, '_header' ) ) {
+			echo '<div id="sbi_mod_error">';
+			echo '<p><b>' . __( 'Error: Access Token is not valid or has expired.', 'instagram-feed' ) . ' ' . __( 'Feed will not update.', 'instagram-feed' ) . '</b><br /><span>' . __(' This error message is only visible to WordPress admins</span>', 'instagram-feed' );
+			echo '<p>' . __( 'There\'s an issue with the Instagram Access Token that you are using. Please obtain a new Access Token on the plugin\'s Settings page.<br />If you continue to have an issue with your Access Token then please see <a href="https://smashballoon.com/my-instagram-access-token-keep-expiring/" target="_blank">this FAQ</a> for more information.', 'instagram-feed' );
+			echo '</div>';
+		}
+
+		return true;
+	} elseif ( $still_using_backup && $backup_cache_exists ) {
+		return true;
+	}
+
+	return false;
+}
+
 function sbi_cache_photos() {
 	$sb_instagram_settings = get_option('sb_instagram_settings');
 
@@ -373,6 +406,7 @@ function sbi_set_expired_token() {
 		$expired_tokens[] = $access_token;
 
 		update_option( 'sb_expired_tokens', $expired_tokens, false );
+		sbi_set_use_backup();
 	}
 
 	die();
@@ -533,12 +567,10 @@ function sb_instagram_scripts_enqueue() {
     isset($sb_instagram_settings[ 'sb_instagram_at' ]) ? $sb_instagram_at = trim($sb_instagram_settings['sb_instagram_at']) : $sb_instagram_at = '';
 	$font_method = isset( $sb_instagram_settings['sbi_font_method'] ) ? $sb_instagram_settings['sbi_font_method'] : 'svg';
 	$disable_font_awesome = isset($sb_instagram_settings['sb_instagram_disable_awesome']) ? $sb_instagram_settings['sb_instagram_disable_awesome'] : false;
-	echo $sb_instagram_settings['sbi_font_method'];
 
 	if ( $font_method === 'fontfile' && ! $disable_font_awesome ) {
 		wp_enqueue_style( 'sb-font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' );
 	}
-	echo $font_method;
     $data = array(
         'sb_instagram_at' => $sb_instagram_at,
         'font_method' => $font_method,
@@ -575,7 +607,7 @@ function sb_instagram_custom_css() {
 
     if( current_user_can( 'manage_options' ) ){
         echo "\r\n";
-        echo "#sbi_mod_error{ display: block; }";
+        echo "#sbi_mod_error{ display: block !important; }";
     }
 
     if( $sbi_show_css ) echo "\r\n";
@@ -656,5 +688,23 @@ function sb_instagram_uninstall()
 
     //Settings
     delete_option( 'sb_instagram_settings' );
+
+	global $wpdb;
+	$table_name = $wpdb->prefix . "options";
+	$wpdb->query( "
+        DELETE
+        FROM $table_name
+        WHERE `option_name` LIKE ('%!sbi\_%')
+        " );
+	$wpdb->query( "
+        DELETE
+        FROM $table_name
+        WHERE `option_name` LIKE ('%\_transient\_&sbi\_%')
+        " );
+	$wpdb->query( "
+        DELETE
+        FROM $table_name
+        WHERE `option_name` LIKE ('%\_transient\_timeout\_&sbi\_%')
+        " );
 }
 register_uninstall_hook( __FILE__, 'sb_instagram_uninstall' );
