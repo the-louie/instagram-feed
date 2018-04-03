@@ -33,6 +33,8 @@ function sb_instagram_settings_page() {
         'sb_instagram_user_id'              => '',
         'sb_instagram_preserve_settings'    => '',
         'sb_instagram_ajax_theme'           => false,
+        'sb_instagram_cache_time'           => 1,
+        'sb_instagram_cache_time_unit'      => 'hours',
         'sb_instagram_width'                => '100',
         'sb_instagram_width_unit'           => '%',
         'sb_instagram_feed_width_resp'      => false,
@@ -61,6 +63,12 @@ function sb_instagram_settings_page() {
         //Misc
         'sb_instagram_custom_css'           => '',
         'sb_instagram_custom_js'            => '',
+        'sb_instagram_cron'                 => 'no',
+        'check_api'         => false,
+        'sb_instagram_backup' => true,
+        'enqueue_css_in_shortcode' => false,
+        'sb_instagram_disable_mob_swipe' => false,
+        'sbi_font_method' => 'svg',
         'sb_instagram_disable_awesome'      => false
     );
     //Save defaults in an array
@@ -72,7 +80,10 @@ function sb_instagram_settings_page() {
     $sb_instagram_user_id = $options[ 'sb_instagram_user_id' ];
     $sb_instagram_preserve_settings = $options[ 'sb_instagram_preserve_settings' ];
     $sb_instagram_ajax_theme = $options[ 'sb_instagram_ajax_theme' ];
-    $sb_instagram_width = $options[ 'sb_instagram_width' ];
+	$sb_instagram_cache_time = $options[ 'sb_instagram_cache_time' ];
+	$sb_instagram_cache_time_unit = $options[ 'sb_instagram_cache_time_unit' ];
+
+	$sb_instagram_width = $options[ 'sb_instagram_width' ];
     $sb_instagram_width_unit = $options[ 'sb_instagram_width_unit' ];
     $sb_instagram_feed_width_resp = $options[ 'sb_instagram_feed_width_resp' ];
     $sb_instagram_height = $options[ 'sb_instagram_height' ];
@@ -101,7 +112,11 @@ function sb_instagram_settings_page() {
     //Misc
     $sb_instagram_custom_css = $options[ 'sb_instagram_custom_css' ];
     $sb_instagram_custom_js = $options[ 'sb_instagram_custom_js' ];
-    $sb_instagram_disable_awesome = $options[ 'sb_instagram_disable_awesome' ];
+	$sb_instagram_cron = $options[ 'sb_instagram_cron' ];
+	$check_api = $options[ 'check_api' ];
+	$sb_instagram_backup = $options[ 'sb_instagram_backup' ];
+	$sbi_font_method = $options[ 'sbi_font_method' ];
+	$sb_instagram_disable_awesome = $options[ 'sb_instagram_disable_awesome' ];
 
 
     //Check nonce before saving data
@@ -118,11 +133,40 @@ function sb_instagram_settings_page() {
 
                 isset($_POST[ 'sb_instagram_preserve_settings' ]) ? $sb_instagram_preserve_settings = sanitize_text_field( $_POST[ 'sb_instagram_preserve_settings' ] ) : $sb_instagram_preserve_settings = '';
                 isset($_POST[ 'sb_instagram_ajax_theme' ]) ? $sb_instagram_ajax_theme = sanitize_text_field( $_POST[ 'sb_instagram_ajax_theme' ] ) : $sb_instagram_ajax_theme = '';
+	            isset($_POST[ 'sb_instagram_cache_time' ]) ? $sb_instagram_cache_time = sanitize_text_field( $_POST[ 'sb_instagram_cache_time' ] ) : $sb_instagram_cache_time = '';
+	            isset($_POST[ 'sb_instagram_cache_time_unit' ]) ? $sb_instagram_cache_time_unit = sanitize_text_field( $_POST[ 'sb_instagram_cache_time_unit' ] ) : $sb_instagram_cache_time_unit = '';
 
                 $options[ 'sb_instagram_at' ] = $sb_instagram_at;
                 $options[ 'sb_instagram_user_id' ] = $sb_instagram_user_id;
                 $options[ 'sb_instagram_preserve_settings' ] = $sb_instagram_preserve_settings;
                 $options[ 'sb_instagram_ajax_theme' ] = $sb_instagram_ajax_theme;
+
+	            $options[ 'sb_instagram_cache_time' ] = $sb_instagram_cache_time;
+	            $options[ 'sb_instagram_cache_time_unit' ] = $sb_instagram_cache_time_unit;
+
+	            //Delete all SBI transients
+	            global $wpdb;
+	            $table_name = $wpdb->prefix . "options";
+	            $wpdb->query( "
+                    DELETE
+                    FROM $table_name
+                    WHERE `option_name` LIKE ('%\_transient\_sbi\_%')
+                    " );
+	            $wpdb->query( "
+                    DELETE
+                    FROM $table_name
+                    WHERE `option_name` LIKE ('%\_transient\_timeout\_sbi\_%')
+                    " );
+	            $wpdb->query( "
+			        DELETE
+			        FROM $table_name
+			        WHERE `option_name` LIKE ('%\_transient\_&sbi\_%')
+			        " );
+	            $wpdb->query( "
+			        DELETE
+			        FROM $table_name
+			        WHERE `option_name` LIKE ('%\_transient\_timeout\_&sbi\_%')
+			        " );
             } //End config tab post
 
             if( isset($_POST[ $sb_instagram_customize_hidden_field ]) && $_POST[ $sb_instagram_customize_hidden_field ] == 'Y' ) {
@@ -180,7 +224,11 @@ function sb_instagram_settings_page() {
                 //Misc
                 $sb_instagram_custom_css = $_POST[ 'sb_instagram_custom_css' ];
                 $sb_instagram_custom_js = $_POST[ 'sb_instagram_custom_js' ];
-                isset($_POST[ 'sb_instagram_disable_awesome' ]) ? $sb_instagram_disable_awesome = sanitize_text_field( $_POST[ 'sb_instagram_disable_awesome' ] ) : $sb_instagram_disable_awesome = '';
+	            if (isset($_POST[ 'sb_instagram_cron' ]) ) $sb_instagram_cron = $_POST[ 'sb_instagram_cron' ];
+	            isset($_POST[ 'check_api' ]) ? $check_api = $_POST[ 'check_api' ] : $check_api = '';
+	            isset($_POST[ 'sb_instagram_backup' ]) ? $sb_instagram_backup = $_POST[ 'sb_instagram_backup' ] : $sb_instagram_backup = '';
+	            isset($_POST[ 'sbi_font_method' ]) ? $sbi_font_method = $_POST[ 'sbi_font_method' ] : $sbi_font_method = 'svg';
+	            isset($_POST[ 'sb_instagram_disable_awesome' ]) ? $sb_instagram_disable_awesome = sanitize_text_field( $_POST[ 'sb_instagram_disable_awesome' ] ) : $sb_instagram_disable_awesome = '';
 
                 $options[ 'sb_instagram_width' ] = $sb_instagram_width;
                 $options[ 'sb_instagram_width_unit' ] = $sb_instagram_width_unit;
@@ -211,7 +259,55 @@ function sb_instagram_settings_page() {
                 //Misc
                 $options[ 'sb_instagram_custom_css' ] = $sb_instagram_custom_css;
                 $options[ 'sb_instagram_custom_js' ] = $sb_instagram_custom_js;
-                $options[ 'sb_instagram_disable_awesome' ] = $sb_instagram_disable_awesome;
+	            $options[ 'sb_instagram_cron' ] = $sb_instagram_cron;
+	            $options[ 'check_api' ] = $check_api;
+	            $options['sb_instagram_backup'] = $sb_instagram_backup;
+	            $options['sbi_font_method'] = $sbi_font_method;
+	            $options[ 'sb_instagram_disable_awesome' ] = $sb_instagram_disable_awesome;
+
+	            //Delete all SBI transients
+	            global $wpdb;
+	            $table_name = $wpdb->prefix . "options";
+	            $wpdb->query( "
+                    DELETE
+                    FROM $table_name
+                    WHERE `option_name` LIKE ('%\_transient\_sbi\_%')
+                    " );
+	            $wpdb->query( "
+                    DELETE
+                    FROM $table_name
+                    WHERE `option_name` LIKE ('%\_transient\_timeout\_sbi\_%')
+                    " );
+	            $wpdb->query( "
+			        DELETE
+			        FROM $table_name
+			        WHERE `option_name` LIKE ('%\_transient\_&sbi\_%')
+			        " );
+	            $wpdb->query( "
+			        DELETE
+			        FROM $table_name
+			        WHERE `option_name` LIKE ('%\_transient\_timeout\_&sbi\_%')
+			        " );
+
+	            if( $sb_instagram_cron == 'no' ) wp_clear_scheduled_hook('sb_instagram_cron_job');
+
+	            //Run cron when Misc settings are saved
+	            if( $sb_instagram_cron == 'yes' ){
+		            //Clear the existing cron event
+		            wp_clear_scheduled_hook('sb_instagram_cron_job');
+
+		            $sb_instagram_cache_time = $options[ 'sb_instagram_cache_time' ];
+		            $sb_instagram_cache_time_unit = $options[ 'sb_instagram_cache_time_unit' ];
+
+		            //Set the event schedule based on what the caching time is set to
+		            $sb_instagram_cron_schedule = 'hourly';
+		            if( $sb_instagram_cache_time_unit == 'hours' && $sb_instagram_cache_time > 5 ) $sb_instagram_cron_schedule = 'twicedaily';
+		            if( $sb_instagram_cache_time_unit == 'days' ) $sb_instagram_cron_schedule = 'daily';
+
+		            wp_schedule_event(time(), $sb_instagram_cron_schedule, 'sb_instagram_cron_job');
+
+		            sb_instagram_clear_page_caches();
+	            }
                 
             } //End customize tab post
             
@@ -337,6 +433,20 @@ function sb_instagram_settings_page() {
                             <label for="sb_instagram_ajax_theme"><?php _e('Yes', 'instagram-feed'); ?></label>
                             <a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e('What does this mean?', 'instagram-feed'); ?></a>
                             <p class="sbi_tooltip"><?php _e("When navigating your site, if your theme uses Ajax to load content into your pages (meaning your page doesn't refresh) then check this setting. If you're not sure then please check with the theme author.", 'instagram-feed'); ?></p>
+                        </td>
+                    </tr>
+
+                    <tr valign="top">
+                        <th scope="row"><label><?php _e('Check for new posts every'); ?></label></th>
+                        <td>
+                            <input name="sb_instagram_cache_time" type="text" value="<?php esc_attr_e( $sb_instagram_cache_time ); ?>" size="4" />
+                            <select name="sb_instagram_cache_time_unit">
+                                <option value="minutes" <?php if($sb_instagram_cache_time_unit == "minutes") echo 'selected="selected"' ?> ><?php _e('Minutes'); ?></option>
+                                <option value="hours" <?php if($sb_instagram_cache_time_unit == "hours") echo 'selected="selected"' ?> ><?php _e('Hours'); ?></option>
+                                <option value="days" <?php if($sb_instagram_cache_time_unit == "days") echo 'selected="selected"' ?> ><?php _e('Days'); ?></option>
+                            </select>
+                            <a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e('What does this mean?'); ?></a>
+                            <p class="sbi_tooltip"><?php _e('Your Instagram posts are temporarily cached by the plugin in your WordPress database. You can choose how long the posts should be cached for. If you set the time to 1 hour then the plugin will clear the cache after that length of time and check Instagram for posts again.'); ?></p>
                         </td>
                     </tr>
                 </tbody>
@@ -1068,10 +1178,57 @@ function sb_instagram_settings_page() {
         </table>
         <table class="form-table">
             <tbody>
+            <tr valign="top">
+                <th scope="row"><label><?php _e('Cache error API recheck'); ?></label></th>
+                <td>
+                    <input type="checkbox" name="check_api" id="sb_instagram_check_api" <?php if($check_api == true) echo 'checked="checked"' ?> />
+                    <a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e('What does this mean?'); ?></a>
+                    <p class="sbi_tooltip"><?php _e("If your site uses caching, minification, or JavaScript concatenation, this option can help prevent missing cache problems with the feed."); ?></p>
+                </td>
+            </tr>
                 <tr valign="top">
-                    <th scope="row"><label><?php _e("Disable Font Awesome", 'instagram-feed'); ?></label></th>
+                    <th><label><?php _e("Enable Backup Caching"); ?></label></th>
+                    <td class="sbi-customize-tab-opt">
+                        <input name="sb_instagram_backup" type="checkbox" id="sb_instagram_backup" <?php if($sb_instagram_backup == true) echo "checked"; ?> />
+                        <input id="sbi_clear_backups" class="button-secondary" type="submit" value="<?php esc_attr_e( 'Clear Backup/Permanent Caches' ); ?>" />
+                        <a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e('What does this mean?'); ?></a>
+                        <p class="sbi_tooltip"><?php _e('Every feed will save a duplicate version of itself in the database to be used if the normal cache is not available.'); ?></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="bump-left">
+                        <label for="sb_instagram_cron" class="bump-left"><?php _e("Force cache to clear on interval"); ?></label>
+                    </th>
+                    <td>
+                        <select name="sb_instagram_cron">
+                            <option value="unset" <?php if($sb_instagram_cron == "unset") echo 'selected="selected"' ?> ><?php _e(' - '); ?></option>
+                            <option value="yes" <?php if($sb_instagram_cron == "yes") echo 'selected="selected"' ?> ><?php _e('Yes'); ?></option>
+                            <option value="no" <?php if($sb_instagram_cron == "no") echo 'selected="selected"' ?> ><?php _e('No'); ?></option>
+                        </select>
+
+                        <a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e('What does this mean?'); ?></a>
+                        <p class="sbi_tooltip"><?php _e("If you're experiencing an issue with the plugin not auto-updating then you can set this to 'Yes' to run a scheduled event behind the scenes which forces the plugin cache to clear on a regular basis and retrieve new data from Instagram."); ?></p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="form-table">
+            <tbody>
+                <tr valign="top">
+                    <th scope="row"><label><?php _e("Disable Icon Font", 'instagram-feed'); ?></label></th>
                     <td>
                         <input type="checkbox" name="sb_instagram_disable_awesome" id="sb_instagram_disable_awesome" <?php if($sb_instagram_disable_awesome == true) echo 'checked="checked"' ?> /> <?php _e( 'Yes', 'instagram-feed' ); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="sbi_font_method"><?php _e("Icon Method"); ?></label></th>
+                    <td>
+                        <select name="sbi_font_method" id="sbi_font_method" class="default-text">
+                            <option value="svg" id="sbi-font_method" class="default-text" <?php if($sbi_font_method == 'svg') echo 'selected="selected"' ?>>SVG</option>
+                            <option value="fontfile" id="sbi-font_method" class="default-text" <?php if($sbi_font_method == 'fontfile') echo 'selected="selected"' ?>><?php _e("Font File"); ?></option>
+                        </select>
+                        <a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e('What does this mean?'); ?></a>
+                        <p class="sbi_tooltip"><?php _e("This plugin uses SVGs for all icons in the feed. Use this setting to switch to font icons."); ?></p>
                     </td>
                 </tr>
             </tbody>
@@ -1680,7 +1837,27 @@ function sbi_rating_notice_html() {
 
     }
 }
+function sb_instagram_clear_page_caches() {
+	if ( isset( $GLOBALS['wp_fastest_cache'] ) && method_exists( $GLOBALS['wp_fastest_cache'], 'deleteCache' ) ){
+		/* Clear WP fastest cache*/
+		$GLOBALS['wp_fastest_cache']->deleteCache();
+	}
 
+	if ( function_exists( 'wp_cache_clear_cache' ) ) {
+		wp_cache_clear_cache();
+	}
+
+	if ( class_exists('W3_Plugin_TotalCacheAdmin') ) {
+		$plugin_totalcacheadmin = & w3_instance('W3_Plugin_TotalCacheAdmin');
+
+		$plugin_totalcacheadmin->flush_all();
+	}
+
+	if ( class_exists( 'autoptimizeCache' ) ) {
+		/* Clear autoptimize */
+		autoptimizeCache::clearall();
+	}
+}
 /**
  * Called via ajax to automatically save access token and access token secret
  * retrieved with the big blue button
