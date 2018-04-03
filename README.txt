@@ -3,7 +3,7 @@ Contributors: smashballoon, craig-at-smash-balloon
 Tags: Instagram, Instagram feed, Instagram photos, Instagram widget, Instagram gallery
 Requires at least: 3.0
 Tested up to: 4.9
-Stable tag: 1.6.1
+Stable tag: 1.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -310,6 +310,14 @@ We understand that sometimes you need help, have issues or just have questions. 
 * Plus more customization options added all the time!
 
 == Changelog ==
+= 1.7 =
+* New: Added feed caching to limit the number of API requests. Use the setting on the "Configure" tab "Check for new posts every" to set how long feed data will be cached before refreshing
+* New: Added backup caching for all feeds. If the feed is unable to display or too many posts are being filtered out, a backup feed will be shown to visitors if a backup cache is available
+* New: Icons are now generated as SVGs for a sharper look and more semantic markup
+* New: Carousel posts include an icon to indicate that they are carousel posts
+* Tweak: Using the "sort posts by random" feature will include the most recent 33 posts instead of just the posts shown in the feed
+* Fix: links back to instagram.com will use the "www" prefix
+
 = 1.6.1 =
 * Fix: Fixed Font Awesome 5.0 causing Instagram icon to appear as a question mark with a circle
 * Fix: Fixed inline padding style for sbi_images element causing validation error when set to "0" or blank space

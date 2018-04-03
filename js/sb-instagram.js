@@ -210,7 +210,7 @@ if(!sbi_js_exists){
                         imgRes = 'standard_resolution',
                         cols = parseInt( var_this.getAttribute('data-cols') ),
                         //Convert styles JSON string to an object
-                        getType = feedOptions.type,
+                        getType = 'user',
                         sortby = 'none',
                         num = var_this.getAttribute('data-num'),
                         user_id = var_this.getAttribute('data-id'),
