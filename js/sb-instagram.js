@@ -337,9 +337,14 @@ if(!sbi_js_exists){
                                 dataType: "jsonp",
                                 success: function(data) {
                                     sbiBuildHeader(data, sbiSettings);
-                                    if(!feedOptions.disablecache && window.sbiCacheStatuses[feedOptions.feedIndex].header !== 'cached' && typeof data.data.username !== 'undefined' && typeof data.data.pagination === 'undefined')  {
-                                        window.sbiCacheStatuses[feedOptions.feedIndex].header = 'cached';
-                                        sbiCachePhotos(data, sbiTransientNames.header);
+
+                                    if( data.data !== undefined ){
+
+                                        if(!feedOptions.disablecache && window.sbiCacheStatuses[feedOptions.feedIndex].header !== 'cached' && typeof data.data.username !== 'undefined' && typeof data.data.pagination === 'undefined')  {
+                                            window.sbiCacheStatuses[feedOptions.feedIndex].header = 'cached';
+                                            sbiCachePhotos(data, sbiTransientNames.header);
+                                        }
+
                                     }
                                 }
                             });
@@ -903,6 +908,7 @@ if(!sbi_js_exists){
                                     url: entry,
                                     dataType: "jsonp",
                                     success: function(data) {
+
                                         //Pretty error messages
                                         var sbiErrorResponse = data.meta.error_message,
                                             sbiErrorMsg = '',
@@ -916,7 +922,16 @@ if(!sbi_js_exists){
                                                 jQuery('#sb_instagram').empty().append( '<p style="text-align: center;">Unable to show Instagram photos</p><div id="sbi_mod_error">' + sbiErrorMsg + sbiErrorDir + '</div>');
                                                 sbiAddTokenToExpiredList(sb_instagram_js_options.sb_instagram_at,transientName);
                                                 return;
-                                                //requests per hour
+                                                
+                                            //Retired endpoint
+                                            } else if( sbiErrorResponse.indexOf('retired') > -1 ){
+
+                                                sbiErrorMsg += '<p><b>No longer possible to display this feed</b><br /><span>This error message is only visible to WordPress admins</span></p>';
+                                                sbiErrorDir = "<p>Due to changes in the Instagram API, it is no longer possible to display a feed from an Instagram account which is not your own. You can now only display your own Instagram account. Please see <a href='https://smashballoon.com/instagram-api-changes-april-4-2018/' target='_blank'>this post</a> for more information.</p>";
+                                                jQuery('#sb_instagram').empty().append( '<p style="text-align: center;">Unable to show Instagram photos</p><div id="sbi_mod_error">' + sbiErrorMsg + sbiErrorDir + '</div>');
+                                                return;
+
+                                            //requests per hour
                                             } else if( typeof data.code !== 'undefined' && data.code == '429' ){
                                                 window.sbiFeedMeta[$i].error = {
                                                     errorMsg    : '<p><b>Error: Rate Limit Reached</b><br /><span>This error is only visible to WordPress admins</span>',

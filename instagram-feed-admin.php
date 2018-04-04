@@ -353,7 +353,9 @@ function sb_instagram_settings_page() {
                     </div>
                     
                     <tr valign="top">
-                        <th scope="row"><label><?php _e( 'Access Token', 'instagram-feed' ); ?></label></th>
+                        <th scope="row"><label><?php _e( 'Access Token', 'instagram-feed' ); ?></label><code class="sbi_shortcode"> accesstoken
+                            Eg: accesstoken=XXXX
+                        </code></th>
                         <td>
                             <input name="sb_instagram_at" id="sb_instagram_at" type="text" value="<?php echo esc_attr( $sb_instagram_at ); ?>" size="60" maxlength="60" placeholder="Click button above to get your Access Token" />
                             &nbsp;<a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed'); ?></a>
@@ -369,14 +371,18 @@ function sb_instagram_settings_page() {
                             <span>
                                 <?php $sb_instagram_type = 'user'; ?>
                                 <input type="radio" name="sb_instagram_type" id="sb_instagram_type_user" value="user" <?php if($sb_instagram_type == "user") echo "checked"; ?> />
-                                <label class="sbi_radio_label" for="sb_instagram_type_user"><?php _e( 'User ID(s):', 'instagram-feed' ); ?></label>
+                                <label class="sbi_radio_label" for="sb_instagram_type_user"><?php _e( 'User ID:', 'instagram-feed' ); ?></label>
                                 <input name="sb_instagram_user_id" id="sb_instagram_user_id" type="text" value="<?php echo esc_attr( $sb_instagram_user_id ); ?>" size="25" />
                                 &nbsp;<a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed' ); ?></a>
-                                <p class="sbi_tooltip"><?php _e("These are the IDs of the Instagram accounts you want to display photos from. To get your ID simply click on the button above and log into Instagram.<br /><br />You can also display photos from other peoples Instagram accounts. To find their User ID you can use <a href='https://smashballoon.com/instagram-feed/find-instagram-user-id/' target='_blank'>this tool</a>. You can separate multiple IDs using commas.", 'instagram-feed'); ?></p><br />
+                                <p class="sbi_tooltip"><?php _e("This is the ID of the Instagram account you want to display photos from. To get your ID simply click on the button above and log into your Instagram account.<br /><br /><b>Please note:</b> Due to recent changes in the Instagram API it is no longer possible to display photos from other Instagram accounts which are not your own. You can only display the user feed of the account which is associated with your Access Token.", 'instagram-feed'); ?></p><br />
                             </span>
 
                             <div class="sbi_notice sbi_user_id_error">
-                                <?php _e("<p>Please be sure to enter your numeric <b>User ID</b> and not your Username. You can find your User ID by clicking the blue Instagram Login button above, or by entering your username into <a href='https://smashballoon.com/instagram-feed/find-instagram-user-id/' target='_blank'>this tool</a>.</p>", 'instagram-feed'); ?>
+                                <?php _e("<p>Please be sure to enter your numeric <b>User ID</b> and not your Username. You can find your User ID by clicking the blue Instagram Login button above and logging into your Instagram account.</p>", 'instagram-feed'); ?>
+                            </div>
+
+                            <div class="sbi_notice sbi_other_user_error">
+                                <?php _e("<p>Due to <a href='https://smashballoon.com/instagram-api-changes-april-4-2018/' target='_blank'>recent changes</a> in the Instagram API it's no longer possible to display feeds from user accounts which are not your own. You can find your user ID by clicking the Instagram login button above, or by using the first part of your Access Token before the dot. Eg: <b><span style='background: yellow;'>1234567890</span>.xxxxxxxxxxxxxxxxxxxxx</b>.</p>", 'instagram-feed'); ?>
                             </div>
                             
                             <span class="sbi_pro sbi_row">
@@ -386,14 +392,6 @@ function sb_instagram_settings_page() {
                                 &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed' ); ?></a><span class="sbi_note"> - <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to show posts by Hashtag</a></span>
                                 <p class="sbi_tooltip"><?php _e( 'Display posts from a specific hashtag instead of from a user', 'instagram-feed' ); ?></p>
                             </span>
-
-                            <div class="sbi_pro sbi_row">
-                                <input disabled type="radio" name="sb_instagram_type" id="sb_instagram_type_self_likes" value="liked" <?php if($sb_instagram_type == "liked") echo "checked"; ?> />
-                                <label class="sbi_radio_label" for="sb_instagram_type_self_likes"><?php _e( 'Liked:', 'instagram-feed' ); ?></label>
-                                <input readonly type="text" size="25" />
-                                    &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed' ); ?></a><span class="sbi_note"> - <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to show posts that you've Liked</a></span>
-                                <p class="sbi_tooltip"><?php _e("Display posts that your user account has liked."); ?></p>
-                            </div>
 
                             <div class="sbi_pro sbi_row">
                                 <input disabled type="radio" />
@@ -1281,7 +1279,7 @@ function sb_instagram_settings_page() {
                 </tr>
                 <tr>
                     <td>id</td>
-                    <td><?php _e('An Instagram User ID. Separate multiple IDs by commas.', 'instagram-feed'); ?></td>
+                    <td><?php _e('Your Instagram User ID. This must be the ID associated with your Access Token.', 'instagram-feed'); ?></td>
                     <td><code>[instagram-feed id="1234567"]</code></td>
                 </tr>
                 <tr class="sbi_pro">
@@ -1569,12 +1567,9 @@ function sb_instagram_settings_page() {
 
 			    <ul>
 				    <li><b>FAQs</b></li>
-				    <li>&bull;&nbsp; <?php _e( '<a href="https://smashballoon.com/instagram-feed/find-instagram-user-id/" target="_blank">How to find an Instagram User ID</a>' ); ?></li>
 				    <li>&bull;&nbsp; <?php _e( '<a href="https://smashballoon.com/my-instagram-access-token-keep-expiring/" target="_blank">My Access Token Keeps Expiring</a>' ); ?></li>
 				    <li>&bull;&nbsp; <?php _e( '<a href="https://smashballoon.com/my-photos-wont-load/" target="_blank">My Instagram Feed Won\'t Load</a>' ); ?></li>
-				    <li style="margin-top: 8px; font-size: 12px;"><a
-						    href="https://smashballoon.com/instagram-feed/support/faq/" target="_blank">See All<i
-							    class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+				    <li style="margin-top: 8px; font-size: 12px;"><a href="https://smashballoon.com/instagram-feed/support/faq/" target="_blank">See All<i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
 			    </ul>
 
 			    <ul>

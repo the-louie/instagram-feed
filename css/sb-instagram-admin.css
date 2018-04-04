@@ -310,7 +310,8 @@
 	padding: 5px 0;
 	font-size: 13px;
 }
-#sbi_admin .sbi_user_id_error{
+#sbi_admin .sbi_user_id_error,
+#sbi_admin .sbi_other_user_error{
 	display: none;
 
 	margin: 10px 0;

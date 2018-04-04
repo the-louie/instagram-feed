@@ -149,7 +149,7 @@
 #sb_instagram .sbi_type_video .svg-inline--fa.fa-play{
   display: block !important;
   position: absolute;
-  z-index: 0;
+  z-index: 1;
 
   color: #fff;
   color: rgba(255,255,255,0.9);
