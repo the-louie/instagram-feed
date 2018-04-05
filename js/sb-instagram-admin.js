@@ -102,11 +102,13 @@ jQuery(document).ready(function($) {
 
 	});
 	function sbi_check_other_user_id(sbi_user_id, $sbi_other_user_error){
-		if( jQuery('#sb_instagram_at').val().indexOf(sbi_user_id) == -1 ){
-  			$sbi_other_user_error.fadeIn();
-  		} else {
-  			$sbi_other_user_error.fadeOut();
-  		}
+		if (jQuery('#sb_instagram_at').length && jQuery('#sb_instagram_at').val() !== '' && sbi_user_id.length) {
+            if(jQuery('#sb_instagram_at').val().indexOf(sbi_user_id) == -1 ){
+                $sbi_other_user_error.fadeIn();
+            } else {
+                $sbi_other_user_error.fadeOut();
+            }
+		}
 	}
 	//Check initially when settings load
 	sbi_check_other_user_id( jQuery('#sb_instagram_user_id').val(), $('td').find('.sbi_other_user_error') );

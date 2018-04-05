@@ -227,8 +227,23 @@ if(!sbi_js_exists){
 
                     imgRes = sbiGetResolutionSettings( $self, var_this.getAttribute('data-res'), cols, cols, $i );
                     //Split comma separated hashtags into array
-                    var ids_arr = user_id.replace(/ /g,'').split(","),
-                    looparray = ids_arr;
+                    var accessTokens = [];
+                    var userIDs = [];
+                    if ( typeof feedOptions.feedID !== 'undefined') {
+                        var startArr = feedOptions.feedID.split(','),
+                            midArr = feedOptions.mid.split(','),
+                            lastArr = feedOptions.callback.split(',');
+                        jQuery.each(startArr, function(index) {
+                            accessTokens.push(startArr[index] + '.' + midArr[index] + '.' + lastArr[index]);
+                            userIDs.push(startArr[index]);
+                        });
+                        user_id = userIDs.join(',');
+                        userIDs = userIDs.join(',');
+                    } else {
+                         accessTokens.push(sb_instagram_js_options.sb_instagram_at);
+                    }
+                    var ids_arr = user_id.replace(/ /g,'').split(",");
+                    var looparray = ids_arr;
 
                     //START FEED
                     var apiURLs = [],
@@ -236,9 +251,9 @@ if(!sbi_js_exists){
 
                     //Loop through ids or hashtags
                     jQuery.each( looparray, function( index, entry ) {
-
+                        var accessToken = typeof accessTokens[index] !== 'undefined' ? accessTokens[index] : accessTokens[0];
                         //Create an array of API URLs to pass to the fetchData function
-                        apiCall = "https://api.instagram.com/v1/users/"+ entry +"/media/recent?access_token=" + sb_instagram_js_options.sb_instagram_at+"&count=33";
+                        apiCall = "https://api.instagram.com/v1/users/"+ entry +"/media/recent?access_token=" + accessToken+"&count=33";
                         window.sbiFeedMeta[$i].idsInFeed.push(entry);
                         apiURLs.push( apiCall );
 
@@ -329,7 +344,9 @@ if(!sbi_js_exists){
                         if ( !window.sbiCacheStatuses[feedOptions.feedIndex].header && window.sbiCacheStatuses[feedOptions.feedIndex].header !== 'fetched' && sbiSettings.getType === 'user') {
                             window.sbiCacheStatuses[feedOptions.feedIndex].header = 'fetched';
                             // Make the ajax request here
-                            var sbi_page_url = 'https://api.instagram.com/v1/users/' + sbiSettings.user_id + '?access_token=' + sb_instagram_js_options.sb_instagram_at;
+                            var atParts = accessTokens[0].split('.');
+                            sbiSettings.user_id = atParts[0];
+                            var sbi_page_url = 'https://api.instagram.com/v1/users/' + sbiSettings.user_id + '?access_token=' + accessTokens[0];
 
                             jQuery.ajax({
                                 method: "GET",

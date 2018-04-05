@@ -69,7 +69,8 @@ function display_instagram($atts, $content = null) {
         'class' => '',
         'ajaxtheme' => isset($options[ 'sb_instagram_ajax_theme' ]) ? $options[ 'sb_instagram_ajax_theme' ] : '',
         'cachetime' => isset($options[ 'sb_instagram_cache_time' ]) ? $options[ 'sb_instagram_cache_time' ] : '',
-        'media' => isset($options[ 'sb_instagram_media_type' ]) ? $options[ 'sb_instagram_media_type' ] : ''
+        'media' => isset($options[ 'sb_instagram_media_type' ]) ? $options[ 'sb_instagram_media_type' ] : '',
+	    'accesstoken' => ''
     ), $atts);
 
 
@@ -82,6 +83,31 @@ function display_instagram($atts, $content = null) {
 		$sb_instagram_settings = get_option( 'sb_instagram_settings' );
 		$at_arr = isset( $sb_instagram_settings[ 'sb_instagram_at' ] ) ? explode( '.', trim( $sb_instagram_settings[ 'sb_instagram_at' ] ), 2) : array();
 		$sb_instagram_user_id = $at_arr[0];
+	}
+
+	// Access Token
+	$at_front_string = '';
+	$at_middle_string = '';
+	$at_back_string = '';
+
+	if ( ! empty( $atts['accesstoken'] ) ) {
+		$tokens = explode(',', str_replace(' ', '', $atts['accesstoken'] ) );
+		$parts = explode('.', $atts['accesstoken'] );
+		$at_front_string = '&quot;feedID&quot;: &quot;';
+		$at_middle_string = '&quot;mid&quot;: &quot;';
+		$at_back_string = '&quot;callback&quot;: &quot;';
+		$sb_instagram_user_id = '';
+		foreach ( $tokens as $token ) {
+				$parts = explode('.', $token );
+				$sb_instagram_user_id .= $parts[0].',';
+				$at_front_string .= $parts[0].',';
+				$at_middle_string .= $parts[1].',';
+				$at_back_string .= $parts[2].',';
+			}
+		$sb_instagram_user_id = substr( $sb_instagram_user_id, 0, -1 );
+		$at_front_string = substr( $at_front_string, 0, -1 ) . '&quot;,';
+		$at_middle_string = substr( $at_middle_string, 0, -1 ) . '&quot;,';
+		$at_back_string = substr( $at_back_string, 0, -1 ) . '&quot;,';
 	}
 
     //Container styles
@@ -263,7 +289,7 @@ function display_instagram($atts, $content = null) {
     if ( !empty($sb_instagram_height) ) $sb_instagram_content .= ' sbi_fixed_height ';
     $sb_instagram_content .= ' sbi_col_' . trim($sb_instagram_cols);
     if ( $sb_instagram_width_resp ) $sb_instagram_content .= ' sbi_width_resp';
-    $sb_instagram_content .= '" '.$sb_instagram_styles .' data-id="' . $sb_instagram_user_id . '" data-num="' . trim($atts['num']) . '" data-res="' . trim($atts['imageres']) . '" data-cols="' . trim($sb_instagram_cols) . '" data-options=\'{&quot;sortby&quot;: &quot;'.$atts['sortby'].'&quot;, &quot;showbio&quot;: &quot;'.$sb_instagram_show_bio.'&quot;, &quot;headercolor&quot;: &quot;'.$sb_instagram_header_color.'&quot;, &quot;imagepadding&quot;: &quot;'.$sb_instagram_image_padding.'&quot;, &quot;disablecache&quot;: &quot;'.$sb_instagram_disable_cache.'&quot;, &quot;sbiCacheExists&quot;: &quot;'.$sbi_cache_exists.'&quot;, &quot;sbiHeaderCache&quot;: &quot;'.$sbiHeaderCache.'&quot;'.$use_backup_json.'}\'>';
+    $sb_instagram_content .= '" '.$sb_instagram_styles .' data-id="' . $sb_instagram_user_id . '" data-num="' . trim($atts['num']) . '" data-res="' . trim($atts['imageres']) . '" data-cols="' . trim($sb_instagram_cols) . '" data-options=\'{&quot;sortby&quot;: &quot;'.$atts['sortby'].'&quot;, &quot;showbio&quot;: &quot;'.$sb_instagram_show_bio.'&quot;,'.$at_front_string.' &quot;headercolor&quot;: &quot;'.$sb_instagram_header_color.'&quot;, &quot;imagepadding&quot;: &quot;'.$sb_instagram_image_padding.'&quot;,'.$at_middle_string.' &quot;disablecache&quot;: &quot;'.$sb_instagram_disable_cache.'&quot;, &quot;sbiCacheExists&quot;: &quot;'.$sbi_cache_exists.'&quot;,'.$at_back_string.' &quot;sbiHeaderCache&quot;: &quot;'.$sbiHeaderCache.'&quot;'.$use_backup_json.'}\'>';
 
     //Header
     if( $sb_instagram_show_header ) $sb_instagram_content .= '<div class="sb_instagram_header" style="padding: '.(2*intval($sb_instagram_image_padding)) . $sb_instagram_image_padding_unit .'; padding-bottom: 0;"></div>';
