@@ -353,13 +353,13 @@ function sb_instagram_settings_page() {
                     </div>
                     
                     <tr valign="top">
-                        <th scope="row"><label><?php _e( 'Access Token', 'instagram-feed' ); ?></label><code class="sbi_shortcode"> accesstoken
+                        <th scope="row"><label><?php _e( 'Access Token', 'instagram-feed' ); ?></label><span style="font-weight:normal; font-style:italic; font-size: 12px; display: block;">Use the button above</span><code class="sbi_shortcode"> accesstoken
                             Eg: accesstoken=XXXX
                         </code></th>
                         <td>
                             <input name="sb_instagram_at" id="sb_instagram_at" type="text" value="<?php echo esc_attr( $sb_instagram_at ); ?>" size="60" maxlength="60" placeholder="Click button above to get your Access Token" />
-                            &nbsp;<a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed'); ?></a>
-                            <p class="sbi_tooltip"><?php _e("In order to display your photos you need an Access Token from Instagram. To get yours, simply click the button above and log into Instagram. You can also use the button on <a href='https://smashballoon.com/instagram-feed/token/' target='_blank'>this page</a>.", 'instagram-feed'); ?></p>
+                            &nbsp;<a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e( 'Multiple Instagram accounts?', 'instagram-feed'); ?></a>
+                            <div class="sbi_tooltip"><?php _e("<p>In order to display feeds from multple accounts there are two options:</p><p style='padding-top:8px;'><b>Separate Feeds</b><br />You can display a separate feed for each account by setting the Access Token for each account directly in the shortcode, like so: <code>[instagram-feed accesstoken='YOUR_ACCESS_TOKEN']</code>.</p><p style='padding-top:10px;'><b>Combining Feeds</b><br />You can combine feeds from accounts you own into one single feed by setting multiple Access Tokens, either in the Access Token field above, or in the shortcode: <code>[instagram-feed accesstoken='ACCESS_TOKEN_1,ACCESS_TOKEN_2,ACCESS_TOKEN_3']</code></p><p style='margin-top: 25px; border-left: 3px solid #aa4949; padding: 5px 10px; background: #F7E6E6;'><b>Important:</b> There is no need to set a User ID for each account/token. The plugin will get the ID directly from the token.</p>", 'instagram-feed'); ?></div>
                         </td>
                     </tr>
 
@@ -374,7 +374,7 @@ function sb_instagram_settings_page() {
                                 <label class="sbi_radio_label" for="sb_instagram_type_user"><?php _e( 'User ID:', 'instagram-feed' ); ?></label>
                                 <input name="sb_instagram_user_id" id="sb_instagram_user_id" type="text" value="<?php echo esc_attr( $sb_instagram_user_id ); ?>" size="25" />
                                 &nbsp;<a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed' ); ?></a>
-                                <p class="sbi_tooltip"><?php _e("This is the ID of the Instagram account you want to display photos from. To get your ID simply click on the button above and log into your Instagram account.<br /><br /><b>Please note:</b> Due to recent changes in the Instagram API it is no longer possible to display photos from other Instagram accounts which are not your own. You can only display the user feed of the account which is associated with your Access Token.", 'instagram-feed'); ?></p><br />
+                                <div class="sbi_tooltip"><?php _e("<p>This is the ID of the Instagram account you want to display photos from. To get your ID simply click on the button above and log into your Instagram account.</p><p style='padding-top:8px;'><b>Displaying Posts from Other Instagram Accounts</b><br />Due to recent changes in the Instagram API it is no longer possible to display photos from other Instagram accounts which are not your own. You can only display the user feed of the account which is associated with your Access Token.</p><p style='padding-top:10px;'><b>Multiple IDs</b><br />It is only possible to display feeds from Instagram accounts which you own. In order to display feeds from multiple accounts please see the 'Multiple Instagram accounts?' link above.</p>", 'instagram-feed'); ?></div><br />
                             </span>
 
                             <div class="sbi_notice sbi_user_id_error">
@@ -407,10 +407,7 @@ function sb_instagram_settings_page() {
                                 <input readonly type="text" size="25" />
                                 &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed' ); ?></a><span class="sbi_note"> - <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to show posts by Location</a></span>
                                 <p class="sbi_tooltip"><?php _e( 'Display posts from an Instagram location ID or location coordinates.', 'instagram-feed' ); ?></p>
-                            </span>
-
-                            <span class="sbi_note" style="margin: 10px 0 0 0; display: block;"><?php _e('Separate multiple IDs using commas', 'instagram-feed' ); ?></span>
-                           
+                            </span>                           
                         </td>
                     </tr>
 
@@ -1256,8 +1253,8 @@ function sb_instagram_settings_page() {
         <code>[instagram-feed num=9 cols=3]</code></p>
         <p><?php _e( 'You can display as many different feeds as you like, on either the same page or on different pages, by just using the shortcode options below. For example:', 'instagram-feed' ); ?><br />
         <code>[instagram-feed]</code><br />
-        <code>[instagram-feed id="ANOTHER_USER_ID"]</code><br />
-        <code>[instagram-feed id="ANOTHER_USER_ID, YET_ANOTHER_USER_ID" num=4 cols=4 showfollow=false]</code>
+        <code>[instagram-feed num=4 cols=4 showfollow=false]</code><br />
+        <code>[instagram-feed accesstoken="ANOTHER_ACCESS_TOKEN"]</code>
         </p>
         <p><?php _e("See the table below for a full list of available shortcode options:", 'instagram-feed'); ?></p>
 
@@ -1272,6 +1269,11 @@ function sb_instagram_settings_page() {
                 </tr>
 
                 <tr class="sbi_table_header"><td colspan=3><?php _e("Configure Options", 'instagram-feed'); ?></td></tr>
+                <tr>
+                    <td>accesstoken</td>
+                    <td><?php _e('Your Instagram Access Token. Separate multiple using commas.', 'instagram-feed'); ?></td>
+                    <td><code>[instagram-feed accesstoken="XXXXXXXXXX"]</code></td>
+                </tr>
                 <tr class="sbi_pro">
                     <td>type</td>
                     <td><?php _e("Display photos from a User ID (user)<br />Display posts from a Hashtag (hashtag)<br />Display posts from a Location (location)<br />Display posts from Coordinates (coordinates)", 'instagram-feed'); ?></td>
