@@ -484,6 +484,7 @@ function sbi_encode_uri( $uri )
 
 function sbi_get_cache() {
 	$options = get_option( 'sb_instagram_settings' );
+	//set_transient( 'sbi_doing_tryfetch_once', 'true', 60*60 );
 
 	$transient_names = json_decode(str_replace( array( '\"', "\\'" ), array( '"', "'" ), sanitize_text_field( $_POST['transientName'] ) ), true);
 	$header_cache_data_transient_data = get_transient( $transient_names['header'] );
@@ -491,11 +492,16 @@ function sbi_get_cache() {
 	$should_use_backup_feed = isset( $_POST['useBackupFeed'] ) && sanitize_text_field( $_POST['useBackupFeed'] ) == 'true' ? true : false;
 	$feed_cache_transient_data = get_transient( $transient_names['feed'] );
 	$warning_message_data = '';
+	$backups_enabled = isset( $options['sb_instagram_backup'] ) ? $options['sb_instagram_backup'] !== '' : true;
 
 	if ( ! empty( $feed_cache_transient_data ) ) {
 		$feed_cache_data = $feed_cache_transient_data;
 	} elseif ( isset( $options['check_api'] ) && $options['check_api'] === 'on' || $options['check_api'] ) {
 		$feed_cache_data = '{%22error%22:%22tryfetch%22}';
+	} elseif ( !get_transient( 'sbi_doing_tryfetch_once' ) && $backups_enabled ) {
+		set_transient( 'sbi_doing_tryfetch_once', 'true', 60*60 );
+		$feed_cache_data = '{%22error%22:%22tryfetch%22}';
+		$warning_message_data = ',%22tryfetchonce%22:{%22tryfetchonce%22:%22tryfetchonce%22}';
 	} else {
 		$feed_cache_data = '{%22error%22:%22nocache%22}';
 	}
@@ -514,6 +520,10 @@ function sbi_get_cache() {
 		$header_cache_data = $header_cache_data_transient_data;
 	} elseif ( $doing_tryfetch ) {
 		$header_cache_data = '{%22error%22:%22tryfetch%22}';
+	} elseif ( !get_transient( 'sbi_doing_tryfetch_once' ) && $backups_enabled ) {
+		set_transient( 'sbi_doing_tryfetch_once', 'true', 60*60 );
+		$feed_cache_data = '{%22error%22:%22tryfetch%22}';
+		$warning_message_data = ',%22tryfetchonce%22:{%22tryfetchonce%22:%22tryfetchonce%22}';
 	} elseif ( empty( $header_cache_data_transient_data ) || $still_using_backup ) {
 		$backup_header_cache = get_option( '!' . $transient_names['header'] );
 		$header_cache_data = ! empty( $backup_header_cache ) ? $backup_header_cache : '{%22error%22:%22nocache%22}';
