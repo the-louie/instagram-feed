@@ -216,9 +216,9 @@ function display_instagram($atts, $content = null) {
 	$sbi_transient_name = substr($sbi_transient_name, 0, 45);
 	// delete_transient($sbi_transient_name);
 
-	//Check whether the cache transient exists in the database
-	( false === ( $sbi_cache_exists = get_transient( $sbi_transient_name ) ) ) ? $sbi_cache_exists = false : $sbi_cache_exists = true;
-	($sbi_cache_exists) ? $sbi_cache_exists = 'true' : $sbi_cache_exists = 'false';
+	//Check whether the cache transient exists in the database and is available for more than one more minute
+	$feed_expires = get_option( '_transient_timeout_'.$sbi_transient_name );
+	$sbi_cache_exists = $feed_expires !== false && ($feed_expires - time()) > 60 ? 'true' : 'false';
 
 	$sbiHeaderCache = 'false';
 	//If it's a user then add the header cache check to the feed
@@ -227,9 +227,9 @@ function display_instagram($atts, $content = null) {
 	$sbi_header_transient_name = substr($sbi_header_transient_name, 0, 45);
 
 	//Check for the header cache
-	( false === ( $sbi_header_cache_exists = get_transient( $sbi_header_transient_name ) ) ) ? $sbi_header_cache_exists = false : $sbi_header_cache_exists = true;
-
-	($sbi_header_cache_exists) ? $sbiHeaderCache = 'true' : $sbiHeaderCache = 'false';
+	$header_expires = get_option( '_transient_timeout_'.$sbi_header_transient_name );
+	$sbi_header_cache_exists = $header_expires !== false && ($header_expires - time()) > 60 ? 'true' : 'false';
+	$sbiHeaderCache = $sbi_header_cache_exists;
 
 	if ( isset( $options['check_api'] ) && ( $options['check_api'] === 'on' || $options['check_api']) && ( !isset( $options['sb_instagram_cache_time'] ) || ( isset( $options['sb_instagram_cache_time'] ) && (int)$options['sb_instagram_cache_time'] > 0 ) ) ) {
 		$sbi_cache_exists = 'true';
@@ -484,6 +484,7 @@ function sbi_encode_uri( $uri )
 
 function sbi_get_cache() {
 	$options = get_option( 'sb_instagram_settings' );
+	//set_transient( 'sbi_doing_tryfetch_once', 'true', 60*60 );
 
 	$transient_names = json_decode(str_replace( array( '\"', "\\'" ), array( '"', "'" ), sanitize_text_field( $_POST['transientName'] ) ), true);
 	$header_cache_data_transient_data = get_transient( $transient_names['header'] );
@@ -491,11 +492,16 @@ function sbi_get_cache() {
 	$should_use_backup_feed = isset( $_POST['useBackupFeed'] ) && sanitize_text_field( $_POST['useBackupFeed'] ) == 'true' ? true : false;
 	$feed_cache_transient_data = get_transient( $transient_names['feed'] );
 	$warning_message_data = '';
+	$backups_enabled = isset( $options['sb_instagram_backup'] ) ? $options['sb_instagram_backup'] !== '' : true;
 
 	if ( ! empty( $feed_cache_transient_data ) ) {
 		$feed_cache_data = $feed_cache_transient_data;
 	} elseif ( isset( $options['check_api'] ) && $options['check_api'] === 'on' || $options['check_api'] ) {
 		$feed_cache_data = '{%22error%22:%22tryfetch%22}';
+	} elseif ( !get_transient( 'sbi_doing_tryfetch_once' ) && $backups_enabled ) {
+		set_transient( 'sbi_doing_tryfetch_once', 'true', 60*60 );
+		$feed_cache_data = '{%22error%22:%22tryfetch%22}';
+		$warning_message_data = ',%22tryfetchonce%22:{%22tryfetchonce%22:%22tryfetchonce%22}';
 	} else {
 		$feed_cache_data = '{%22error%22:%22nocache%22}';
 	}
@@ -514,6 +520,10 @@ function sbi_get_cache() {
 		$header_cache_data = $header_cache_data_transient_data;
 	} elseif ( $doing_tryfetch ) {
 		$header_cache_data = '{%22error%22:%22tryfetch%22}';
+	} elseif ( !get_transient( 'sbi_doing_tryfetch_once' ) && $backups_enabled ) {
+		set_transient( 'sbi_doing_tryfetch_once', 'true', 60*60 );
+		$feed_cache_data = '{%22error%22:%22tryfetch%22}';
+		$warning_message_data = ',%22tryfetchonce%22:{%22tryfetchonce%22:%22tryfetchonce%22}';
 	} elseif ( empty( $header_cache_data_transient_data ) || $still_using_backup ) {
 		$backup_header_cache = get_option( '!' . $transient_names['header'] );
 		$header_cache_data = ! empty( $backup_header_cache ) ? $backup_header_cache : '{%22error%22:%22nocache%22}';
