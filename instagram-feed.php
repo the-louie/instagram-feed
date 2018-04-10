@@ -216,9 +216,9 @@ function display_instagram($atts, $content = null) {
 	$sbi_transient_name = substr($sbi_transient_name, 0, 45);
 	// delete_transient($sbi_transient_name);
 
-	//Check whether the cache transient exists in the database
-	( false === ( $sbi_cache_exists = get_transient( $sbi_transient_name ) ) ) ? $sbi_cache_exists = false : $sbi_cache_exists = true;
-	($sbi_cache_exists) ? $sbi_cache_exists = 'true' : $sbi_cache_exists = 'false';
+	//Check whether the cache transient exists in the database and is available for more than one more minute
+	$feed_expires = get_option( '_transient_timeout_'.$sbi_transient_name );
+	$sbi_cache_exists = $feed_expires !== false && ($feed_expires - time()) > 60 ? 'true' : 'false';
 
 	$sbiHeaderCache = 'false';
 	//If it's a user then add the header cache check to the feed
@@ -227,9 +227,9 @@ function display_instagram($atts, $content = null) {
 	$sbi_header_transient_name = substr($sbi_header_transient_name, 0, 45);
 
 	//Check for the header cache
-	( false === ( $sbi_header_cache_exists = get_transient( $sbi_header_transient_name ) ) ) ? $sbi_header_cache_exists = false : $sbi_header_cache_exists = true;
-
-	($sbi_header_cache_exists) ? $sbiHeaderCache = 'true' : $sbiHeaderCache = 'false';
+	$header_expires = get_option( '_transient_timeout_'.$sbi_header_transient_name );
+	$sbi_header_cache_exists = $header_expires !== false && ($header_expires - time()) > 60 ? 'true' : 'false';
+	$sbiHeaderCache = $sbi_header_cache_exists;
 
 	if ( isset( $options['check_api'] ) && ( $options['check_api'] === 'on' || $options['check_api']) && ( !isset( $options['sb_instagram_cache_time'] ) || ( isset( $options['sb_instagram_cache_time'] ) && (int)$options['sb_instagram_cache_time'] > 0 ) ) ) {
 		$sbi_cache_exists = 'true';
