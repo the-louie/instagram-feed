@@ -484,7 +484,6 @@ function sbi_encode_uri( $uri )
 
 function sbi_get_cache() {
 	$options = get_option( 'sb_instagram_settings' );
-	//set_transient( 'sbi_doing_tryfetch_once', 'true', 60*60 );
 
 	$transient_names = json_decode(str_replace( array( '\"', "\\'" ), array( '"', "'" ), sanitize_text_field( $_POST['transientName'] ) ), true);
 	$header_cache_data_transient_data = get_transient( $transient_names['header'] );
