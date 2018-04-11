@@ -82,7 +82,7 @@ function display_instagram($atts, $content = null) {
 	if ( empty( $sb_instagram_user_id ) ) {
 		$sb_instagram_settings = get_option( 'sb_instagram_settings' );
 		$at_arr = isset( $sb_instagram_settings[ 'sb_instagram_at' ] ) ? explode( '.', trim( $sb_instagram_settings[ 'sb_instagram_at' ] ), 2) : array();
-		$sb_instagram_user_id = $at_arr[0];
+		$sb_instagram_user_id = isset( $at_arr[0] ) ? $at_arr[0] : '';
 	}
 
 	// Access Token
@@ -329,10 +329,13 @@ function display_instagram($atts, $content = null) {
     $sb_instagram_content .= '</div>'; //End #sb_instagram
 
     //If using an ajax theme then add the JS to the bottom of the feed
-    if($sb_instagram_ajax_theme){
-        $sb_instagram_content .= '<script type="text/javascript">var sb_instagram_js_options = {"sb_instagram_at":"'.trim($options['sb_instagram_at']).'"};</script>';
-        $sb_instagram_content .= "<script type='text/javascript' src='".plugins_url( '/js/sb-instagram.min.js?ver='.SBIVER , __FILE__ )."'></script>";
-    }
+	//If using an ajax theme then add the JS to the bottom of the feed
+	if($sb_instagram_ajax_theme){
+		$font_method = isset( $options['sbi_font_method'] ) ? $options['sbi_font_method'] : 'svg';
+
+		$sb_instagram_content .= '<script type="text/javascript">var sb_instagram_js_options = {"sb_instagram_at":"'.trim($options['sb_instagram_at']).'", "font_method":"'.$font_method.'"};</script>';
+		$sb_instagram_content .= "<script type='text/javascript' src='".plugins_url( '/js/sb-instagram.js?ver='.SBIVER , __FILE__ )."'></script>";
+	}
  
     //Return our feed HTML to display
     return $sb_instagram_content;

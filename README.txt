@@ -312,6 +312,7 @@ We understand that sometimes you need help, have issues or just have questions. 
 == Changelog ==
 = 1.8.1 =
 * Fix: Fixed issue where feeds were displaying "Looking for cache that doesn't exist" when page caching was not being used.
+* Fix: Font method setting not working when "Are you using an ajax theme?" setting is enabled.
 
 = 1.8 =
 * Important: Due to [recent changes](https://smashballoon.com/instagram-api-changes-april-4-2018/) in the Instagram API it is no longer possible to display photos from other Instagram accounts which are not your own. You can only display the user feed of the account which is associated with your Access Token.
