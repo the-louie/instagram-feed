@@ -933,6 +933,8 @@ if(!sbi_js_exists){
 
                                         if(typeof sbiErrorResponse !== 'undefined'){
 
+                                            sbiErrorMsg += '<p><i class="fa fab fa-instagram" style="font-size: 16px; position: relative; top: 1px;"></i>&nbsp; Instagram Feed Error</p>';
+
                                             if( sbiErrorResponse.indexOf('access_token') > -1 ){
                                                 sbiErrorMsg += '<p><b>Error: Access Token is not valid or has expired</b><br /><span>This error message is only visible to WordPress admins</span></p>';
                                                 sbiErrorDir = "<p>There's an issue with the Instagram Access Token that you are using. Please obtain a new Access Token on the plugin's Settings page.<br />If you continue to have an issue with your Access Token then please see <a href='https://smashballoon.com/my-instagram-access-token-keep-expiring/' target='_blank'>this FAQ</a> for more information.</p>";
