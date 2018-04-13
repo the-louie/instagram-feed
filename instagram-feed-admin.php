@@ -1630,7 +1630,7 @@ while (list($key, $val) = each($sbi_options)) {
 
 ## API RESPONSE: ##
 <?php
-$url = isset( $sbi_options['sb_instagram_at'] ) ? 'https://api.instagram.com/v1/users/self/?access_token=' . $sbi_options['sb_instagram_at'] : 'no_at';
+$url = isset( $sbi_options['sb_instagram_at'] ) ? 'https://api.instagram.com/v1/users/self/?access_token=' . sbi_maybe_clean( $sbi_options['sb_instagram_at'] ) : 'no_at';
 if ( $url !== 'no_at' ) {
     $args = array(
         'timeout' => 60,
@@ -1644,22 +1644,6 @@ if ( $url !== 'no_at' ) {
         echo 'id: ' . $data->data->id . "\n";
         echo 'username: ' . $data->data->username . "\n";
         echo 'posts: ' . $data->data->counts->media . "\n";
-
-        $url = 'https://api.instagram.com/v1/users/13460080?access_token=' . $sbi_options['sb_instagram_at'];
-        $args = array(
-            'timeout' => 60,
-            'sslverify' => false
-        );
-        $search_result = wp_remote_get( $url, $args );
-        $search_data = json_decode( $search_result['body'] );
-
-        if ( isset( $data->meta->code ) ) {
-            echo "\n" . 'Instagram Response' . "\n";
-            echo 'code: ' . $search_data->meta->code . "\n";
-            if ( isset( $search_data->meta->error_message ) ) {
-                echo 'error_message: ' . $search_data->meta->error_message . "\n";
-            }
-        }
 
     } else {
         echo 'No id returned' . "\n";
