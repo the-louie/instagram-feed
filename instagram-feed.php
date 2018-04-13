@@ -3,7 +3,7 @@
 Plugin Name: Instagram Feed
 Plugin URI: https://smashballoon.com/instagram-feed
 Description: Display beautifully clean, customizable, and responsive Instagram feeds
-Version: 1.8.1
+Version: 1.8.2
 Author: Smash Balloon
 Author URI: https://smashballoon.com/
 License: GPLv2 or later
@@ -23,7 +23,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-define( 'SBIVER', '1.8.1' );
+define( 'SBIVER', '1.8.2' );
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -98,12 +98,16 @@ function display_instagram($atts, $content = null) {
 		$at_back_string = '&quot;callback&quot;: &quot;';
 		$sb_instagram_user_id = '';
 		foreach ( $tokens as $token ) {
-				$parts = explode('.', $token );
-				$sb_instagram_user_id .= $parts[0].',';
-				$at_front_string .= $parts[0].',';
-				$at_middle_string .= $parts[1].',';
+			$parts = explode('.', $token );
+			$sb_instagram_user_id .= $parts[0].',';
+			$at_front_string .= $parts[0].',';
+			$at_middle_string .= $parts[1].',';
+			if ( isset( $parts[3] ) ) {
+				$at_back_string .= $parts[2].'.'.$parts[3].',';
+			} else {
 				$at_back_string .= $parts[2].',';
 			}
+		}
 		$sb_instagram_user_id = substr( $sb_instagram_user_id, 0, -1 );
 		$at_front_string = substr( $at_front_string, 0, -1 ) . '&quot;,';
 		$at_middle_string = substr( $at_middle_string, 0, -1 ) . '&quot;,';
@@ -333,7 +337,7 @@ function display_instagram($atts, $content = null) {
 	if($sb_instagram_ajax_theme){
 		$font_method = isset( $options['sbi_font_method'] ) ? $options['sbi_font_method'] : 'svg';
 
-		$sb_instagram_content .= '<script type="text/javascript">var sb_instagram_js_options = {"sb_instagram_at":"'.trim($options['sb_instagram_at']).'", "font_method":"'.$font_method.'"};</script>';
+		$sb_instagram_content .= '<script type="text/javascript">var sb_instagram_js_options = {"sb_instagram_at":"'.sbi_get_parts( trim($options['sb_instagram_at']) ).'", "font_method":"'.$font_method.'"};</script>';
 		$sb_instagram_content .= "<script type='text/javascript' src='".plugins_url( '/js/sb-instagram.js?ver='.SBIVER , __FILE__ )."'></script>";
 	}
  
@@ -498,7 +502,7 @@ function sbi_get_cache() {
 
 	if ( ! empty( $feed_cache_transient_data ) ) {
 		$feed_cache_data = $feed_cache_transient_data;
-	} elseif ( isset( $options['check_api'] ) && $options['check_api'] === 'on' || $options['check_api'] ) {
+	} elseif ( ! isset( $options['check_api'] ) || $options['check_api'] === 'on' || $options['check_api'] === true ) {
 		$feed_cache_data = '{%22error%22:%22tryfetch%22}';
 	} elseif ( !get_transient( 'sbi_doing_tryfetch_once' ) && $backups_enabled ) {
 		set_transient( 'sbi_doing_tryfetch_once', 'true', 60*60 );
@@ -580,6 +584,28 @@ function sbi_clear_backups() {
 }
 add_action( 'wp_ajax_sbi_clear_backups', 'sbi_clear_backups' );
 
+function sbi_maybe_clean( $maybe_dirty ) {
+	if ( substr_count ( $maybe_dirty , '.' ) < 3 ) {
+		return $maybe_dirty;
+	}
+
+	$parts = explode( '.', trim( $maybe_dirty ) );
+	$last_part = $parts[2] . $parts[3];
+	$cleaned = $parts[0] . '.' . base64_decode( $parts[1] ) . '.' . base64_decode( $last_part );
+
+	return $cleaned;
+}
+function sbi_get_parts( $whole ) {
+	if ( substr_count ( $whole , '.' ) !== 2 ) {
+		return $whole;
+	}
+
+	$parts = explode( '.', trim( $whole ) );
+	$return = $parts[0] . '.' . base64_encode( $parts[1] ). '.' . base64_encode( $parts[2] );
+
+	return substr( $return, 0, 40 ) . '.' . substr( $return, 40, 100 );
+}
+
 //Enqueue stylesheet
 add_action( 'wp_enqueue_scripts', 'sb_instagram_styles_enqueue' );
 function sb_instagram_styles_enqueue() {
@@ -611,7 +637,7 @@ function sb_instagram_scripts_enqueue() {
 		wp_enqueue_style( 'sb-font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' );
 	}
     $data = array(
-        'sb_instagram_at' => $sb_instagram_at,
+	    'sb_instagram_at' => sbi_get_parts( $sb_instagram_at ),
         'font_method' => $font_method,
     );
 
