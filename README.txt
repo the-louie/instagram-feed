@@ -315,9 +315,9 @@ We understand that sometimes you need help, have issues or just have questions. 
 * Fix: Removed code and support for using user names in user ID settings. Will now default to the user id attached to the access token.
 
 = 1.8.2 =
-* Tweak: Setting "Cache Error API Recheck" enabled by default.
-* Fix: Page caches created with WP Rocket will be cleared when Instagram Feed settings change.
-* Fix: Fixed issue where feeds were displaying "Looking for cache that doesn't exist" when page caching was not being used.
+* Tweak: Setting "Cache Error API Recheck" enabled by default for new installs
+* Fix: Page caches created with the WP Rocket plugin will be cleared when the Instagram Feed settings are updated or the cache is forced to clear
+* Fix: Fixed a rare issue where feeds were displaying "Looking for cache that doesn't exist" when page caching was not being used
 
 = 1.8.1 =
 * Fix: Fixed issue where feeds were displaying "Looking for cache that doesn't exist" when page caching was not being used
