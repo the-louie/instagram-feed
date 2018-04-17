@@ -311,8 +311,8 @@ We understand that sometimes you need help, have issues or just have questions. 
 
 == Changelog ==
 = 1.8.3 =
-* Fix: SVG icons causing display problems in IE 11.
-* Fix: Removed code and support for using user names in user ID settings. Will now default to the user id attached to the access token.
+* Fix: SVG icons causing display problems in IE 11
+* Fix: Removed code and support for using user names in user ID settings. Will now default to the user id attached to the access token
 
 = 1.8.2 =
 * Tweak: Setting "Cache Error API Recheck" enabled by default for new installs
