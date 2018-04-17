@@ -3,7 +3,7 @@ Contributors: smashballoon, craig-at-smash-balloon
 Tags: Instagram, Instagram feed, Instagram photos, Instagram widget, Instagram gallery
 Requires at least: 3.0
 Tested up to: 4.9
-Stable tag: 1.8.2
+Stable tag: 1.8.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -310,6 +310,10 @@ We understand that sometimes you need help, have issues or just have questions. 
 * Plus more customization options added all the time!
 
 == Changelog ==
+= 1.8.3 =
+* Fix: SVG icons causing display problems in IE 11.
+* Fix: Removed code and support for using user names in user ID settings. Will now default to the user id attached to the access token.
+
 = 1.8.2 =
 * Tweak: Setting "Cache Error API Recheck" enabled by default.
 * Fix: Page caches created with WP Rocket will be cleared when Instagram Feed settings change.
