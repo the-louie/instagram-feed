@@ -743,6 +743,7 @@ function sb_instagram_activate() {
     $options[ 'sb_instagram_show_header' ] = true;
 	$options[ 'sb_instagram_show_follow_btn' ] = true;
     update_option( 'sb_instagram_settings', $options );
+	delete_option( 'sb_expired_tokens' );
 }
 register_activation_hook( __FILE__, 'sb_instagram_activate' );
 
