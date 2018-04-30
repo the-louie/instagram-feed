@@ -239,8 +239,10 @@ function display_instagram($atts, $content = null) {
 	$sbiHeaderCache = $sbi_header_cache_exists;
 
 	if ( isset( $options['check_api'] ) && ( $options['check_api'] === 'on' || $options['check_api']) && ( !isset( $options['sb_instagram_cache_time'] ) || ( isset( $options['sb_instagram_cache_time'] ) && (int)$options['sb_instagram_cache_time'] > 0 ) ) ) {
-		$sbi_cache_exists = 'true';
-		$sbiHeaderCache = 'true';
+		if ( ! get_transient( '&'.$sbi_transient_name, false ) ) {
+			$sbi_cache_exists = 'true';
+			$sbiHeaderCache = 'true';
+		}
 	}
 
 	$use_backup_json = '';
@@ -372,7 +374,7 @@ function sbi_should_use_backup_cache( $token, $cache_name, $is_filtered, $always
 		return false;
 	}
 
-	if ( in_array( $token, $expired_tokens, true ) && $backup_cache_exists ) {
+	if ( in_array( sbi_maybe_clean( $token ), $expired_tokens, true ) && $backup_cache_exists ) {
 
 		if ( !strpos( $cache_name, '_header' ) ) {
 			echo '<div id="sbi_mod_error">';
@@ -438,10 +440,12 @@ function sbi_set_expired_token() {
 
 	if ( $access_token !== false ) {
 		$expired_tokens = get_option( 'sb_expired_tokens', array() );
-		$expired_tokens[] = $access_token;
 
-		update_option( 'sb_expired_tokens', $expired_tokens, false );
-		sbi_set_use_backup();
+		if (! in_array( sbi_maybe_clean( $access_token ), $expired_tokens, true ) ) {
+			$expired_tokens[] = sbi_maybe_clean( $access_token );
+		}
+
+		update_option( 'sb_expired_tokens', $expired_tokens );
 	}
 
 	die();

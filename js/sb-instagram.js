@@ -905,6 +905,18 @@ if(!sbi_js_exists){
                                                 sbiErrorDir = "<p>There's an issue with the Instagram Access Token that you are using. Please obtain a new Access Token on the plugin's Settings page.<br />If you continue to have an issue with your Access Token then please see <a href='https://smashballoon.com/my-instagram-access-token-keep-expiring/' target='_blank'>this FAQ</a> for more information.</p>";
                                                 jQuery('#sb_instagram').empty().append( '<p style="text-align: center;">Unable to show Instagram photos</p><div id="sbi_mod_error">' + sbiErrorMsg + sbiErrorDir + '</div>');
                                                 sbiAddTokenToExpiredList(sb_instagram_js_options.sb_instagram_at,transientName);
+                                                var submittedData = {
+                                                    action: 'sbi_set_use_backup',
+                                                    transientName : transientName,
+                                                    context : 'falsecache'
+                                                };
+                                                jQuery.ajax({
+                                                    url: sbiajaxurl,
+                                                    type: 'post',
+                                                    data: submittedData,
+                                                    success: function (data) {
+                                                    }
+                                                }); // ajax
                                                 return;
                                                 
                                             //Retired endpoint
