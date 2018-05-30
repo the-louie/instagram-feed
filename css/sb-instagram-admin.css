@@ -783,3 +783,86 @@
 	margin-right: 8px;
 	border-radius: 4px;
 }
+
+/* Config info */
+#sbi_config{
+	float: left;
+	width: 100%;
+	clear: both;
+	margin: 10px 0 10px 0;
+}
+#sbi_config_info{
+	position: fixed;
+	z-index: 999;
+	width: 100%;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+
+	background: rgba(0,0,0,0.3);
+}
+#sbi_config_info .sbi_config_modal{
+	position: absolute;
+	top: 180px;
+	left: 50%;
+	width: 350px;
+
+	margin: 0 0 0 -195px;
+	padding: 20px;
+	background: #fff;
+	text-align: center;
+
+	-webkit-box-shadow: 0 1px 20px rgba(0,0,0,0.2);
+	box-shadow: 0 1px 20px rgba(0,0,0,0.2);
+
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+.sb_get_token .submit {
+	display: inline-block;
+	margin: 0 0 0 10px;
+	padding: 0;
+}
+.sbi_config_modal .sbi_submit{
+	clear: both;
+	width: 100%;
+	margin: 15px 0 5px 0;
+	text-align: center;
+}
+.sbi_config_modal .button{
+	margin: 0 5px;
+}
+#sbi_admin #sbi_connect_account:active{
+	margin-top: 0;
+}
+.sbi_config_modal .sbi_ca_username {
+	float: none;
+	margin: 10px 0 0 10px;
+	font-size: 18px;
+	line-height: 1.2;
+
+	display: inline-block;
+	position: relative;
+	top: -13px;
+}
+.sbi_config_modal .sbi_ca_avatar{
+	float: none;
+	width: 40px;
+	height: 40px;
+	border-radius: 5px;
+}
+.sbi_config_modal .sbi_modal_close{
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 10px;
+	font-size: 14px;
+	color: #ccc;
+	margin: 0;
+}
+.sbi_config_modal .sbi_modal_close:focus,
+.sbi_config_modal .sbi_modal_close:hover{
+	color: #333;
+}
