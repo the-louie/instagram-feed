@@ -70,34 +70,97 @@ function display_instagram($atts, $content = null) {
         'ajaxtheme' => isset($options[ 'sb_instagram_ajax_theme' ]) ? $options[ 'sb_instagram_ajax_theme' ] : '',
         'cachetime' => isset($options[ 'sb_instagram_cache_time' ]) ? $options[ 'sb_instagram_cache_time' ] : '',
         'media' => isset($options[ 'sb_instagram_media_type' ]) ? $options[ 'sb_instagram_media_type' ] : '',
-	    'accesstoken' => ''
-    ), $atts);
+        'accesstoken' => '',
+        'user' => isset($options[ 'sb_instagram_user' ]) ? $options[ 'sb_instagram_user' ] : false,
+	    ), $atts);
 
 
     /******************* VARS ********************/
 
-    //User ID
-    $sb_instagram_user_id = trim($atts['id']);
-
-	if ( empty( $sb_instagram_user_id ) || preg_match('([a-zA-Z])', $sb_instagram_user_id ) ) {
-		$sb_instagram_settings = get_option( 'sb_instagram_settings' );
-		$at_arr = isset( $sb_instagram_settings[ 'sb_instagram_at' ] ) ? explode( '.', trim( $sb_instagram_settings[ 'sb_instagram_at' ] ), 2) : array();
-		$sb_instagram_user_id = isset( $at_arr[0] ) ? $at_arr[0] : '';
-	}
+	$sb_instagram_user_id = is_array( $atts['id'] ) ? implode( ',', $atts['id'] ) : trim($atts['id'], " ,");
+	$sb_instagram_users = !empty($atts['user']) ? explode( ',', trim( $atts['user'] ) ) : false;
 
 	// Access Token
 	$at_front_string = '';
 	$at_middle_string = '';
 	$at_back_string = '';
 
-	if ( ! empty( $atts['accesstoken'] ) ) {
-		$tokens = explode(',', str_replace(' ', '', $atts['accesstoken'] ) );
-		$parts = explode('.', $atts['accesstoken'] );
+	//$db_access_token = isset( $options['sb_instagram_at'] ) ? trim( $options['sb_instagram_at'] ) : '';
+	$existing_shortcode_tokens = ! empty( $atts['accesstoken'] ) ? explode(',', str_replace(' ', '', $atts['accesstoken'] ) ) : '';
+	$existing_shortcode_tokens = apply_filters( 'sbi_access_tokens', $existing_shortcode_tokens );
+
+	$usable_tokens = array();
+	$all_valid_tokens = array();
+
+
+	if ( ! empty ( $existing_shortcode_tokens ) ) {
+		foreach ( $existing_shortcode_tokens as $existing_shortcode_token ) {
+			if ( ! empty( $existing_shortcode_token ) ) {
+				$usable_tokens[] =  $existing_shortcode_token;
+				$all_valid_tokens[] = $existing_shortcode_tokens;
+			}
+
+		}
+	}
+	if ( $sb_instagram_users !== false && ! empty ( $options[ 'connected_accounts' ] ) ) {
+		foreach ( $options[ 'connected_accounts' ] as $connected_account ) {
+			if ( in_array( $connected_account['username'], $sb_instagram_users ) ) {
+				$usable_tokens[] = sbi_get_parts( $connected_account['access_token'] );
+			}
+			if ( ! in_array( sbi_get_parts( $connected_account['access_token'] ), $all_valid_tokens ) && ! in_array( sbi_maybe_clean( $connected_account['access_token'] ), $all_valid_tokens ) ) {
+				$all_valid_tokens[] = sbi_get_parts( $connected_account['access_token'] );
+			}
+		}
+
+	}
+	if ( empty( $usable_tokens ) && ! empty( $options[ 'connected_accounts' ] ) ) {
+		$feed_id_array = is_array( $sb_instagram_user_id ) ? $sb_instagram_user_id : explode( ',', $sb_instagram_user_id );
+		if ( ! empty( $feed_id_array ) && ! empty( $feed_id_array[0] ) ) {
+			foreach ( $options[ 'connected_accounts' ] as $connected_account ) {
+				if ( isset( $connected_account['access_token'] ) && in_array( $connected_account['user_id'], $feed_id_array, true ) ) {
+					$usable_tokens[] = $connected_account['access_token'];
+				} elseif ( isset( $connected_account['access_token'] ) ) {
+					if ( ! in_array( sbi_get_parts( $connected_account['access_token'] ), $all_valid_tokens ) && ! in_array( sbi_maybe_clean( $connected_account['access_token'] ), $all_valid_tokens ) ) {
+						$all_valid_tokens[] = sbi_get_parts( $connected_account['access_token'] );
+					}
+				}
+			}
+		} else {
+			foreach ( $options[ 'connected_accounts' ] as $connected_account ) {
+				if ( empty( $usable_tokens ) ) {
+					$usable_tokens        = array( $connected_account['access_token'] );
+					$user_for_token       = explode( '.', $connected_account['access_token'] );
+					$sb_instagram_user_id = $user_for_token[0];
+				}
+
+				if ( ! in_array( sbi_get_parts( $connected_account['access_token'] ), $all_valid_tokens ) && ! in_array( sbi_maybe_clean( $connected_account['access_token'] ), $all_valid_tokens ) ) {
+					$all_valid_tokens[] = sbi_get_parts( $connected_account['access_token'] );
+				}
+			}
+		}
+
+	} elseif ( empty ( $all_valid_tokens ) ) {
+
+		$db_access_tokens = isset( $options['sb_instagram_at'] ) ? explode( ',', trim( $options['sb_instagram_at'] ) ) : array();
+		foreach ( $db_access_tokens as $db_access_token ) {
+			if ( ! empty( $db_access_token ) ) {
+				$usable_tokens[]    = sbi_get_parts( $db_access_token );
+				$all_valid_tokens[] = sbi_get_parts( $db_access_token );
+			}
+		}
+	}
+
+	$the_token_array = ! empty( $usable_tokens ) ? $usable_tokens : $all_valid_tokens;
+	if ( empty( $the_token_array ) && ! empty( $all_valid_tokens ) && $sb_instagram_type !== 'user' ) {
+		$the_token_array = $all_valid_tokens;
+	}
+
+	if ( ! empty( $the_token_array ) ) {
 		$at_front_string = '&quot;feedID&quot;: &quot;';
 		$at_middle_string = '&quot;mid&quot;: &quot;';
 		$at_back_string = '&quot;callback&quot;: &quot;';
 		$sb_instagram_user_id = '';
-		foreach ( $tokens as $token ) {
+		foreach ( $usable_tokens as $token ) {
 			$parts = explode('.', $token );
 			$sb_instagram_user_id .= $parts[0].',';
 			$at_front_string .= $parts[0].',';
@@ -112,9 +175,7 @@ function display_instagram($atts, $content = null) {
 		$at_front_string = substr( $at_front_string, 0, -1 ) . '&quot;,';
 		$at_middle_string = substr( $at_middle_string, 0, -1 ) . '&quot;,';
 		$at_back_string = substr( $at_back_string, 0, -1 ) . '&quot;,';
-		$access_token = $tokens[0];
-	} else {
-		$access_token = isset( $options['sb_instagram_at'] ) ? trim( $options['sb_instagram_at'] ) : '';
+		$access_token = $the_token_array[0];
 	}
 
 	//Container styles

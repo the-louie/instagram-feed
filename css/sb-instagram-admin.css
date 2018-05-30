@@ -573,3 +573,213 @@
     -o-transition: all 0.1s ease-in-out;
     transition: all 0.1s ease-in-out;
 }
+/* Connected Accounts */
+#sbi_admin .sbi_connected_account {
+	position: relative;
+	box-sizing: border-box;
+	padding: 10px;
+	border-radius: 5px;
+	background: #fff;
+	margin-bottom: 5px;
+	overflow: hidden;
+	clear: both;
+	border: 1px solid #ddd;
+}
+#sbi_admin .sbi_ca_username {
+	line-height: 38px;
+	margin-left: 15px;
+	float: left;
+	font-size: 18px;
+}
+#sbi_admin .sbi_ca_actions {
+	display: inline-block;
+	margin-left: 10px;
+}
+#sbi_admin .sbi_ca_actions .fa{
+	margin-right: 5px;
+}
+#sbi_admin .sbi_ca_actions a.button-primary,
+#sbi_admin .sbi_ca_actions a.button-secondary,
+#sbi_admin .sbi_ca_accesstoken a.sbi_ca_token_shortcode {
+	font-size: 12px;
+	padding: 6px;
+	height: auto;
+	line-height: 1;
+	margin: 7px 5px 0 0;
+	vertical-align: top;
+}
+#sbi_admin .sbi_ca_at_is_valid {
+	margin-top: 10px;
+	display: none;
+}
+
+@-webkit-keyframes sbi_flash {
+	0% {
+		background-color: #cae2a5;
+		opacity:1;
+		border: 1px solid #b2ce88;
+	}
+	100% {
+		background-color: #fff;
+	}
+}
+#sbi_admin .sbi_account_updated{
+	border: 1px solid #ddd;
+	background: #fff;
+
+	-webkit-animation-name: sbi_flash;
+	-webkit-animation-duration: 700ms;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-timing-function: linear;
+	-moz-animation-name: sbi_flash;
+	-moz-animation-duration: 700ms;
+	-moz-animation-iteration-count: 1;
+	-moz-animation-timing-function: linear;
+}
+
+#sbi_admin .sbi_account_active{
+	border: 1px solid #b2ce88;
+	background: #ecf2e3;
+}
+
+#sbi_admin .sbi_ca_alert {
+	display: none;
+}
+#sbi_admin .sbi_account_invalid .sbi_ca_alert {
+	display: block;
+}
+#sbi_admin .sbi_ca_avatar{
+	float: left;
+	width: 40px;
+	height: 40px;
+	border-radius: 5px;
+}
+#sbi_admin .sbi_ca_accesstoken{
+	display: none;
+	width: 100%;
+	float: left;
+	clear: both;
+	margin-top: 10px;
+}
+#sbi_admin .sbi_ca_token_label{
+	display: inline-block;
+	position: relative;
+	background: #f9f9f9;
+	color: #555;
+	padding: 3px 5px;
+	font-size: 12px;
+	border: 1px solid #d6d6d6;
+	height: 16px;
+	line-height: 15px;
+	border-radius: 4px 0 0 4px;
+}
+#sbi_admin .sbi_ca_token{
+	position: relative;
+	top: 1px;
+	padding: 3px 10px;
+	border: 1px solid #d6d6d6;
+	border-left: none;
+	font-size: 12px;
+	border-radius: 0 4px 4px 0;
+	background: rgba(255,255,255,0.8);
+	width: 510px;
+	display: inline-block;
+	margin-left: 0;
+}
+#sbi_admin .sbi_ca_accesstoken a.sbi_ca_token_shortcode{
+	margin-top: 0;
+	margin: 8px;
+	padding: 6px;
+	height: auto;
+	line-height: 1;
+}
+
+#sbi_admin .sbi_delete_account{
+	position: absolute;
+	right: 10px;
+	top: 10px;
+
+	padding: 5px 10px;
+	background: rgba(0,0,0,0.05);
+	color: #666;
+	border-radius: 50px;
+	text-decoration: none;
+	font-size: 12px;
+}
+#sbi_admin .sbi_delete_account:hover,
+#sbi_admin .sbi_delete_account:focus{
+	background: #333;
+	color: #ddd;
+}
+#sbi_admin .sbi_delete_account .fa{
+	margin-right: 5px;
+}
+
+.sbi_connected_accounts_wrap{
+	vertical-align: top;
+}
+#sbi_admin .sbi_no_accounts{
+	display: inline-block;
+	padding: 6px 12px;
+	border-radius: 8px;
+	background: rgba(255,255,255,0.8);
+	margin-bottom: 5px;
+}
+#sbi_admin #sbi_manual_submit:active{
+	vertical-align: unset;
+}
+#sbi_admin .sbi_manually_connect_wrap{
+	padding-top: 5px;
+}
+#sbi_admin .sbi_user_feed_account_wrap:first-child{
+	padding-top: 5px;
+}
+#sbi_admin .sbi_user_feed_account_wrap:last-child{
+	padding-bottom: 15px;
+}
+#sbi_admin .sbi_user_feed_account_wrap{
+	padding-bottom: 5px;
+}
+#sbi_admin .sbi_user_feed_account_wrap span{
+	font-size: 13px;
+}
+/*#sbi_admin .sbi_remove_from_user_feed{
+	background: #71ad26;
+    color: #fff;
+    border: none;
+    box-shadow: none;
+}*/
+#sbi_admin .sbi_ca_info{
+	overflow: hidden;
+}
+#sbi_admin .sbi_ca_show_token{
+	display: inline-block;
+	padding: 10px 5px;
+	margin: 0;
+	font-size: 12px;
+	vertical-align: top;
+}
+#sbi_admin .sbi_ca_shortcode{
+	display: none;
+	padding: 0;
+	width: 100%;
+	float: left;
+	clear: both;
+	margin: 10px 0 0 0;
+}
+#sbi_admin .sbi_ca_shortcode p{
+	padding-bottom: 10px;
+	font-size: 13px;
+}
+#sbi_admin .sbi_ca_shortcode code{
+	margin-top: 5px;
+	display: inline-block;
+}
+#sbi_admin .sbi_user_feed_ids_wrap .sbi_ca_avatar{
+	width: 20px;
+	height: 20px;
+	position: relative;
+	top: 5px;
+	margin-right: 8px;
+	border-radius: 4px;
+}
