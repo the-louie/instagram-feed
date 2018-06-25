@@ -2064,7 +2064,30 @@ function sbi_test_token() {
                 }
             }
             update_option( 'sb_expired_tokens', $new_expired );
-
+//Delete all SBI transients
+			global $wpdb;
+			$table_name = $wpdb->prefix . "options";
+			$wpdb->query( "
+                    DELETE
+                    FROM $table_name
+                    WHERE `option_name` LIKE ('%\_transient\_sbi\_%')
+                    " );
+			$wpdb->query( "
+                    DELETE
+                    FROM $table_name
+                    WHERE `option_name` LIKE ('%\_transient\_timeout\_sbi\_%')
+                    " );
+			$wpdb->query( "
+			        DELETE
+			        FROM $table_name
+			        WHERE `option_name` LIKE ('%\_transient\_&sbi\_%')
+			        " );
+			$wpdb->query( "
+			        DELETE
+			        FROM $table_name
+			        WHERE `option_name` LIKE ('%\_transient\_timeout\_&sbi\_%')
+			        " );
+			
 			echo json_encode( $connected_accounts[ $new_user_id ] );
 		} else {
 			echo 'A successful connection could not be made. Please make sure your Access Token is valid.';
