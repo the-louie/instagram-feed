@@ -23,7 +23,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-define( 'SBIVER', '1.8.3' );
+define( 'SBIVER', '1.8.4' );
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -151,7 +151,7 @@ function display_instagram($atts, $content = null) {
 	}
 
 	$the_token_array = ! empty( $usable_tokens ) ? $usable_tokens : $all_valid_tokens;
-	if ( empty( $the_token_array ) && ! empty( $all_valid_tokens ) && $sb_instagram_type !== 'user' ) {
+	if ( empty( $the_token_array ) && ! empty( $all_valid_tokens ) ) {
 		$the_token_array = $all_valid_tokens;
 	}
 

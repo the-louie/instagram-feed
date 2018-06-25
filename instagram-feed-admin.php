@@ -273,6 +273,9 @@ function sb_instagram_settings_page() {
 	            $options['sbi_font_method'] = $sbi_font_method;
 	            $options[ 'sb_instagram_disable_awesome' ] = $sb_instagram_disable_awesome;
 
+	            //clear expired tokens
+	            delete_option( 'sb_expired_tokens' );
+
 	            //Delete all SBI transients
 	            global $wpdb;
 	            $table_name = $wpdb->prefix . "options";
@@ -1767,7 +1770,12 @@ if ( $url !== 'no_at' ) {
 } else {
     echo 'No Access Token';
 }?>
-        </textarea>
+
+## Invalid Tokens: ##
+<?php
+var_dump( get_option( 'sb_expired_tokens' ) );
+?>
+</textarea>
 
 <?php 
 } //End Support tab 
@@ -2034,6 +2042,17 @@ function sbi_test_token() {
 
 			update_option( 'sb_instagram_settings', $options );
 
+			$expired = get_option( 'sb_expired_tokens', array() );
+			$new_expired = array();
+			foreach ( $expired as $expired_token ) {
+                $split_token = explode( '.', $expired_token );
+				$old_user_id = isset( $split_token[0] ) ? $split_token[0] : '';
+				if ( $old_user_id !== $new_user_id ) {
+					$new_expired[] = $expired_token;
+                }
+            }
+            update_option( 'sb_expired_tokens', $new_expired );
+
 			echo json_encode( $connected_accounts[ $new_user_id ] );
 		} else {
 			echo 'A successful connection could not be made. Please make sure your Access Token is valid.';
@@ -2133,6 +2152,7 @@ function sbi_get_connected_accounts_data( $sb_instagram_at ) {
 		$return['user_ids'] = $user_ids;
 
 		update_option( 'sb_instagram_settings', $sbi_options );
+		delete_option( 'sb_expired_tokens' );
 	}
 
 	return $return;
