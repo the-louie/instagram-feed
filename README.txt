@@ -315,9 +315,9 @@ We understand that sometimes you need help, have issues or just have questions. 
 * Tweak: Disabled auto load in the database for backup caches
 
 = 1.8.3 =
-* Fix: SVG icons causing display problems in IE 11
-* Fix: Removed code and support for using user names in user ID settings. Will now default to the user id attached to the access token
-* Fix: Backup feed not always being used when access tokens expire
+* Fix: SVG icons caused some display problems in IE 11
+* Fix: Removed support for using usernames in the User ID setting due to recent API changes. Will now default to the User ID attached to the Access Token.
+* Fix: Backup feed not always being used when Access Tokens expire
 * Fix: Access Tokens may have been incorrectly saved as invalid under certain circumstances
 
 = 1.8.2 =
