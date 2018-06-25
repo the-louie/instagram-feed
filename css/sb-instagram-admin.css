@@ -176,6 +176,7 @@
 #sbi_admin .sbi_row{
 	display: block;
 	width: 100%;
+	clear: left;
 }
 #sbi_admin .sbi_pro,
 #sbi_admin .sbi_pro label{

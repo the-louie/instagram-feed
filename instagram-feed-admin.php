@@ -497,43 +497,40 @@ function sb_instagram_settings_page() {
                             
                             <div class="sbi_pro sbi_row">
                                 <div class="sbi_col sbi_one">
-
-                                <input disabled type="radio" name="sb_instagram_type" id="sb_instagram_type_hashtag" value="hashtag" <?php if($sb_instagram_type == "hashtag") echo "checked"; ?> />
-                                <label class="sbi_radio_label" for="sb_instagram_type_hashtag"><?php _e( 'Hashtag:', 'instagram-feed' ); ?></label>
+                                    <input disabled type="radio" name="sb_instagram_type" id="sb_instagram_type_hashtag" value="hashtag" <?php if($sb_instagram_type == "hashtag") echo "checked"; ?> />
+                                    <label class="sbi_radio_label" for="sb_instagram_type_hashtag"><?php _e( 'Hashtag:', 'instagram-feed' ); ?></label>
                                 </div>
                                 <div class="sbi_col sbi_two">
-                                        <input readonly type="text" size="25" />
-                                &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed' ); ?></a><span class="sbi_note"> - <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to show posts by Hashtag</a></span>
-                                <p class="sbi_tooltip"><?php _e( 'Display posts from a specific hashtag instead of from a user', 'instagram-feed' ); ?></p>
-                                    </div>
+                                    <input readonly type="text" size="25" />
+                            &nbsp;      <a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed' ); ?></a><span class="sbi_note"> - <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to show posts by Hashtag</a></span>
+                                    <p class="sbi_tooltip"><?php _e( 'Display posts from a specific hashtag instead of from a user', 'instagram-feed' ); ?></p>
                                 </div>
+                            </div>
 
                             <div class="sbi_pro sbi_row">
                                 <div class="sbi_col sbi_one">
-
-                                <input disabled type="radio" />
-                                <label class="sbi_radio_label"><?php _e( 'Single:', 'instagram-feed' ); ?></label>
+                                    <label class="sbi_radio_label"><?php _e( 'Single:', 'instagram-feed' ); ?></label>
+                                    <input disabled type="radio" />
                                 </div>
                                 <div class="sbi_col sbi_two">
 
                                     <input readonly type="text" size="25" />
                                     &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed' ); ?></a><span class="sbi_note"> - <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to show single posts</a></span>
-                                <p class="sbi_tooltip"><?php _e("Display a feed comprised of specific single posts."); ?></p>
-                                    </div>
+                                    <p class="sbi_tooltip"><?php _e("Display a feed comprised of specific single posts."); ?></p>
                                 </div>
+                            </div>
 
                             <div class="sbi_pro sbi_row">
-                                                                <div class="sbi_col sbi_one">
-
-                                <input disabled type="radio" name="sb_instagram_type" id="sb_instagram_type_location" value="location" <?php if($sb_instagram_type == "location") echo "checked"; ?> />
-                                <label class="sbi_radio_label" for="sb_instagram_type_location"><?php _e( 'Location:', 'instagram-feed' ); ?></label>
-                                                                </div>
+                                <div class="sbi_col sbi_one">
+                                    <input disabled type="radio" name="sb_instagram_type" id="sb_instagram_type_location" value="location" <?php if($sb_instagram_type == "location") echo "checked"; ?> />
+                                    <label class="sbi_radio_label" for="sb_instagram_type_location"><?php _e( 'Location:', 'instagram-feed' ); ?></label>
+                                </div>
                                 <div class="sbi_col sbi_two">
-                                                                        <input readonly type="text" size="25" />
+                                        <input readonly type="text" size="25" />
                                 &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed' ); ?></a><span class="sbi_note"> - <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to show posts by Location</a></span>
                                 <p class="sbi_tooltip"><?php _e( 'Display posts from an Instagram location ID or location coordinates.', 'instagram-feed' ); ?></p>
-                                                                    </div>
-                                                                </div>
+                                </div>
+                            </div>
                         </td>
                     </tr>
 
@@ -2087,7 +2084,7 @@ function sbi_test_token() {
 			        FROM $table_name
 			        WHERE `option_name` LIKE ('%\_transient\_timeout\_&sbi\_%')
 			        " );
-			
+
 			echo json_encode( $connected_accounts[ $new_user_id ] );
 		} else {
 			echo 'A successful connection could not be made. Please make sure your Access Token is valid.';
