@@ -367,15 +367,7 @@ function sb_instagram_settings_page() {
                     <input name="sb_instagram_at" id="sb_instagram_at" type="hidden" value="<?php echo esc_attr( $sb_instagram_at ); ?>" size="80" maxlength="100" placeholder="Click button above to get your Access Token" />
 
                     <?php
-                    // admin reset
-                    /*
-										$resettable = get_option('sb_instagram_settings');
-										$resettable[ 'sb_instagram_user_id' ] = '2227436581';
-										$resettable[ 'sb_instagram_at' ] = '2227436581.M2E4MWE5Zg==.MjFjNzdkY2NkZGIy.NGJiYzg5NDg5NTBlNjY0NzAwZmQ=,6310700161.M2E4MWE5Zg==.MjMzZDgwZmZiZGE2.NGFkZDhhNjQ1MmU3YTRiNTc4MTM=';
-										unset($resettable['connected_accounts'] );
-										update_option( 'sb_instagram_settings', $resettable );
-										$connected_accounts = array();
-					*/
+
                     $returned_data = sbi_get_connected_accounts_data( $sb_instagram_at );
                     $connected_accounts = $returned_data['connected_accounts'];
                     $user_feeds_returned = isset(  $returned_data['user_ids'] ) ? $returned_data['user_ids'] : false;
@@ -409,22 +401,23 @@ function sb_instagram_settings_page() {
                                         <div class="sbi_ca_info">
 
                                             <div class="sbi_ca_delete">
-                                                <a href="JavaScript:void(0);" class="sbi_delete_account"><i class="fa fa-times"></i><?php _e( 'Remove', 'instagram-feed' ); ?></a>
+                                                <a href="JavaScript:void(0);" class="sbi_delete_account"><i class="fa fa-times"></i><span class="sbi_remove_text"><?php _e( 'Remove', 'instagram-feed' ); ?></span></a>
                                             </div>
 
-						                    <?php echo $profile_picture; ?>
-
                                             <div class="sbi_ca_username">
+							                    <?php echo $profile_picture; ?>
                                                 <strong><?php echo $username; ?></strong>
-                                                <div class="sbi_ca_actions">
-								                    <?php if ( ! $in_user_feed ) : ?>
-                                                        <a href="JavaScript:void(0);" class="sbi_use_in_user_feed button-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i><?php _e( 'Add to Primary Feed', 'instagram-feed' ); ?></a>
-								                    <?php else : ?>
-                                                        <a href="JavaScript:void(0);" class="sbi_remove_from_user_feed button-primary"><i class="fa fa-minus-circle" aria-hidden="true"></i><?php _e( 'Remove from Primary Feed', 'instagram-feed' ); ?></a>
-								                    <?php endif; ?>
-                                                    <a class="sbi_ca_token_shortcode button-secondary" href="JavaScript:void(0);"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i><?php _e( 'Add to another Feed', 'instagram-feed' ); ?></a>
-                                                    <p class="sbi_ca_show_token"><input type="checkbox" id="sbi_ca_show_token_<?php esc_attr_e( $account['user_id'] ); ?>" /><label for="sbi_ca_show_token_<?php esc_attr_e( $account['user_id'] ); ?>">Show Access Token</label></p>
-                                                </div>
+                                            </div>
+
+                                            <div class="sbi_ca_actions">
+							                    <?php if ( ! $in_user_feed ) : ?>
+                                                    <a href="JavaScript:void(0);" class="sbi_use_in_user_feed button-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i><?php _e( 'Add to Primary Feed', 'instagram-feed' ); ?></a>
+							                    <?php else : ?>
+                                                    <a href="JavaScript:void(0);" class="sbi_remove_from_user_feed button-primary"><i class="fa fa-minus-circle" aria-hidden="true"></i><?php _e( 'Remove from Primary Feed', 'instagram-feed' ); ?></a>
+							                    <?php endif; ?>
+                                                <a class="sbi_ca_token_shortcode button-secondary" href="JavaScript:void(0);"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i><?php _e( 'Add to another Feed', 'instagram-feed' ); ?></a>
+                                                <p class="sbi_ca_show_token"><input type="checkbox" id="sbi_ca_show_token_<?php esc_attr_e( $account['user_id'] ); ?>" /><label for="sbi_ca_show_token_<?php esc_attr_e( $account['user_id'] ); ?>">Show Access Token</label></p>
+
                                             </div>
 
                                             <div class="sbi_ca_shortcode">
@@ -441,7 +434,7 @@ function sb_instagram_settings_page() {
 								                    <?php if ( !empty( $account['username'] ) ) : ?>
                                                         <code>[instagram-feed user="<?php echo $account['username']; ?>, a_second_user, a_third_user"]</code>
 								                    <?php else : ?>
-                                                        <code>[instagram-feed accesstoken="<?php echo $account['access_token']; ?>, aanother_access_token"]</code>
+                                                        <code>[instagram-feed accesstoken="<?php echo $account['access_token']; ?>, another_access_token"]</code>
 								                    <?php endif; ?>
 
                                                 <p>Click on the <a href="?page=sb-instagram-feed&tab=display" target="_blank">Display Your Feed</a> tab to learn more about shortcodes</p>
@@ -470,58 +463,77 @@ function sb_instagram_settings_page() {
                             Eg: type=user id=12986477
                         </code></th>
                         <td>
-                            <div class="sbi_col sbi_one">
-                                <input type="radio" name="sb_instagram_type" id="sb_instagram_type_user" value="user" <?php if($sb_instagram_type == "user") echo "checked"; ?> />
-                                <label class="sbi_radio_label" for="sb_instagram_type_user"><?php _e( 'User Account:', 'instagram-feed' ); ?></label>
-                            </div>
-                            <div class="sbi_col sbi_two">
-                                <div class="sbi_user_feed_ids_wrap">
-			                        <?php foreach ( $user_feed_ids as $feed_id ) : if ( $feed_id !== '' ) :?>
-                                        <div id="sbi_user_feed_id_<?php echo $feed_id; ?>" class="sbi_user_feed_account_wrap">
+                            <div class="sbi_row">
+                                <div class="sbi_col sbi_one">
+                                    <input type="radio" name="sb_instagram_type" id="sb_instagram_type_user" value="user" <?php if($sb_instagram_type == "user") echo "checked"; ?> />
+                                    <label class="sbi_radio_label" for="sb_instagram_type_user"><?php _e( 'User Account:', 'instagram-feed' ); ?></label>
+                                </div>
+                                <div class="sbi_col sbi_two">
+                                    <div class="sbi_user_feed_ids_wrap">
+				                        <?php foreach ( $user_feed_ids as $feed_id ) : if ( $feed_id !== '' ) :?>
+                                            <div id="sbi_user_feed_id_<?php echo $feed_id; ?>" class="sbi_user_feed_account_wrap">
 
-					                        <?php if ( isset( $connected_accounts[ $feed_id ] ) && ! empty( $connected_accounts[ $feed_id ]['username'] ) ) : ?>
-                                                <strong><?php echo $connected_accounts[ $feed_id ]['username']; ?></strong> <span>(<?php echo $feed_id; ?>)</span>
-                                                <input name="sb_instagram_user_id[]" id="sb_instagram_user_id" type="hidden" value="<?php esc_attr_e( $feed_id ); ?>" />
-					                        <?php elseif ( isset( $connected_accounts[ $feed_id ] ) && ! empty( $connected_accounts[ $feed_id ]['access_token'] ) ) : ?>
-                                                <strong><?php echo $feed_id; ?></strong>
-                                                <input name="sb_instagram_user_id[]" id="sb_instagram_user_id" type="hidden" value="<?php esc_attr_e( $feed_id ); ?>" />
-					                        <?php endif; ?>
+						                        <?php if ( isset( $connected_accounts[ $feed_id ] ) && ! empty( $connected_accounts[ $feed_id ]['username'] ) ) : ?>
+                                                    <strong><?php echo $connected_accounts[ $feed_id ]['username']; ?></strong> <span>(<?php echo $feed_id; ?>)</span>
+                                                    <input name="sb_instagram_user_id[]" id="sb_instagram_user_id" type="hidden" value="<?php esc_attr_e( $feed_id ); ?>" />
+						                        <?php elseif ( isset( $connected_accounts[ $feed_id ] ) && ! empty( $connected_accounts[ $feed_id ]['access_token'] ) ) : ?>
+                                                    <strong><?php echo $feed_id; ?></strong>
+                                                    <input name="sb_instagram_user_id[]" id="sb_instagram_user_id" type="hidden" value="<?php esc_attr_e( $feed_id ); ?>" />
+						                        <?php endif; ?>
 
-                                        </div>
-			                        <?php endif; endforeach; ?>
+                                            </div>
+				                        <?php endif; endforeach; ?>
+                                    </div>
+
+			                        <?php if ( empty( $user_feed_ids ) ) : ?>
+                                        <p class="sbi_no_accounts" style="margin-top: -3px; margin-right: 10px;">Connect a user account above</p>
+			                        <?php endif; ?>
+
+                                    <a class="sbi_tooltip_link" href="JavaScript:void(0);" style="margin: 0 0 10px 0; display: inline-block; height: 19px;"><?php _e("How to display User feeds"); ?></a>
+                                    <div class="sbi_tooltip"><?php _e("<p>In order to display posts from a User account, first connect an account using the button above.</p><p style='padding-top:8px;'><b>Displaying Posts from Other Instagram Accounts</b><br />Due to recent changes in the Instagram API it is no longer possible to display photos from other Instagram accounts which you do not have access to. You can only display the user feed of an account which you connect above. You can connect as many account as you like by logging in using the button above, or manually copy/pasting an Access Token by selecting the 'Manually Connect an Account' option.</p><p style='padding-top:10px;'><b>Multiple Acounts</b><br />It is only possible to display feeds from Instagram accounts which you own. In order to display feeds from multiple accounts, first connect them above and then use the buttons to add the account either to your primary feed or to another feed on your site.</p>", 'instagram-feed'); ?></div><br />
                                 </div>
 
-		                        <?php if ( empty( $user_feed_ids ) ) : ?>
-                                    <p class="sbi_no_accounts" style="margin-top: -3px; margin-right: 10px;">Connect a user account above</p>
-		                        <?php endif; ?>
-
-                                <a class="sbi_tooltip_link" href="JavaScript:void(0);" style="margin: 0 0 10px 0; display: inline-block; height: 19px;"><?php _e("How to display User feeds"); ?></a>
-                                <div class="sbi_tooltip"><?php _e("<p>In order to display posts from a User account, first connect an account using the button above.</p><p style='padding-top:8px;'><b>Displaying Posts from Other Instagram Accounts</b><br />Due to recent changes in the Instagram API it is no longer possible to display photos from other Instagram accounts which you do not have access to. You can only display the user feed of an account which you connect above. You can connect as many account as you like by logging in using the button above, or manually copy/pasting an Access Token by selecting the 'Manually Connect an Account' option.</p><p style='padding-top:10px;'><b>Multiple Acounts</b><br />It is only possible to display feeds from Instagram accounts which you own. In order to display feeds from multiple accounts, first connect them above and then use the buttons to add the account either to your primary feed or to another feed on your site.</p>", 'instagram-feed'); ?></div><br />
                             </div>
                             
-                            <span class="sbi_pro sbi_row">
+                            <div class="sbi_pro sbi_row">
+                                <div class="sbi_col sbi_one">
+
                                 <input disabled type="radio" name="sb_instagram_type" id="sb_instagram_type_hashtag" value="hashtag" <?php if($sb_instagram_type == "hashtag") echo "checked"; ?> />
                                 <label class="sbi_radio_label" for="sb_instagram_type_hashtag"><?php _e( 'Hashtag:', 'instagram-feed' ); ?></label>
-                                <input readonly type="text" size="25" />
+                                </div>
+                                <div class="sbi_col sbi_two">
+                                        <input readonly type="text" size="25" />
                                 &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed' ); ?></a><span class="sbi_note"> - <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to show posts by Hashtag</a></span>
                                 <p class="sbi_tooltip"><?php _e( 'Display posts from a specific hashtag instead of from a user', 'instagram-feed' ); ?></p>
-                            </span>
+                                    </div>
+                                </div>
 
                             <div class="sbi_pro sbi_row">
+                                <div class="sbi_col sbi_one">
+
                                 <input disabled type="radio" />
                                 <label class="sbi_radio_label"><?php _e( 'Single:', 'instagram-feed' ); ?></label>
-                                <input readonly type="text" size="25" />
+                                </div>
+                                <div class="sbi_col sbi_two">
+
+                                    <input readonly type="text" size="25" />
                                     &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed' ); ?></a><span class="sbi_note"> - <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to show single posts</a></span>
                                 <p class="sbi_tooltip"><?php _e("Display a feed comprised of specific single posts."); ?></p>
-                            </div>
+                                    </div>
+                                </div>
 
-                            <span class="sbi_pro sbi_row">
+                            <div class="sbi_pro sbi_row">
+                                                                <div class="sbi_col sbi_one">
+
                                 <input disabled type="radio" name="sb_instagram_type" id="sb_instagram_type_location" value="location" <?php if($sb_instagram_type == "location") echo "checked"; ?> />
                                 <label class="sbi_radio_label" for="sb_instagram_type_location"><?php _e( 'Location:', 'instagram-feed' ); ?></label>
-                                <input readonly type="text" size="25" />
+                                                                </div>
+                                <div class="sbi_col sbi_two">
+                                                                        <input readonly type="text" size="25" />
                                 &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed' ); ?></a><span class="sbi_note"> - <a href="https://smashballoon.com/instagram-feed/" target="_blank">Upgrade to Pro to show posts by Location</a></span>
                                 <p class="sbi_tooltip"><?php _e( 'Display posts from an Instagram location ID or location coordinates.', 'instagram-feed' ); ?></p>
-                            </span>                           
+                                                                    </div>
+                                                                </div>
                         </td>
                     </tr>
 

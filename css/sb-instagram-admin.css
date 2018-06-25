@@ -577,13 +577,20 @@
 #sbi_admin .sbi_connected_account {
 	position: relative;
 	box-sizing: border-box;
-	padding: 10px;
+	padding: 10px 35px 10px 10px;;
 	border-radius: 5px;
 	background: #fff;
 	margin-bottom: 5px;
 	overflow: hidden;
 	clear: both;
 	border: 1px solid #ddd;
+}
+#sbi_admin .sbi_connected_account .sbi_ca_avatar{
+	margin-right: 15px;
+}
+#sbi_admin .sbi_connected_account .sbi_ca_username {
+	margin-left: 0;
+    margin-right: 15px;
 }
 #sbi_admin .sbi_ca_username {
 	line-height: 38px;
@@ -597,6 +604,9 @@
 }
 #sbi_admin .sbi_ca_actions .fa{
 	margin-right: 5px;
+}
+#sbi_admin .sbi_delete_account .sbi_remove_text{
+	margin-left: 5px;
 }
 #sbi_admin .sbi_ca_actions a.button-primary,
 #sbi_admin .sbi_ca_actions a.button-secondary,
@@ -754,7 +764,7 @@
 }
 #sbi_admin .sbi_ca_show_token{
 	display: inline-block;
-	padding: 10px 5px;
+	padding: 10px 5px 0px 5px;
 	margin: 0;
 	font-size: 12px;
 	vertical-align: top;
@@ -782,6 +792,46 @@
 	top: 5px;
 	margin-right: 8px;
 	border-radius: 4px;
+}
+
+#sbi_admin .sbi_col {
+	float: left;
+}
+#sbi_admin .sbi_col.sbi_one{
+	width: 118px;
+}
+#sbi_admin #sb_instagram_coordinates_options .sbi_col.sbi_one{
+	width: 70px;
+}
+#sbi_admin .sbi_col.sbi_two{
+	/*width: 600px;*/
+	width: 75%;
+}
+#sbi_admin .sbi_row input[type=radio]{
+	margin: 5px 2px 0 0;
+}
+
+
+@media all and (max-width: 1200px){
+	#sbi_admin .sbi_delete_account .sbi_remove_text{
+		display: none;
+	}
+	#sbi_admin .sbi_ca_token_label{
+		display: none;
+	}
+	#sbi_admin .sbi_ca_token{
+		border-left: 1px solid #d6d6d6;
+		border-radius: 4px;
+	}
+}
+@media all and (max-width: 800px){
+	#sbi_admin .sbi_col.sbi_one {
+		width: 25%;
+		margin-right: 5%;
+	}
+	#sbi_admin .sbi_col.sbi_two{
+		width: 70%;
+	}
 }
 
 /* Config info */
