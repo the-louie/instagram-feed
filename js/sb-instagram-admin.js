@@ -108,18 +108,18 @@ jQuery(document).ready(function($) {
                     '<div class="sbi_ca_info">'+
 
                     '<div class="sbi_ca_delete">'+
-                    '<a href="JavaScript:void(0);" class="sbi_delete_account"><i class="fa fa-times"></i>Remove</a>'+
+                        '<a href="JavaScript:void(0);" class="sbi_delete_account"><i class="fa fa-times"></i><span class="sbi_remove_text">Remove</span></a>'+
                     '</div>'+
-
-                    '<img class="sbi_ca_avatar" src="'+savedToken.profile_picture+'" />'+
 
                     '<div class="sbi_ca_username">'+
-                    '<strong>'+savedToken.username+'</strong>'+
-                    '<div class="sbi_ca_actions">'+
-                    removeOrSaveHTML +
-                    '<a class="sbi_ca_token_shortcode button-secondary" href="JavaScript:void(0);"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i>Add to another Feed</a>'+
-                    '<p class="sbi_ca_show_token"><input type="checkbox" id="sbi_ca_show_token_'+savedToken.user_id+'" /><label for="sbi_ca_show_token_'+savedToken.user_id+'">Show Access Token</label></p>'+
+                        '<img class="sbi_ca_avatar" src="'+savedToken.profile_picture+'" />'+
+                        '<strong>'+savedToken.username+'</strong>'+
                     '</div>'+
+
+                    '<div class="sbi_ca_actions">'+
+                        removeOrSaveHTML +
+                        '<a class="sbi_ca_token_shortcode button-secondary" href="JavaScript:void(0);"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i>Add to another Feed</a>'+
+                        '<p class="sbi_ca_show_token"><input type="checkbox" id="sbi_ca_show_token_'+savedToken.user_id+'" /><label for="sbi_ca_show_token_'+savedToken.user_id+'">Show Access Token</label></p>'+
                     '</div>'+
 
                     '<div class="sbi_ca_shortcode">'+
@@ -185,14 +185,14 @@ jQuery(document).ready(function($) {
         }
     });
     var $body = $('body');
-    $body.on('click', '.sbi_remove_from_user_feed, .sbi_use_in_user_feed, .sbi_test_token, .sbi_delete_account, .sbi_ca_token_shortcode', function (event) {
+    $body.on('click', '.sbi_remove_from_user_feed, .sbi_use_in_user_feed, .sbi_test_token, .sbi_delete_account *, .sbi_ca_token_shortcode', function (event) {
         event.preventDefault();
         var $clicked = $(event.target),
             accessToken = $clicked.closest('.sbi_connected_account').attr('data-accesstoken'),
             action = false,
             atParts = accessToken.split('.'),
             username = $clicked.closest('.sbi_connected_account').attr('data-username');
-        console.log(accessToken);
+
         if ($clicked.hasClass('sbi_remove_from_user_feed')) {
             $clicked.removeClass('sbi_remove_from_user_feed');
             $clicked.addClass('sbi_use_in_user_feed');
@@ -215,7 +215,7 @@ jQuery(document).ready(function($) {
                 '<input type="hidden" name="sb_instagram_user_id[]" value="'+atParts[0]+'">' +
                 '</div>'
             );
-        } else if ($clicked.hasClass('sbi_delete_account')) {
+        } else if ($clicked.parent().hasClass('sbi_delete_account')) {
             if (window.confirm("Delete this connected account?")) {
                 action = 'sbi_delete_account';
                 $('#sbi_user_feed_id_' + atParts[0] + ',#sbi_connected_account_' + atParts[0]).remove();
@@ -238,7 +238,6 @@ jQuery(document).ready(function($) {
     });
 
     $body.on('change', '.sbi_ca_show_token input[type=checkbox]', function(event) {
-        console.log('change');
         jQuery(this).closest('.sbi_ca_info').find('.sbi_ca_accesstoken').slideToggle(200);
     });
 
