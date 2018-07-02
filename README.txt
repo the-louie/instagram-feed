@@ -313,6 +313,7 @@ We understand that sometimes you need help, have issues or just have questions. 
 = 1.9 =
 * New: Retrieving Access Tokens and connecting multiple Instagram accounts is now easier using our improved interface for managing account information. While on the Configure tab, click on the big blue button to connect an account, or use the "Manually Connect an Account" option to connect one using an existing Access Token. Once an account is connected, you can use the associated buttons to either add it to your primary User feed or to a different feed on your site using the `user` shortcode option, eg: `user=smashballoon`.
 * Tweak: Disabled auto load in the database for backup caches
+* Fix: Fixed an occasional issue with the Instagram login flow which would result in an "Unauthorized redirect URL" error
 
 = 1.8.3 =
 * Fix: SVG icons caused some display problems in IE 11

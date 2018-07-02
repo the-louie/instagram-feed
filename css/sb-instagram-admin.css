@@ -50,6 +50,7 @@
 	padding: 0 21px 0 160px;
 	height: 47px;
 	line-height: 47px;
+	font-size: 14px;
 
 	background: #386793 url('../img/small-logo.png') no-repeat 16px 11px;
 
@@ -122,7 +123,7 @@
 }
 
 #sbi_admin .sbi_radio_label{
-	width: 70px;
+	width: 90px;
 	padding-top: 5px;
 
 	display: -moz-inline-stack;
@@ -601,13 +602,14 @@
 }
 #sbi_admin .sbi_ca_actions {
 	display: inline-block;
-	margin-left: 10px;
 }
 #sbi_admin .sbi_ca_actions .fa{
 	margin-right: 5px;
 }
 #sbi_admin .sbi_delete_account .sbi_remove_text{
+	display: inline-block;
 	margin-left: 5px;
+	padding: 5px 10px 5px 0;
 }
 #sbi_admin .sbi_ca_actions a.button-primary,
 #sbi_admin .sbi_ca_actions a.button-secondary,
@@ -710,7 +712,7 @@
 	right: 10px;
 	top: 10px;
 
-	padding: 5px 10px;
+	padding: 0;
 	background: rgba(0,0,0,0.05);
 	color: #666;
 	border-radius: 50px;
@@ -723,7 +725,7 @@
 	color: #ddd;
 }
 #sbi_admin .sbi_delete_account .fa{
-	margin-right: 5px;
+	padding: 5px 0 5px 10px;
 }
 
 .sbi_connected_accounts_wrap{

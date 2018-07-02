@@ -359,7 +359,7 @@ function sb_instagram_settings_page() {
 
                     <div id="sbi_config">
                         <!-- <a href="https://instagram.com/oauth/authorize/?client_id=1654d0c81ad04754a898d89315bec227&redirect_uri=https://smashballoon.com/instagram-feed/instagram-token-plugin/?return_uri=<?php echo admin_url('admin.php?page=sb-instagram-feed'); ?>&response_type=token" class="sbi_admin_btn"><?php _e( 'Log in and get my Access Token and User ID', 'instagram-feed' ); ?></a> -->
-                        <a href="https://instagram.com/oauth/authorize/?client_id=3a81a9fa2a064751b8c31385b91cc25c&scope=basic+public_content&redirect_uri=https://smashballoon.com/instagram-feed/instagram-token-plugin/?return_uri=<?php echo admin_url('admin.php?page=sb-instagram-feed'); ?>&response_type=token" class="sbi_admin_btn"><?php _e( 'Log in and get my Access Token and User ID', 'instagram-feed' ); ?></a>
+                        <a href="https://instagram.com/oauth/authorize/?client_id=3a81a9fa2a064751b8c31385b91cc25c&scope=basic+public_content&redirect_uri=https://smashballoon.com/instagram-feed/instagram-token-plugin/?return_uri=<?php echo admin_url('admin.php?page=sb-instagram-feed'); ?>&response_type=token&state=<?php echo admin_url('admin.php?page-sb-instagram-feed'); ?>" class="sbi_admin_btn"><i class="fa fa-user-plus" aria-hidden="true" style="font-size: 20px;"></i>&nbsp; <?php _e( 'Connect an Instagram Account', 'instagram-feed' ); ?></a>
                         <a href="https://smashballoon.com/instagram-feed/token/" target="_blank" style="position: relative; top: 14px; left: 15px;"><?php _e( 'Button not working?', 'instagram-feed' ); ?></a>
                     </div>
 
@@ -453,7 +453,7 @@ function sb_instagram_settings_page() {
                             <a href="JavaScript:void(0);" class="sbi_manually_connect button-secondary"><?php _e( 'Manually Connect an Account', 'instagram-feed' ); ?></a>
                             <div class="sbi_manually_connect_wrap">
                                 <input name="sb_manual_at" id="sb_manual_at" type="text" value="" style="margin-top: 4px; padding: 5px 9px; margin-left: 0px;" size="64" maxlength="100" placeholder="Enter a valid Instagram Access Token" />
-                                <p class="sbi_submit" style="display: inline-block;"><input type="sbi_submit" name="submit" id="sbi_manual_submit" class="button button-primary" style="text-align: center; padding: 0;" value="Connect This Account"></p>
+                                <p class="sbi_submit" style="display: inline-block;"><button name="submit" id="sbi_manual_submit" class="button button-primary">Connect This Account</button></p>
                             </div>
                         </td>
                     </tr>
@@ -509,8 +509,8 @@ function sb_instagram_settings_page() {
 
                             <div class="sbi_pro sbi_row">
                                 <div class="sbi_col sbi_one">
+                                	<input type="radio" name="sb_instagram_type" disabled="">
                                     <label class="sbi_radio_label"><?php _e( 'Single:', 'instagram-feed' ); ?></label>
-                                    <input disabled type="radio" />
                                 </div>
                                 <div class="sbi_col sbi_two">
 
