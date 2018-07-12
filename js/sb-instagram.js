@@ -741,8 +741,9 @@ if(!sbi_js_exists){
                                     var sbi_num_cols = sbiGetColumnCount($self, parseInt(cols), parseInt(cols));
 
                                     //Figure out what the width should be using the number of cols
-                                    var sbi_photo_width_manual = ( $self.find('#sbi_images').width() / sbi_num_cols ) - (imagepadding*2);
-
+                                    //Figure out what the width should be using the number of cols
+                                    var imagesPadding = jQuery('#sbi_images').innerWidth() - jQuery('#sbi_images').width(),
+                                        sbi_photo_width_manual = ( $self.find('#sbi_images').width() / sbi_num_cols ) - imagesPadding;
                                     //If the width is less than it should be then set it manually
                                     if( sbi_photo_width <= (sbi_photo_width_manual) ) sbi_photo_width = sbi_photo_width_manual;
 
