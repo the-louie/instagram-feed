@@ -314,6 +314,7 @@ We understand that sometimes you need help, have issues or just have questions. 
 * Fix: Captions missing as "alt" text for images.
 * Fix: System information was not formatting connected accounts and user ids correctly
 * Fix: "Unauthorized redirect URL" error occurring while trying to connect a new account due to recent changes from Instagram
+* Fix: Using a percent for the image padding was causing the height of images to be to tall
 
 = 1.9 =
 * New: Retrieving Access Tokens and connecting multiple Instagram accounts is now easier using our improved interface for managing account information. While on the Configure tab, click on the big blue button to connect an account, or use the "Manually Connect an Account" option to connect one using an existing Access Token. Once an account is connected, you can use the associated buttons to either add it to your primary User feed or to a different feed on your site using the `user` shortcode option, eg: `user=smashballoon`.
