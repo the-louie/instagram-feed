@@ -521,8 +521,8 @@ if(!sbi_js_exists){
 
                             //TEMPLATE:
                             imagesHTML += '<div class="sbi_item sbi_type_'+item.type+' sbi_new" id="sbi_'+item.id+'" data-date="'+created_time_raw+'">' +
-                                    '<div class="sbi_photo_wrap">'+carouselTypeIcon+playBtnHtml +
-                                        '<a class="sbi_photo" href="'+item.link+'" target="_blank">' +
+                                    '<div class="sbi_photo_wrap">'+
+                                        '<a class="sbi_photo" href="'+item.link+'" target="_blank">' + carouselTypeIcon + playBtnHtml +
                                         '<img src="'+data_image+'" alt="'+captionText.replace(/<>/g, " ")+'" width="200" height="200" />' +
                                         '</a>' +
                                     '</div>' +
