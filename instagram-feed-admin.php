@@ -54,6 +54,7 @@ function sb_instagram_settings_page() {
         'sb_instagram_image_res'            => 'auto',
         //Header
         'sb_instagram_show_header'          => true,
+        'sb_instagram_header_size'  => 'small',
         'sb_instagram_header_color'         => '',
         //Follow button
         'sb_instagram_show_follow_btn'      => true,
@@ -102,7 +103,8 @@ function sb_instagram_settings_page() {
     $sb_instagram_image_res = $options[ 'sb_instagram_image_res' ];
     //Header
     $sb_instagram_show_header = $options[ 'sb_instagram_show_header' ];
-    $sb_instagram_show_bio = isset( $options[ 'sb_instagram_show_bio' ] ) ? $options[ 'sb_instagram_show_bio' ] : true;
+	$sb_instagram_header_size = $options[ 'sb_instagram_header_size' ];
+	$sb_instagram_show_bio = isset( $options[ 'sb_instagram_show_bio' ] ) ? $options[ 'sb_instagram_show_bio' ] : true;
     $sb_instagram_header_color = $options[ 'sb_instagram_header_color' ];
     //Follow button
     $sb_instagram_show_follow_btn = $options[ 'sb_instagram_show_follow_btn' ];
@@ -222,6 +224,7 @@ function sb_instagram_settings_page() {
                 //Header
                 isset($_POST[ 'sb_instagram_show_header' ]) ? $sb_instagram_show_header = sanitize_text_field( $_POST[ 'sb_instagram_show_header' ] ) : $sb_instagram_show_header = '';
                 isset($_POST[ 'sb_instagram_show_bio' ]) ? $sb_instagram_show_bio = sanitize_text_field( $_POST[ 'sb_instagram_show_bio' ] ) : $sb_instagram_show_bio = '';
+	            if (isset($_POST[ 'sb_instagram_header_size' ]) ) $sb_instagram_header_size = $_POST[ 'sb_instagram_header_size' ];
 
                 $sb_instagram_header_color = sanitize_text_field( $_POST[ 'sb_instagram_header_color' ] );
                 //Follow button
@@ -257,7 +260,8 @@ function sb_instagram_settings_page() {
                 $options[ 'sb_instagram_image_res' ] = $sb_instagram_image_res;
                 //Header
                 $options[ 'sb_instagram_show_header' ] = $sb_instagram_show_header;
-                $options[ 'sb_instagram_show_bio' ] = $sb_instagram_show_bio;
+	            $options[ 'sb_instagram_header_size' ] = $sb_instagram_header_size;
+	            $options[ 'sb_instagram_show_bio' ] = $sb_instagram_show_bio;
                 $options[ 'sb_instagram_header_color' ] = $sb_instagram_header_color;
                 //Follow button
                 $options[ 'sb_instagram_show_follow_btn' ] = $sb_instagram_show_follow_btn;
@@ -885,10 +889,21 @@ function sb_instagram_settings_page() {
         <table class="form-table">
             <tbody>
                 <tr valign="top">
-                    <th scope="row"><label><?php _e("Show the Header", 'instagram-feed'); ?></label><code class="sbi_shortcode"> showheader
+                    <th scope="row"><label><?php _e("Show Feed Header", 'instagram-feed'); ?></label><code class="sbi_shortcode"> showheader
                         Eg: showheader=false</code></th>
                     <td>
                         <input type="checkbox" name="sb_instagram_show_header" id="sb_instagram_show_header" <?php if($sb_instagram_show_header == true) echo 'checked="checked"' ?> />
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><label><?php _e('Header Size', 'instagram-feed'); ?></label><code class="sbi_shortcode"> headersize
+                            Eg: headersize=medium</code></th>
+                    <td>
+                        <select name="sb_instagram_header_size" id="sb_instagram_header_size" style="float: left;">
+                            <option value="small" <?php if($sb_instagram_header_size == "small") echo 'selected="selected"' ?> ><?php _e('Small', 'instagram-feed'); ?></option>
+                            <option value="medium" <?php if($sb_instagram_header_size == "medium") echo 'selected="selected"' ?> ><?php _e('Medium', 'instagram-feed'); ?></option>
+                            <option value="large" <?php if($sb_instagram_header_size == "large") echo 'selected="selected"' ?> ><?php _e('Large', 'instagram-feed'); ?></option>
+                        </select>
                     </td>
                 </tr>
                 <tr valign="top">
@@ -1765,7 +1780,20 @@ foreach( $sbi_options as $key => $val ) {
 
 ## API RESPONSE: ##
 <?php
-$url = isset( $sbi_options['sb_instagram_at'] ) ? 'https://api.instagram.com/v1/users/self/?access_token=' . sbi_maybe_clean( $sbi_options['sb_instagram_at'] ) : 'no_at';
+$con_accounts = isset( $sbi_options['connected_accounts'] ) ? $sbi_options['connected_accounts'] : array();
+$first_at = '';
+$i = 0;
+if ( ! empty( $con_accounts ) ) {
+    foreach ( $con_accounts as $account ) {
+        if ( $i == 0 ) {
+	        $first_at = $account['access_token'];
+	        $i++;
+        }
+    }
+
+}
+
+$url = ! empty( $first_at ) ? 'https://api.instagram.com/v1/users/self/?access_token=' . sbi_maybe_clean( $first_at ) : 'no_at';
 if ( $url !== 'no_at' ) {
     $args = array(
         'timeout' => 60,
@@ -1773,20 +1801,25 @@ if ( $url !== 'no_at' ) {
     );
     $result = wp_remote_get( $url, $args );
 
-    $data = json_decode( $result['body'] );
+    if ( ! is_wp_error( $result ) ) {
+	    $data = json_decode( $result['body'] );
 
-    if ( isset( $data->data->id ) ) {
-        echo 'id: ' . $data->data->id . "\n";
-        echo 'username: ' . $data->data->username . "\n";
-        echo 'posts: ' . $data->data->counts->media . "\n";
+	    if ( isset( $data->data->id ) ) {
+		    echo 'id: ' . $data->data->id . "\n";
+		    echo 'username: ' . $data->data->username . "\n";
+		    echo 'posts: ' . $data->data->counts->media . "\n";
 
+	    } else {
+		    echo 'No id returned' . "\n";
+		    echo 'code: ' . $data->meta->code . "\n";
+		    if ( isset( $data->meta->error_message ) ) {
+			    echo 'error_message: ' . $data->meta->error_message . "\n";
+		    }
+	    }
     } else {
-        echo 'No id returned' . "\n";
-        echo 'code: ' . $data->meta->code . "\n";
-        if ( isset( $data->meta->error_message ) ) {
-            echo 'error_message: ' . $data->meta->error_message . "\n";
-        }
+        var_dump( $result );
     }
+
 
 } else {
     echo 'No Access Token';
@@ -2145,7 +2178,11 @@ function sbi_account_data_for_token( $access_token ) {
 	);
 	$result = wp_remote_get( $url, $args );
 
-	$data = json_decode( $result['body'] );
+	if ( ! is_wp_error( $result ) ) {
+		$data = json_decode( $result['body'] );
+	} else {
+	    $data = array();
+    }
 
 	if ( isset( $data->data->id ) ) {
 		$return['id'] = $data->data->id;
