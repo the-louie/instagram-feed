@@ -535,25 +535,41 @@
     *display: inline;
     text-align: center;
 }
-#sb_instagram #sbi_load .sbi_follow_btn svg.fa-instagram{
-    margin-right: 7px;
-}
 #sb_instagram .sbi_follow_btn.sbi_top{
     display: block;
     margin-bottom: 5px;
 }
 #sb_instagram .sbi_follow_btn a{
-    background: #517fa4;
+    background: #408bd1;
     color: #fff;
 }
-#sb_instagram .sbi_follow_btn a:hover,
-#sb_instagram .sbi_follow_btn a:focus,
-#sb_instagram #sbi_load .sbi_load_btn:hover,
-#sb_instagram #sbi_load .sbi_load_btn:focus{
-    filter: alpha(opacity=85);
-    opacity: 0.85;
+#sb_instagram .sbi_follow_btn a,
+#sb_instagram .sbi_follow_btn a,
+#sb_instagram #sbi_load .sbi_load_btn{
+    transition: all 0.1s ease-in;
 }
-#sb_instagram #sbi_load .fa-spinner,
+/* Hover state for default colors */
+#sb_instagram #sbi_load .sbi_load_btn:hover{
+    outline: none;
+    box-shadow: inset 0 0 20px 20px rgba(255,255,255,0.25);
+}
+#sb_instagram .sbi_follow_btn a:hover,
+#sb_instagram .sbi_follow_btn a:focus{
+    outline: none;
+    box-shadow: inset 0 0 10px 20px #359dff;
+}
+/* If a custom color is applied then just use opacity for the hover effect */
+#sb_instagram .sbi_follow_btn.sbi_custom a:hover,
+#sb_instagram .sbi_follow_btn.sbi_custom a:focus,
+#sb_instagram #sbi_load .sbi_load_btn.sbi_custom:hover{
+    box-shadow: inset 0 0 20px 20px rgba(255,255,255,0.15);
+}
+/* Active state */
+#sb_instagram .sbi_follow_btn a:active,
+#sb_instagram #sbi_load .sbi_load_btn:active{
+    box-shadow: inset 0 0 10px 20px rgba(0,0,0,0.3);
+}
+
 #sb_instagram .sbi_follow_btn .fa,
 #sb_instagram .sbi_follow_btn svg{
     margin-bottom: -1px;

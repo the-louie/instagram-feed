@@ -381,7 +381,7 @@ function display_instagram($atts, $content = null) {
     }
 
     //Loader
-    if( !$sb_instagram_error ) $sb_instagram_content .= '<div class="sbi_loader sbi_hidden"></div>';
+    if( !$sb_instagram_error ) $sb_instagram_content .= '<div class="sbi_loader"></div>';
 
     //Load section
     $sb_instagram_content .= '</div><div id="sbi_load" class="sbi_hidden"';

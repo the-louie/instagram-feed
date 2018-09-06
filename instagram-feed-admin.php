@@ -648,6 +648,133 @@ function sb_instagram_settings_page() {
 
         <table class="form-table">
             <tbody>
+            <?php
+            $selected_type = isset( $sb_instagram_layout_type ) ? $sb_instagram_layout_type : 'grid';
+            $layout_types = array(
+	            'grid' => __( 'Grid', 'instagram-feed' ),
+	            'carousel' => __( 'Carousel', 'instagram-feed' ),
+	            'masonry' => __( 'Masonry', 'instagram-feed' ),
+	            'highlight' => __( 'Highlight', 'instagram-feed' )
+            );
+            $layout_images = array(
+	            'grid' => plugins_url( 'img/grid.png' , __FILE__ ),
+	            'carousel' => plugins_url( 'img/carousel.png' , __FILE__ ),
+	            'masonry' => plugins_url( 'img/masonry.png' , __FILE__ ),
+	            'highlight' => plugins_url( 'img/highlight.png' , __FILE__ )
+            );
+            ?>
+            <tr valign="top">
+                <th scope="row"><label title="Click for shortcode option">Layout Type</label></th>
+                <td>
+	                <?php foreach( $layout_types as $layout_type => $label ) : ?>
+                        <div class="sbi_layout_cell <?php if($selected_type === $layout_type) { echo "sbi_layout_selected"; } else { echo "sbi_pro"; }; ?>">
+                            <input class="sb_layout_type" id="sb_layout_type_<?php esc_attr_e( $layout_type ); ?>" name="sb_instagram_layout_type" type="radio" value="<?php esc_attr_e( $layout_type ); ?>" <?php if ( $selected_type === $layout_type ) echo 'checked'; ?>/><label for="sb_layout_type_<?php esc_attr_e( $layout_type ); ?>"><span class="sbi_label"><?php echo esc_html( $label ); ?></span><img src="<?php echo $layout_images[ $layout_type ]; ?>" /></label>
+                        </div>
+	                <?php endforeach; ?>
+                    <div class="sb_layout_options_wrap">
+                        <div class="sb_instagram_layout_settings sbi_layout_type_grid">
+                            <i class="fa fa-info-circle" aria-hidden="true" style="margin-right: 8px;"></i><span class="sbi_note" style="margin-left: 0;">A uniform grid of square-cropped images.</span>
+                        </div>
+                        <div class="sb_instagram_layout_settings sbi_layout_type_masonry">
+                            <i class="fa fa-info-circle" aria-hidden="true" style="margin-right: 8px;"></i><span class="sbi_note" style="margin-left: 0;">Images in their original aspect ratios with no vertical space between posts.</span>
+                        </div>
+                        <div class="sb_instagram_layout_settings sbi_layout_type_carousel">
+                            <div class="sb_instagram_layout_setting">
+                                <i class="fa fa-info-circle" aria-hidden="true" style="margin-right: 8px;"></i><span class="sbi_note" style="margin-left: 0;">Posts are displayed in a slideshow carousel.</span>
+                            </div>
+                            <div class="sb_instagram_layout_setting">
+
+                                <label>Number of Rows</label><code class="sbi_shortcode"> carouselrows
+                                    Eg: carouselrows=2</code>
+                                <br>
+                                <span class="sbi_note" style="margin: -5px 0 -10px 0; display: block;">Use the "Number of Columns" setting below this section to set how many posts are visible in the carousel at a given time.</span>
+                                <br>
+                                <select name="sb_instagram_carousel_rows" id="sb_instagram_carousel_rows">
+                                    <option value="1">1</option>
+                                    <option value="2" selected="selected">2</option>
+                                </select>
+                            </div>
+                            <div class="sb_instagram_layout_setting">
+                                <label>Loop Type</label><code class="sbi_shortcode"> carouselloop
+                                    Eg: carouselloop=rewind
+                                    carouselloop=infinity</code>
+                                <br>
+                                <select name="sb_instagram_carousel_loop" id="sb_instagram_carousel_loop">
+                                    <option value="rewind">Rewind</option>
+                                    <option value="infinity" selected="selected">Infinity</option>
+                                </select>
+                            </div>
+                            <div class="sb_instagram_layout_setting">
+                                <input type="checkbox" name="sb_instagram_carousel_arrows" id="sb_instagram_carousel_arrows" checked="checked">
+                                <label>Show Navigation Arrows</label><code class="sbi_shortcode"> carouselarrows
+                                    Eg: carouselarrows=true</code>
+                            </div>
+                            <div class="sb_instagram_layout_setting">
+                                <input type="checkbox" name="sb_instagram_carousel_pag" id="sb_instagram_carousel_pag">
+                                <label>Show Pagination</label><code class="sbi_shortcode"> carouselpag
+                                    Eg: carouselpag=true</code>
+                            </div>
+                            <div class="sb_instagram_layout_setting">
+                                <input type="checkbox" name="sb_instagram_carousel_autoplay" id="sb_instagram_carousel_autoplay">
+                                <label>Enable Autoplay</label><code class="sbi_shortcode"> carouselautoplay
+                                    Eg: carouselautoplay=true</code>
+                            </div>
+                            <div class="sb_instagram_layout_setting">
+                                <label>Interval Time</label><code class="sbi_shortcode"> carouseltime
+                                    Eg: carouseltime=8000</code>
+                                <br>
+                                <input name="sb_instagram_carousel_interval" type="text" value="5000" size="6">miliseconds                                </div>
+                        </div>
+
+                        <div class="sb_instagram_layout_settings sbi_layout_type_highlight" style="display: block;">
+                            <div class="sb_instagram_layout_setting">
+                                <i class="fa fa-info-circle" aria-hidden="true" style="margin-right: 8px;"></i><span class="sbi_note" style="margin-left: 0;">Masonry style, square-cropped, image only (no captions or likes/comments below image). "Highlighted" posts are twice as large.</span>
+                            </div>
+                            <div class="sb_instagram_layout_setting">
+                                <label title="Click for shortcode option">Highlighting Type</label><code class="sbi_shortcode"> highlighttype
+                                    Eg: highlighttype=pattern</code>
+                                <br>
+                                <select name="sb_instagram_highlight_type" id="sb_instagram_highlight_type">
+                                    <option value="pattern" selected="selected">Pattern</option>
+                                    <option value="id">Post ID</option>
+                                    <option value="hashtag">Hashtag</option>
+                                </select>
+                            </div>
+                            <div class="sb_instagram_highlight_sub_options sb_instagram_highlight_pattern sb_instagram_layout_setting" style="display: block;">
+                                <label>Offset</label><code class="sbi_shortcode"> highlightoffset
+                                    Eg: highlightoffset=2</code>
+                                <br>
+                                <input name="sb_instagram_highlight_offset" type="number" min="0" value="0" style="width: 50px;">
+                            </div>
+                            <div class="sb_instagram_highlight_sub_options sb_instagram_highlight_pattern sb_instagram_layout_setting" style="display: block;">
+                                <label>Pattern</label><code class="sbi_shortcode"> highlightpattern
+                                    Eg: highlightpattern=3</code>
+                                <br>
+                                <span>Highlight every</span><input name="sb_instagram_highlight_factor" type="number" min="2" value="6" style="width: 50px;"><span>posts</span>
+                            </div>
+                            <div class="sb_instagram_highlight_sub_options sb_instagram_highlight_hashtag sb_instagram_layout_setting" style="display: none;">
+                                <label>Highlight Posts with these Hashtags</label>
+                                <input name="sb_instagram_highlight_hashtag" id="sb_instagram_highlight_hashtag" type="text" size="40" value="#fishing">&nbsp;<a class="sbi_tooltip_link" href="JavaScript:void(0);">What is this?</a>
+                                <br>
+                                <span class="sbi_note" style="margin-left: 0;">Separate multiple hashtags using commas</span>
+
+
+                                <p class="sbi_tooltip">You can use this setting to highlight posts by a hashtag. Use a specified hashtag in your posts and they will be automatically highlighted in your feed.</p>
+                            </div>
+                            <div class="sb_instagram_highlight_sub_options sb_instagram_highlight_ids sb_instagram_layout_setting" style="display: none;">
+                                <label>Highlight Posts by ID</label>
+                                <textarea name="sb_instagram_highlight_ids" id="sb_instagram_highlight_ids" style="width: 100%;" rows="3">sbi_1852317219231323590_3269008872</textarea>
+                                <br>
+                                <span class="sbi_note" style="margin-left: 0;">Separate IDs using commas</span>
+
+                                &nbsp;<a class="sbi_tooltip_link" href="JavaScript:void(0);">What is this?</a>
+                                <p class="sbi_tooltip">You can use this setting to highlight posts by their ID. Enable and use "moderation mode", check the box to show post IDs underneath posts, then copy and paste IDs into this text box.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
                 <tr valign="top">
                     <th scope="row"><label><?php _e('Number of Photos', 'instagram-feed'); ?></label><code class="sbi_shortcode"> num
                         Eg: num=6</code></th>
