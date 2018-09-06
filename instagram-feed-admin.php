@@ -1817,7 +1817,7 @@ if ( $url !== 'no_at' ) {
 		    }
 	    }
     } else {
-        var_dump( $result );
+	    var_export( $result );
     }
 
 
@@ -1827,7 +1827,11 @@ if ( $url !== 'no_at' ) {
 
 ## Invalid Tokens: ##
 <?php
-var_dump( get_option( 'sb_expired_tokens' ) );
+$sb_expired_tokens = get_option( 'sb_expired_tokens' );
+if (is_array($sb_expired_tokens)){
+	$sb_expired_tokens = array_unique($sb_expired_tokens);
+}
+var_export($sb_expired_tokens);
 ?>
 </textarea>
 
