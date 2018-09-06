@@ -229,7 +229,7 @@ function display_instagram($atts, $content = null) {
     $sb_instagram_btn_background = str_replace('#', '', $atts['buttoncolor']);
     $sb_instagram_btn_text_color = str_replace('#', '', $atts['buttontextcolor']);
     //Load more button styles
-    $sb_instagram_button_styles = 'style="';
+    $sb_instagram_button_styles = 'style="display: none; ';
     if ( !empty($sb_instagram_btn_background) ) $sb_instagram_button_styles .= 'background: #'.$sb_instagram_btn_background.'; ';
     if ( !empty($sb_instagram_btn_text_color) ) $sb_instagram_button_styles .= 'color: #'.$sb_instagram_btn_text_color.';';
     $sb_instagram_button_styles .= '"';
@@ -246,7 +246,9 @@ function display_instagram($atts, $content = null) {
     if ( !empty($sb_instagram_follow_btn_text_color) ) $sb_instagram_follow_btn_styles .= 'color: #'.$sb_instagram_follow_btn_text_color.';';
     $sb_instagram_follow_btn_styles .= '"';
     //Follow button HTML
-    $sb_instagram_follow_btn_html = '<div class="sbi_follow_btn"><a href="https://www.instagram.com/" '.$sb_instagram_follow_btn_styles.' target="_blank"><i class="fa fab fa-instagram"></i>'.esc_html( stripslashes( $sb_instagram_follow_btn_text ) ).'</a></div>';
+	$sb_instagram_follow_btn_classes = '';
+	if( strpos($sb_instagram_follow_btn_styles, 'background') !== false ) $sb_instagram_follow_btn_classes = ' sbi_custom';
+    $sb_instagram_follow_btn_html = '<div class="sbi_follow_btn'.$sb_instagram_follow_btn_classes.'"><a href="https://www.instagram.com/" '.$sb_instagram_follow_btn_styles.' target="_blank"><i class="fa fab fa-instagram"></i>'.esc_html( stripslashes( $sb_instagram_follow_btn_text ) ).'</a></div>';
 
     //Mobile
     $sb_instagram_disable_mobile = $atts['disablemobile'];
@@ -379,10 +381,10 @@ function display_instagram($atts, $content = null) {
     }
 
     //Loader
-    if( !$sb_instagram_error ) $sb_instagram_content .= '<div class="sbi_loader fa-spin"></div>';
+    if( !$sb_instagram_error ) $sb_instagram_content .= '<div class="sbi_loader sbi_hidden"></div>';
 
     //Load section
-    $sb_instagram_content .= '</div><div id="sbi_load"';
+    $sb_instagram_content .= '</div><div id="sbi_load" class="sbi_hidden"';
 
     if(($sb_instagram_image_padding == 0 || !isset($sb_instagram_image_padding)) && ($sb_instagram_show_btn || $sb_instagram_show_follow_btn)) $sb_instagram_content .= ' style="padding-top: 5px"';
     $sb_instagram_content .= '>';
