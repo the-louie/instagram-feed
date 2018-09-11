@@ -343,6 +343,15 @@ jQuery(document).ready(function($) {
   });
 
 
+  jQuery('#sbi_admin .sbi_lock').hover(function(){
+    jQuery(this).siblings('.sbi_pro_tooltip').show();
+  }, function(){
+    jQuery('.sbi_pro_tooltip').hide();
+  });
+
+  
+
+
   //Add the color picker
 	if( jQuery('.sbi_colorpick').length > 0 ) jQuery('.sbi_colorpick').wpColorPicker();
 
@@ -429,8 +438,11 @@ jQuery(document).ready(function($) {
             jQuery('.sb_instagram_layout_settings.sbi_layout_type_'+jQuery('.sb_layout_type:checked').val()).show();
         }, 1);
     }
-    sbiUpdateLayoutTypeOptionsDisplay();
     jQuery('.sb_layout_type').change(sbiUpdateLayoutTypeOptionsDisplay);
+
+    jQuery('.sbi_close_options').on('click', function(){
+        jQuery('.sb_instagram_layout_settings').hide();
+    });
 
     function sbiUpdateHighlightOptionsDisplay() {
         jQuery('.sb_instagram_highlight_sub_options').hide();
