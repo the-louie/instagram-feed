@@ -1690,6 +1690,11 @@ function sb_instagram_settings_page() {
                     <td><code>[instagram-feed showbio=true]</code></td>
                 </tr>
                 <tr>
+                    <td>headersize</td>
+                    <td><?php _e("Size of the header. Choose from small, medium, or large.", 'instagram-feed'); ?></td>
+                    <td><code>[instagram-feed headersize=medium]</code></td>
+                </tr>
+                <tr>
                     <td>headercolor</td>
                     <td><?php _e("The color of the Header text. Any hex color code.", 'instagram-feed'); ?></td>
                     <td><code>[instagram-feed headercolor=#333]</code></td>
