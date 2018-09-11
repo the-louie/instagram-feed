@@ -3,7 +3,7 @@ Contributors: smashballoon, craig-at-smash-balloon
 Tags: Instagram, Instagram feed, Instagram photos, Instagram widget, Instagram gallery
 Requires at least: 3.0
 Tested up to: 4.9
-Stable tag: 1.9.1
+Stable tag: 1.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -310,6 +310,12 @@ We understand that sometimes you need help, have issues or just have questions. 
 * Plus more customization options added all the time!
 
 == Changelog ==
+= 1.10 =
+* New: We've made improvements to the way photos are loaded into the feed, adding a smooth transition to display photos subtly rather than suddenly
+* New: More header sizes. You can now choose from three sizes: small, medium, and large. Change this on the "Customize" tab
+* Fix: Using a percent for the image padding was causing the height of images to be too tall
+* Fix: PHP error when Instagram API blocked server side
+
 = 1.9.1 =
 * Fix: Captions missing as "alt" text for images.
 * Fix: System information was not formatting connected accounts and user ids correctly
