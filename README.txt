@@ -312,7 +312,7 @@ We understand that sometimes you need help, have issues or just have questions. 
 == Changelog ==
 = 1.10 =
 * New: We've made improvements to the way photos are loaded into the feed, adding a smooth transition to display photos subtly rather than suddenly
-* New: More header sizes. You can now choose from three sizes: small, medium, and large. Change this on the "Customize" tab
+* New: More header sizes. You can now choose from three sizes: small, medium, and large. Change this on the "Customize" tab.
 * Fix: Using a percent for the image padding was causing the height of images to be too tall
 * Fix: PHP error when Instagram API blocked server side
 

@@ -406,7 +406,7 @@ function display_instagram($atts, $content = null) {
 		$access_token = isset( $options['sb_instagram_at'] ) ? $options['sb_instagram_at'] : '';
 
 		$sb_instagram_content .= '<script type="text/javascript">var sb_instagram_js_options = {"sb_instagram_at":"'.sbi_get_parts( $access_token ).'", "font_method":"'.$font_method.'"};</script>';
-		$sb_instagram_content .= "<script type='text/javascript' src='".plugins_url( '/js/sb-instagram.js?ver='.SBIVER , __FILE__ )."'></script>";
+		$sb_instagram_content .= "<script type='text/javascript' src='".plugins_url( '/js/sb-instagram.min.js?ver='.SBIVER , __FILE__ )."'></script>";
 	}
  
     //Return our feed HTML to display
