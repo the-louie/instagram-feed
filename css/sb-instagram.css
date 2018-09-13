@@ -576,6 +576,9 @@
   margin-right: 7px;
   font-size: 15px;
 }
+#sb_instagram .sbi_follow_btn svg{
+  vertical-align: -.125em;
+}
 #sb_instagram #sbi_load .sbi_follow_btn{
   margin-left: 5px;
 }
