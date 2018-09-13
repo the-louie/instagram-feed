@@ -310,6 +310,9 @@ We understand that sometimes you need help, have issues or just have questions. 
 * Plus more customization options added all the time!
 
 == Changelog ==
+= 1.10.1 =
+* Tweak: Automatic image resolution detection setting now works better with wide images. Resizing the browser will now automatically raise the image resolution if needed.
+
 = 1.10 =
 * New: We've made improvements to the way photos are loaded into the feed, adding a smooth transition to display photos subtly rather than suddenly.
 * New: More header sizes; you can now choose from three sizes: small, medium, and large. Change this on the "Customize" tab.
