@@ -579,7 +579,7 @@ if(!sbi_js_exists){
                             $self.find('#sbi_images > .sbi_loader').remove();
 
                             //Show the Load More button
-                            $self.find('#sbi_load').removeClass('sbi_hidden');
+                            $self.find('#sbi_load').removeClass('sbi_hidden').find('.sbi_load_btn').show();
 
                             setTimeout(function(){
                                 //Hide the loader in the load more button
