@@ -579,7 +579,9 @@ if(!sbi_js_exists){
                             $self.find('#sbi_images > .sbi_loader').remove();
 
                             //Show the Load More button
-                            $self.find('#sbi_load').removeClass('sbi_hidden').find('.sbi_load_btn').show();
+                            $self.find('#sbi_load').removeClass('sbi_hidden');
+                            //Don't show the button if there aren't enough photos to fill the feed
+                            if( imagesArrCount >= num ) $self.find('.sbi_load_btn').show();
 
                             setTimeout(function(){
                                 //Hide the loader in the load more button
