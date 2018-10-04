@@ -1838,12 +1838,12 @@ function sb_instagram_settings_page() {
 
 		    <p>
 			    <span class="sbi-support-title"><i class="fa fa-youtube-play" aria-hidden="true"></i>&nbsp; <a
-					    href="https://www.youtube.com/embed/V_fJ_vhvQXM" target="_blank"
+					    href="https://www.youtube.com/embed/q6ZXVU4g970" target="_blank"
 					    id="sbi-play-support-video"><?php _e( 'Watch a Video' ); ?></a></span>
 			    <?php _e( "Watch a short video demonstrating how to set up, customize and use the plugin.<br /><b>Please note</b> that the video shows the set up and use of the <b><a href='https://smashballoon.com/instagram-feed/' target='_blank'>PRO version</a></b> of the plugin, but the process is the same for this free version. The only difference is some of the features available." ); ?>
 
 			    <iframe id="sbi-support-video"
-			            src="//www.youtube.com/embed/V_fJ_vhvQXM?theme=light&amp;showinfo=0&amp;controls=2" width="960"
+			            src="//www.youtube.com/embed/q6ZXVU4g970?theme=light&amp;showinfo=0&amp;controls=2" width="960"
 			            height="540" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
 		    </p>
 
