@@ -11,7 +11,7 @@ Display beautifully clean, customizable, and responsive feeds from multiple Inst
 
 == Description ==
 
-Display Instagram photos from any non-private Instagram accounts, either in the same single feed or in multiple different ones.
+Display Instagram posts from your Instagram accounts, either in the same single feed or in multiple different ones.
 
 = Features =
 * Super **simple to set up**
@@ -33,6 +33,22 @@ Display Instagram photos from any non-private Instagram accounts, either in the 
 * **Display Your Content Your Way** - Customize your Instagram feeds to look exactly the way you want, so that they blend seemlessly into your site or pop out at your visitors!
 * **Keep Your Site Looking Fresh** - Automatically push your new Instagram content straight to your site to keep it looking fresh and keeping your audience engaged.
 * **Super simple to set up** - Once installed, you can be displaying your Instagram photos within 30 seconds! No confusing steps or Instagram Developer account needed.
+
+= Pro Version =
+In order to maintain the free version of the plugin on an ongoing basis, and to provide quick and effective support for free, we offer a Pro version of the plugin. The Pro version allows you to:
+* Display Hashtag feeds (fully compatible with the Instagram December 11, 2018, API changes)
+* View photos and videos in a popup lightbox directly on your site
+* View post comments for user feeds
+* Display the number of like and comments for each post
+* Create carousels from your posts
+* Use "Masonry" or "Highlight" layouts for your feeds
+* Display captions for photos and videos
+* Filter posts based on hashtag/word
+* Advanced moderation system for hiding/showing certain posts
+* Block posts by specific users
+* Create "shoppable" Instagram feeds, and more.
+
+[Find out more about the Pro version](https://smashballoon.com/instagram-feed/ "Instagram Feed Pro") or [try out the Pro demo](https://smashballoon.com/instagram-feed/demo "Instagram Feed Pro Demo").
 
 = Featured Reviews =
 "**Simple and concise** - Excellent plugin. Simple and non-bloated. I had a couple small issues with the plugin when I first started using it, but a quick comment on the support forums got a new version pushed out the next day with the fix. Awesome support!" - [Josh Jones](https://wordpress.org/support/topic/simple-and-concise-3 'Simple and concise Instagram plugin')
@@ -142,8 +158,6 @@ Yep. You can just separate the IDs by commas, either in the User ID(s) field on 
 = How do I find my Instagram Access Token and Instagram User ID =
 
 We've made it super easy. Simply click on the big blue button on the Instagram Feed Settings page and log into your Instagram account. The plugin will then retrieve and display both your Access Token and User ID from Instagram.
-
-You can also display photos from other peoples Instagram accounts. To find their Instagram User ID you can use [this tool](http://www.otzberg.net/iguserid/).
 
 = My Instagram feed isn't displaying. Why not!? =
 
@@ -287,7 +301,7 @@ We understand that sometimes you need help, have issues or just have questions. 
 
 = What can it do? =
 
-* Display Instagram photos from any non-private Instagram account.
+* Display Instagram photos from any Instagram account you own.
 * Completely responsive and mobile ready –your Instagram feed layout looks great on any screen size and in any container width
 * Display multiple Instagram feeds on the same page or on different pages throughout your site by using our powerful Instagram Feed shortcode options
 * Display posts from multiple Instagram User IDs
