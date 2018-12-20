@@ -474,31 +474,128 @@ function sbi_cache_photos() {
 		$transient_name = isset( $transient_name['feed'] ) ? sanitize_text_field( $transient_name['feed'] ) : 'sbi_other';
 	}
 
+	$cache_type = strpos( $transient_name, 'sbi_header_' ) !== 0 ? 'feed' : 'header';
+
 	if ( strpos( $_POST['photos'], "%7B%22" ) === 0
 	     && ( strpos( "%22standard_resolution%22", $_POST['photos'] ) && strpos( "%22https://scontent.cdninstagram.com", $_POST['photos'] ) || ! strpos( "%22standard_resolution%22", $_POST['photos'] ) ) ) {
 
-		$stripped_json_string = wp_strip_all_tags( $_POST['photos'] );
-		set_transient( $transient_name, $stripped_json_string, $cache_seconds );
+	    $feed_tokens = isset( $_POST['feed_tokens'] ) ? $_POST['feed_tokens'] : array();
+	    $num_images = isset( $_POST['num_images'] ) ? (int)$_POST['num_images'] : 33;
+	    $new_cache = ! empty( $feed_tokens ) ? sbi_get_post_data_from_tokens( $feed_tokens, $cache_type, $num_images ) : array();
+        //echo stripslashes($_POST['images']);
+        echo $new_cache;
+		//$stripped_json_string = wp_strip_all_tags( $_POST['photos'] );
+		set_transient( $transient_name, $new_cache, $cache_seconds );
+        //die();
 
 		$backups_enabled = isset( $sb_instagram_settings['sb_instagram_backup'] ) ? $sb_instagram_settings['sb_instagram_backup'] !== '' : true;
 
 		if ( $backups_enabled ) {
-			if ( strlen( $stripped_json_string ) > 1999 && strpos( $transient_name, 'sbi_header_' ) !== 0 ) {
-				update_option( '!'.$transient_name, $stripped_json_string, false );
+			if ( strlen( $new_cache ) > 1999 && strpos( $transient_name, 'sbi_header_' ) !== 0 ) {
+				update_option( '!'.$transient_name, $new_cache, false );
 			} elseif ( strpos( $transient_name, 'sbi_header_' ) === 0 ) {
-				update_option( '!'.$transient_name, $stripped_json_string, false );
+				update_option( '!'.$transient_name, $new_cache, false );
 			}
 		}
 
 	}
 
-	if ( strlen( $stripped_json_string ) < 2000 && strpos( $transient_name, 'sbi_header_' ) !== 0 && get_option( '!'.$transient_name ) ) {
+	if ( strlen( $new_cache ) < 2000 && strpos( $transient_name, 'sbi_header_' ) !== 0 && get_option( '!'.$transient_name ) ) {
 		echo 'too much filtering';
 	}
 
 }
 add_action('wp_ajax_cache_photos', 'sbi_cache_photos');
 add_action('wp_ajax_nopriv_cache_photos', 'sbi_cache_photos');
+
+function sbi_get_post_data_from_tokens( $access_tokens = array(), $cache_type = 'feed', $num_needed = 33 ) {
+    $images = array();
+    $num_images_overall = 0;
+    $pagination = array(
+        'next_url' => array()
+    );
+    foreach ( $access_tokens as $token ) {
+        $clean_token = preg_replace("/[^a-zA-Z0-9\.]+/", "", sbi_maybe_clean( $token ) );
+        $split_token = explode( '.', $clean_token );
+        $id = $split_token[0];
+        if ( $cache_type === 'header' ) {
+            $api_call = 'https://api.instagram.com/v1/users/' . $id . '?access_token=' . $clean_token;
+        } else {
+            $api_call = 'https://api.instagram.com/v1/users/' . $id . '/media/recent?access_token=' . $clean_token . '&count=33';
+        }
+        $args = array(
+            'timeout' => 60,
+            'sslverify' => false
+        );
+        $result = wp_remote_get( $api_call, $args );
+        if ( ! is_wp_error( $result ) ) {
+            $decoded_results = json_decode( $result['body'], true );
+            $num_images_returned = 0;
+            if ( is_array( $decoded_results['data'] ) ) {
+                $num_images_returned = count( $decoded_results['data'] );
+            }
+            $num_images_overall += $num_images_returned;
+            $images = array_merge( $images, $decoded_results['data'] );
+            if ( !empty( $decoded_results['pagination']['next_url'] ) ) {
+                $pagination['next_url'][] = $decoded_results['pagination']['next_url'];
+            }
+        } else {
+            // error
+            return json_encode( $result );
+        }
+    }
+
+    if ( $cache_type === 'feed' ) {
+        $secondary_requests = 0;
+
+        while ( $num_images_overall < $num_needed && ! empty( $pagination['next_url'] ) && $secondary_requests < 10 ) {
+            $secondary_requests++;
+            $api_call = array_shift( $pagination['next_url'] );
+            $args = array(
+                'timeout' => 60,
+                'sslverify' => false
+            );
+            $result = wp_remote_get( $api_call, $args );
+            if ( ! is_wp_error( $result ) ) {
+                $decoded_results = json_decode( $result['body'], true );
+                $num_images_returned = 0;
+                if ( is_array( $decoded_results['data'] ) ) {
+                    $num_images_returned = count( $decoded_results['data'] );
+                }
+                $num_images_overall += $num_images_returned;
+                $images = array_merge( $images, $decoded_results['data'] );
+                if ( !empty( $decoded_results['pagination']['next_url'] ) ) {
+                    $pagination['next_url'][] = $decoded_results['pagination']['next_url'];
+                }
+            } else {
+                // error
+                return json_encode( $result );
+            }
+
+        }
+    }
+
+    if ( isset( $images[0]['created_time'] ) ) {
+        usort($images, 'sbi_date_sort' );
+    }
+
+    $return = array(
+        'pagination' => $pagination,
+        'data' => $images,
+        'meta' => array()
+    );
+
+    return json_encode( $return );
+}
+
+function sbi_date_sort( $a, $b ) {
+    var_dump( (int)$a['created_time'] - (int)$b['created_time'] );
+    if ( isset( $a['created_time'] ) ) {
+        return (int)$b['created_time'] - (int)$a['created_time'];
+    } else {
+        return rand ( -1, 1 );
+    }
+}
 
 function sbi_set_expired_token() {
 	$access_token = isset( $_POST['access_token'] ) ? sanitize_text_field( $_POST['access_token'] ) : false;
@@ -693,7 +790,7 @@ function sb_instagram_styles_enqueue() {
 add_action( 'wp_enqueue_scripts', 'sb_instagram_scripts_enqueue' );
 function sb_instagram_scripts_enqueue() {
     //Register the script to make it available
-    wp_register_script( 'sb_instagram_scripts', plugins_url( '/js/sb-instagram.min.js' , __FILE__ ), array('jquery'), SBIVER, true ); //http://www.minifier.org/
+    wp_register_script( 'sb_instagram_scripts', plugins_url( '/js/sb-instagram.js' , __FILE__ ), array('jquery'), SBIVER, true ); //http://www.minifier.org/
 
     //Options to pass to JS file
     $sb_instagram_settings = get_option('sb_instagram_settings');

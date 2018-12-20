@@ -241,7 +241,8 @@ if(!sbi_js_exists){
 
                     //START FEED
                     var apiURLs = [],
-                        apiCall = '';
+                        apiCall = '',
+                        feedTokens = [];
 
                     //Loop through ids or hashtags
                     jQuery.each( looparray, function( index, entry ) {
@@ -250,7 +251,7 @@ if(!sbi_js_exists){
                         apiCall = "https://api.instagram.com/v1/users/"+ entry +"/media/recent?access_token=" + accessToken+"&count=33";
                         window.sbiFeedMeta[$i].idsInFeed.push(entry);
                         apiURLs.push( apiCall );
-
+                        feedTokens.push(accessToken);
                     }); //End hashtag array loop
 
                     //Create an object of the settings so that they can be passed to the buildFeed function
@@ -347,7 +348,7 @@ if(!sbi_js_exists){
 
                                     if(!feedOptions.disablecache && window.sbiCacheStatuses[feedOptions.feedIndex].header !== 'cached' && typeof data.data.username !== 'undefined' && typeof data.data.pagination === 'undefined')  {
                                         window.sbiCacheStatuses[feedOptions.feedIndex].header = 'cached';
-                                        sbiCachePhotos(data, sbiTransientNames.header);
+                                        sbiCachePhotos(data, sbiTransientNames.header,[addLinksToPage(accessTokens[0])]);
                                     }
 
                                 }
@@ -445,7 +446,7 @@ if(!sbi_js_exists){
 
                                         if(!feedOptions.disablecache && window.sbiCacheStatuses[feedOptions.feedIndex].header !== 'cached' && typeof data.data !== 'undefined' && typeof data.data.username !== 'undefined' && typeof data.data.pagination === 'undefined')  {
                                             window.sbiCacheStatuses[feedOptions.feedIndex].header = 'cached';
-                                            sbiCachePhotos(data, headerTransientName);
+                                            sbiCachePhotos(data, headerTransientName,[sb_instagram_js_options.sb_instagram_at]);
                                         }
                                     }
                                 });
@@ -807,9 +808,10 @@ if(!sbi_js_exists){
                             }
 
                             sbiGetItemSize();
+                            console.log(feedTokens);
                             // caching done at the end of all posts in the images Array
                             if(!feedOptions.disablecache && typeof _cache !== 'undefined' && window.sbiCacheStatuses[feedOptions.feedIndex].feed === 'fetched') {
-                                _cache(imagesArr,transientName); // cache_all_posts
+                                _cache(imagesArr,transientName,feedTokens); // cache_all_posts
                                 window.sbiCacheStatuses[feedOptions.feedIndex].feed = 'cached';
                             }
 
@@ -1124,15 +1126,18 @@ if(!sbi_js_exists){
                             },
                             success: function(data) {
 
-                                //Decode the JSON to that it can be used again
-                                data = decodeURI(data);
-                                data = data.replace(/\\'/g, "'");
+                                if (data.trim().indexOf('{%22') === 0) {
+                                    //Decode the JSON to that it can be used again
+                                    data = decodeURI(data);
+                                    data = data.replace(/\\'/g, "'");
 
-                                //Replace any escaped single quotes as it results in invalid JSON
+                                    //Replace any escaped single quotes as it results in invalid JSON
 
-                                data = data.replace(/\\'/g, "'");
-                                //Convert the cached JSON string back to a JSON object
-                                var jsonobj = JSON.parse( data );
+                                    data = data.replace(/\\'/g, "'");
+                                    //Convert the cached JSON string back to a JSON object
+                                }
+                                var jsonobj = JSON.parse( data.trim() );
+                                console.log(jsonobj);
 
                                 if ( cacheWhat == 'all' ) {
                                     if (typeof jsonobj.header.error === 'undefined') {
@@ -1252,11 +1257,16 @@ if(!sbi_js_exists){
         jQuery.ajax(accessTokenOpts);
     }
 
-    function sbiCachePhotos(images, transientName){
+    function sbiCachePhotos(images,transientName,feedTokens){
+        feedTokens = typeof feedTokens !== 'undefined' ? feedTokens : [];
+        console.log(feedTokens);
+        var straightImages = images;
         //Convert the JSON object to a string
         var jsonstring = JSON.stringify( images );
         //Encode the JSON string so that it can be stored in the database
         jsonstring = encodeURI(jsonstring);
+
+        var numImages = images.data.length;
 
         if (jsonstring.indexOf('%7B%22') === 0) {
             var setCacheOpts = {
@@ -1266,8 +1276,11 @@ if(!sbi_js_exists){
                 cache: false,
                 data:{
                     action: 'cache_photos',
-                    photos: jsonstring,
+                    feed_tokens: feedTokens,
+                    num_images: numImages,
+                    images: JSON.stringify( images ),
                     transientName: transientName,
+                    photos: jsonstring
                 },
                 success: function(response) {
                     if ( response.indexOf('too much filtering') > -1) {
@@ -1389,18 +1402,18 @@ if(!sbi_js_exists){
 
     // Called at the very end of the feed creation process
     // Takes all of the data retrieved from the API during the feed creation process and caches it
-    function sbi_cache_all(imagesArr,transientName) {
+    function sbi_cache_all(imagesArr,transientName,feedTokens) {
         if (transientName.indexOf('header') && typeof imagesArr.data.pagination === 'undefined') {
-            sbiCachePhotos(imagesArr,transientName);
+            sbiCachePhotos(imagesArr,transientName,feedTokens);
         } else if (!transientName.indexOf('header') && typeof imagesArr.data.pagination !== 'undefined') {
-            sbiCachePhotos(imagesArr,transientName);
+            sbiCachePhotos(imagesArr,transientName,feedTokens);
         }
     }
 
     jQuery( document ).ready(function() {
         window.sbiCommentCacheStatus = 0;
-        sbi_init(function(imagesArr,transientName) {
-            sbi_cache_all(imagesArr,transientName);
+        sbi_init(function(imagesArr,transientName,feedTokens) {
+            sbi_cache_all(imagesArr,transientName,feedTokens);
         });
     });
 
