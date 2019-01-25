@@ -3,7 +3,7 @@
 Plugin Name: Instagram Feed
 Plugin URI: https://smashballoon.com/instagram-feed
 Description: Display beautifully clean, customizable, and responsive Instagram feeds
-Version: 1.10.2
+Version: 1.11
 Author: Smash Balloon
 Author URI: https://smashballoon.com/
 License: GPLv2 or later
@@ -23,7 +23,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-define( 'SBIVER', '1.10.2' );
+define( 'SBIVER', '1.11' );
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -475,18 +475,13 @@ function sbi_cache_photos() {
 	}
 
 	$cache_type = strpos( $transient_name, 'sbi_header_' ) !== 0 ? 'feed' : 'header';
+	$num_images = isset( $_POST['num_images'] ) ? (int)$_POST['num_images'] : 33;
 
-	if ( strpos( $_POST['photos'], "%7B%22" ) === 0
-	     && ( strpos( "%22standard_resolution%22", $_POST['photos'] ) && strpos( "%22https://scontent.cdninstagram.com", $_POST['photos'] ) || ! strpos( "%22standard_resolution%22", $_POST['photos'] ) ) ) {
-
+	if ( $num_images > 0 ) {
 	    $feed_tokens = isset( $_POST['feed_tokens'] ) ? $_POST['feed_tokens'] : array();
-	    $num_images = isset( $_POST['num_images'] ) ? (int)$_POST['num_images'] : 33;
 	    $new_cache = ! empty( $feed_tokens ) ? sbi_get_post_data_from_tokens( $feed_tokens, $cache_type, $num_images ) : array();
-        //echo stripslashes($_POST['images']);
         echo $new_cache;
-		//$stripped_json_string = wp_strip_all_tags( $_POST['photos'] );
 		set_transient( $transient_name, $new_cache, $cache_seconds );
-        //die();
 
 		$backups_enabled = isset( $sb_instagram_settings['sb_instagram_backup'] ) ? $sb_instagram_settings['sb_instagram_backup'] !== '' : true;
 
@@ -589,12 +584,13 @@ function sbi_get_post_data_from_tokens( $access_tokens = array(), $cache_type = 
 }
 
 function sbi_date_sort( $a, $b ) {
-    var_dump( (int)$a['created_time'] - (int)$b['created_time'] );
+
     if ( isset( $a['created_time'] ) ) {
         return (int)$b['created_time'] - (int)$a['created_time'];
     } else {
         return rand ( -1, 1 );
     }
+
 }
 
 function sbi_set_expired_token() {
@@ -670,20 +666,20 @@ function sbi_get_cache() {
 	if ( ! empty( $feed_cache_transient_data ) ) {
 		$feed_cache_data = $feed_cache_transient_data;
 	} elseif ( ! isset( $options['check_api'] ) || $options['check_api'] === 'on' || $options['check_api'] === true ) {
-		$feed_cache_data = '{%22error%22:%22tryfetch%22}';
+		$feed_cache_data = '{"error":"tryfetch"}';
 	} elseif ( !get_transient( 'sbi_doing_tryfetch_once' ) && $backups_enabled ) {
 		set_transient( 'sbi_doing_tryfetch_once', 'true', 60*60 );
-		$feed_cache_data = '{%22error%22:%22tryfetch%22}';
-		$warning_message_data = ',%22tryfetchonce%22:{%22tryfetchonce%22:%22tryfetchonce%22}';
+		$feed_cache_data = '{"error":"tryfetch"}';
+		$warning_message_data = ',"tryfetchonce":{"tryfetchonce":"tryfetchonce"}';
 	} else {
-		$feed_cache_data = '{%22error%22:%22nocache%22}';
+		$feed_cache_data = '{"error":"nocache"}';
 	}
 
 	if ( $transient_names['comments'] === 'need' ) {
 		$comment_cache_data = get_transient( 'sbinst_comment_cache' );
-		$comment_cache_data = ! empty( $comment_cache_data ) ? sbi_encode_uri( $comment_cache_data ) : '{%22error%22:%22nocache%22}';
+		$comment_cache_data = ! empty( $comment_cache_data ) ? sbi_encode_uri( $comment_cache_data ) : '{"error":"nocache"}';
 	} else {
-		$comment_cache_data = '{%22error%22:%22nocache%22}';
+		$comment_cache_data = '{"error":"nocache"}';
 	}
 
 	// maybe use backup cache
@@ -692,19 +688,19 @@ function sbi_get_cache() {
 	if ( ! empty( $header_cache_data_transient_data ) ) {
 		$header_cache_data = $header_cache_data_transient_data;
 	} elseif ( $doing_tryfetch ) {
-		$header_cache_data = '{%22error%22:%22tryfetch%22}';
+		$header_cache_data = '{"error":"tryfetch"}';
 	} elseif ( !get_transient( 'sbi_doing_tryfetch_once' ) && $backups_enabled ) {
 		set_transient( 'sbi_doing_tryfetch_once', 'true', 60*60 );
-		$feed_cache_data = '{%22error%22:%22tryfetch%22}';
-		$warning_message_data = ',%22tryfetchonce%22:{%22tryfetchonce%22:%22tryfetchonce%22}';
+		$feed_cache_data = '{"error":"tryfetch"}';
+		$warning_message_data = ',"tryfetchonce":{"tryfetchonce":"tryfetchonce"}';
 	} elseif ( empty( $header_cache_data_transient_data ) || $still_using_backup ) {
 		$backup_header_cache = get_option( '!' . $transient_names['header'] );
-		$header_cache_data = ! empty( $backup_header_cache ) ? $backup_header_cache : '{%22error%22:%22nocache%22}';
+		$header_cache_data = ! empty( $backup_header_cache ) ? $backup_header_cache : '{"error":"nocache"}';
 		if ( $still_using_backup === 'falsecache' ) {
-			$warning_message_data = ',%22warning%22:{%22warning%22:%22falsecache%22}';
+			$warning_message_data = ',"warning":{"warning":"falsecache"}';
 		}
 	} else {
-		$header_cache_data = ! empty( $header_cache_data ) ? $header_cache_data : '{%22error%22:%22nocache%22}';
+		$header_cache_data = ! empty( $header_cache_data ) ? $header_cache_data : '{"error":"nocache"}';
 	}
 
 	// maybe use backup cache
@@ -712,11 +708,11 @@ function sbi_get_cache() {
 		$backup_feed_cache = get_option( '!' . $transient_names['feed'] );
 		$feed_cache_data = ! empty( $backup_feed_cache ) ? $backup_feed_cache : $feed_cache_data;
 		if ( $still_using_backup === 'falsecache' ) {
-			$warning_message_data = ',%22warning%22:{%22warning%22:%22falsecache%22}';
+			$warning_message_data = ',"warning":{"warning":"falsecache"}';
 		}
 	}
 
-	$data = '{%22header%22:' . $header_cache_data .',%22feed%22:' . $feed_cache_data . ',%22comments%22:' . $comment_cache_data . $warning_message_data . '}';
+	$data = '{"header":' . $header_cache_data .',"feed":' . $feed_cache_data . ',"comments":' . $comment_cache_data . $warning_message_data . '}';
 
 	echo $data;
 
