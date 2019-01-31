@@ -324,10 +324,14 @@ We understand that sometimes you need help, have issues or just have questions. 
 * Plus more customization options added all the time!
 
 == Changelog ==
+= 1.11 =
+* Fix: rel="noopener" added to all links that contain target="blank"
+* Fix: Https used in xlmns attribute for svgs
+
 = 1.10.2 =
 * Confirmed compatibility with the upcoming WordPress 5.0 "Gutenberg" update
 * Fix: Fixed an issue caused by some themes which affected the formatting of the 'Load More' and 'Follow' buttons
-* Fix: Fixed an occassional formatting issue with error messages due to no line-height being set
+* Fix: Fixed an occasional formatting issue with error messages due to no line-height being set
 * Fix: Minor admin UI fixes
 * Tweak: Removed mention of some Pro features which will be deprecated due to upcoming Instagram API changes
 

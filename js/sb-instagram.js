@@ -531,7 +531,7 @@ if(!sbi_js_exists){
                             //TEMPLATE:
                             imagesHTML += '<div class="sbi_item sbi_type_'+item.type+' sbi_new sbi_transition" id="sbi_'+item.id+'" data-date="'+created_time_raw+'">' +
                                     '<div class="sbi_photo_wrap">'+
-                                        '<a class="sbi_photo" href="'+item.link+'" target="_blank" data-full-res="'+item.images.standard_resolution.url+'">' + carouselTypeIcon + playBtnHtml +
+                                        '<a class="sbi_photo" href="'+item.link+'" target="_blank" rel="noopener" data-full-res="'+item.images.standard_resolution.url+'">' + carouselTypeIcon + playBtnHtml +
                                         '<img src="'+data_image+'" alt="'+captionText.replace(/<>/g, " ")+'" width="200" height="200" />' +
                                         '</a>' +
                                     '</div>' +
@@ -838,7 +838,7 @@ if(!sbi_js_exists){
                             headerStyles = '';
                         if(feedOptions.headercolor.length) headerStyles = 'style="color: #'+feedOptions.headercolor+'"';
 
-                        $header = '<a href="https://www.instagram.com/'+data.data.username+'" target="_blank" title="@'+data.data.username+'" class="sbi_header_link" '+headerStyles+'>';
+                        $header = '<a href="https://www.instagram.com/'+data.data.username+'" target="_blank" rel="noopener" title="@'+data.data.username+'" class="sbi_header_link" '+headerStyles+'>';
                         $header += '<div class="sbi_header_text">';
                         var classheader = '';
                         if( ( typeof data.data.bio !== 'undefined' && data.data.bio.length < 1 ) || feedOptions.showbio != 'true' ) classheader = ' class="sbi_no_bio"';
@@ -863,7 +863,7 @@ if(!sbi_js_exists){
                         if(feedOptions.headerstyle == 'boxed') {
                             $header += '<div class="sbi_header_bar" style="background: #'+feedOptions.headersecondarycolor+'">';
                             if(feedOptions.showbio != 'false') $header += $headerInfo;
-                            $header += '<a class="sbi_header_follow_btn" href="https://www.instagram.com/'+data.data.username+'" target="_blank" style="color: #'+feedOptions.headercolor+'; background: #'+feedOptions.headerprimarycolor+';"><i class="sbi_new_logo"></i><span></span></div></div>';
+                            $header += '<a class="sbi_header_follow_btn" href="https://www.instagram.com/'+data.data.username+'" target="_blank" rel="noopener" style="color: #'+feedOptions.headercolor+'; background: #'+feedOptions.headerprimarycolor+';"><i class="sbi_new_logo"></i><span></span></div></div>';
                         }
 
                         //Add the header to the feed
@@ -924,7 +924,7 @@ if(!sbi_js_exists){
 
                                             if( sbiErrorResponse.indexOf('access_token') > -1 ){
                                                 sbiErrorMsg += '<p><b>Error: Access Token is not valid or has expired</b><br /><span>This error message is only visible to WordPress admins</span></p>';
-                                                sbiErrorDir = "<p>There's an issue with the Instagram Access Token that you are using. Please obtain a new Access Token on the plugin's Settings page.<br />If you continue to have an issue with your Access Token then please see <a href='https://smashballoon.com/my-instagram-access-token-keep-expiring/' target='_blank'>this FAQ</a> for more information.</p>";
+                                                sbiErrorDir = "<p>There's an issue with the Instagram Access Token that you are using. Please obtain a new Access Token on the plugin's Settings page.<br />If you continue to have an issue with your Access Token then please see <a href='https://smashballoon.com/my-instagram-access-token-keep-expiring/' target='_blank' rel='noopener'>this FAQ</a> for more information.</p>";
                                                 jQuery('#sb_instagram').empty().append( '<p style="text-align: center;">Unable to show Instagram photos</p><div id="sbi_mod_error">' + sbiErrorMsg + sbiErrorDir + '</div>');
                                                 sbiAddTokenToExpiredList(sb_instagram_js_options.sb_instagram_at,transientName);
                                                 var submittedData = {
@@ -945,7 +945,7 @@ if(!sbi_js_exists){
                                             } else if( sbiErrorResponse.indexOf('retired') > -1 ){
 
                                                 sbiErrorMsg += '<p><b>No longer possible to display this feed</b><br /><span>This error message is only visible to WordPress admins</span></p>';
-                                                sbiErrorDir = "<p>Due to changes in the Instagram API, it is no longer possible to display a feed from an Instagram account which is not your own. You can now only display your own Instagram account. Please see <a href='https://smashballoon.com/instagram-api-changes-april-4-2018/' target='_blank'>this post</a> for more information.</p>";
+                                                sbiErrorDir = "<p>Due to changes in the Instagram API, it is no longer possible to display a feed from an Instagram account which is not your own. You can now only display your own Instagram account. Please see <a href='https://smashballoon.com/instagram-api-changes-april-4-2018/' target='_blank' rel='noopener'>this post</a> for more information.</p>";
                                                 jQuery('#sb_instagram').empty().append( '<p style="text-align: center;">Unable to show Instagram photos</p><div id="sbi_mod_error">' + sbiErrorMsg + sbiErrorDir + '</div>');
                                                 return;
 
@@ -976,7 +976,7 @@ if(!sbi_js_exists){
                                             } else if( sbiErrorResponse.indexOf('user does not exist') > -1 || sbiErrorResponse.indexOf('you cannot view this resource') > -1 ){
                                                 window.sbiFeedMeta[$i].error = {
                                                     errorMsg    : '<p><b>Error: User ID <span class="sbiErrorIds">'+window.sbiFeedMeta[$i].idsInFeed[index]+'</span> does not exist, is invalid, or is private</b><br /><span>This error is only visible to WordPress admins</span>',
-                                                    errorDir    : "<p>Please double check that the Instagram User ID you are using is valid and not from a private account. To find your User ID simply enter your Instagram user name into this <a href='https://smashballoon.com/instagram-feed/find-instagram-user-id/' target='_blank'>tool</a>.</p>"
+                                                    errorDir    : "<p>Please double check that the Instagram User ID you are using is valid and not from a private account. To find your User ID simply enter your Instagram user name into this <a href='https://smashballoon.com/instagram-feed/find-instagram-user-id/' target='_blank' rel='noopener'>tool</a>.</p>"
                                                 };
                                                 if (!$self.find('#sbi_mod_error').length) {
                                                     $self.prepend('<div id="sbi_mod_error">'+window.sbiFeedMeta[$i].error.errorMsg+window.sbiFeedMeta[$i].error.errorDir+'</div>');
