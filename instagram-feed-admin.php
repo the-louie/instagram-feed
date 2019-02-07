@@ -1,11 +1,17 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+function sbi_add_caps() {
+	global $wp_roles;
+	$wp_roles->add_cap( 'administrator', 'manage_instagram_feed_options' );
+}
+add_action( 'admin_init', 'sbi_add_caps' );
+
 function sb_instagram_menu() {
     add_menu_page(
         __( 'Instagram Feed', 'instagram-feed' ),
         __( 'Instagram Feed', 'instagram-feed' ),
-        'manage_options',
+        'manage_instagram_feed_options',
         'sb-instagram-feed',
         'sb_instagram_settings_page'
     );
@@ -13,7 +19,7 @@ function sb_instagram_menu() {
         'sb-instagram-feed',
         __( 'Settings', 'instagram-feed' ),
         __( 'Settings', 'instagram-feed' ),
-        'manage_options',
+        'manage_instagram_feed_options',
         'sb-instagram-feed',
         'sb_instagram_settings_page'
     );

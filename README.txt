@@ -325,6 +325,7 @@ We understand that sometimes you need help, have issues or just have questions. 
 
 == Changelog ==
 = 1.11 =
+* New: Added capability "manage_instagram_feed_options" to support customizations that will allow users/roles other than the administrator to access Instagram Feed settings pages.
 * Fix: rel="noopener" added to all links that contain target="blank"
 * Fix: Https used in xlmns attribute for svgs
 * Fix: Fixed issues with strings in the admin area being translatable
