@@ -1521,11 +1521,6 @@ function sb_instagram_settings_page() {
                 </tr>
 
                 <tr class="sbi_table_header"><td colspan=3><?php _e("Configure Options", 'instagram-feed'); ?></td></tr>
-                <tr>
-                    <td>accesstoken</td>
-                    <td><?php _e('Your Instagram Access Token. Separate multiple using commas.', 'instagram-feed'); ?></td>
-                    <td><code>[instagram-feed accesstoken="XXXXXXXXXX"]</code></td>
-                </tr>
                 <tr class="sbi_pro">
                     <td>type</td>
                     <td><?php _e("Display photos from a User ID (user)<br />Display posts from a Hashtag (hashtag)", 'instagram-feed'); ?></td>
