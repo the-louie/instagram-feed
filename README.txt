@@ -327,6 +327,7 @@ We understand that sometimes you need help, have issues or just have questions. 
 = 1.11 =
 * Fix: rel="noopener" added to all links that contain target="blank"
 * Fix: Https used in xlmns attribute for svgs
+* Fix: Fixed issues with strings in the admin area being translatable
 
 = 1.10.2 =
 * Confirmed compatibility with the upcoming WordPress 5.0 "Gutenberg" update
