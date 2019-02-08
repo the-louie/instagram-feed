@@ -902,6 +902,9 @@ function sb_instagram_activate() {
 	$options[ 'sb_instagram_show_follow_btn' ] = true;
     update_option( 'sb_instagram_settings', $options );
 	delete_option( 'sb_expired_tokens' );
+
+	global $wp_roles;
+	$wp_roles->add_cap( 'administrator', 'manage_instagram_feed_options' );
 }
 register_activation_hook( __FILE__, 'sb_instagram_activate' );
 
@@ -936,5 +939,8 @@ function sb_instagram_uninstall()
         FROM $table_name
         WHERE `option_name` LIKE ('%\_transient\_timeout\_&sbi\_%')
         " );
+
+	global $wp_roles;
+	$wp_roles->remove_cap( 'administrator', 'manage_instagram_feed_options' );
 }
 register_uninstall_hook( __FILE__, 'sb_instagram_uninstall' );

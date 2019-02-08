@@ -8,10 +8,12 @@ function sbi_add_caps() {
 add_action( 'admin_init', 'sbi_add_caps' );
 
 function sb_instagram_menu() {
+    $cap = current_user_can( 'manage_instagram_feed_options' ) ? 'manage_instagram_feed_options' : 'manage_options';
+
     add_menu_page(
         __( 'Instagram Feed', 'instagram-feed' ),
         __( 'Instagram Feed', 'instagram-feed' ),
-        'manage_instagram_feed_options',
+	    $cap,
         'sb-instagram-feed',
         'sb_instagram_settings_page'
     );
@@ -19,7 +21,7 @@ function sb_instagram_menu() {
         'sb-instagram-feed',
         __( 'Settings', 'instagram-feed' ),
         __( 'Settings', 'instagram-feed' ),
-        'manage_instagram_feed_options',
+	    $cap,
         'sb-instagram-feed',
         'sb_instagram_settings_page'
     );
