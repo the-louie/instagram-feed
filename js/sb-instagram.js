@@ -1126,6 +1126,11 @@ if(!sbi_js_exists){
                             success: function(data) {
                                 var jsonobj = {};
                                 if (data.trim().indexOf('{') === 0) {
+                                    if ( data.indexOf('{%22') > -1 || data.indexOf('%7B%22') > -1 ) {
+                                        //Decode the JSON to that it can be used again
+                                        data = decodeURI(data);
+                                    }
+
                                     //Replace any escaped single quotes as it results in invalid JSON
                                     data = data.replace(/\\'/g, "'");
                                     //Convert the cached JSON string back to a JSON object
