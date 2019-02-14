@@ -2,7 +2,7 @@
 Contributors: smashballoon, craig-at-smash-balloon
 Tags: Instagram, Instagram feed, Instagram photos, Instagram widget, Instagram gallery
 Requires at least: 3.0
-Tested up to: 5.0
+Tested up to: 5.1
 Stable tag: 1.11.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -333,6 +333,7 @@ We understand that sometimes you need help, have issues or just have questions. 
 * Fix: rel="noopener" added to all links that contain target="blank"
 * Fix: HTTPS used in xlmns attribute for svgs
 * Fix: Fixed issues with strings in the admin area being translatable
+* Fix: Fixed a potential security vulnerability. Thanks to [Martin Verreault](https://egyde.ca/) for reporting the issue.
 
 = 1.10.2 =
 * Confirmed compatibility with the upcoming WordPress 5.0 "Gutenberg" update
