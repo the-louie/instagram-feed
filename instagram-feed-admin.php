@@ -2442,6 +2442,18 @@ function sbi_get_connected_accounts_data( $sb_instagram_at ) {
 	return $return;
 }
 
+function sbi_after_connection() {
+
+    if ( isset( $_POST['access_token'] ) ) {
+	    $access_token = sanitize_text_field( $_POST['access_token'] );
+	    $account_info = 	sbi_account_data_for_token( $access_token );
+        echo json_encode( $account_info );
+    }
+
+    die();
+}
+add_action( 'wp_ajax_sbi_after_connection', 'sbi_after_connection' );
+
 // variables to define certain terms
 $transient = 'instagram_feed_rating_notice_waiting';
 $option = 'sbi_rating_notice';
