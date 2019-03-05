@@ -515,7 +515,7 @@ function sb_instagram_settings_page() {
                                 <div class="sbi_col sbi_two">
 
                                     <p class="sbi_pro_tooltip"><?php _e( 'Upgrade to the Pro version to display hashtag feeds', 'instagram-feed' ); ?><i class="fa fa-caret-down" aria-hidden="true"></i></p>
-                                    <a href="https://smashballoon.com/instagram-feed/?utm_source=plugin-free&utm_campaign=sbi" target="_blank" class="sbi_lock"><i class="fa fa-rocket"></i>Pro</a>
+                                    <a href="https://smashballoon.com/instagram-feed/?utm_source=plugin-free&utm_campaign=sbi" target="_blank" class="sbi_lock"><i class="fa fa-rocket"></i><?php _e('Pro', 'instagram-feed'); ?></a>
 
                                     <input readonly type="text" size="25" style="height: 32px; top: -2px; position: relative; box-shadow: none;" />
                                     &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed' ); ?></a>
@@ -652,7 +652,7 @@ function sb_instagram_settings_page() {
             );
             ?>
             <tr valign="top">
-                <th scope="row" class="sbi_pro"><label title="Click for shortcode option">Layout Type</label><br /><span class="sbi_note" style="margin: 5px 0 0 0; font-weight: normal;"><?php _e('Select a layout to see associated<br />options', 'instagram-feed'); ?></span></th>
+                <th scope="row" class="sbi_pro"><label title="<?php _e('Click for shortcode option', 'instagram-feed'); ?>"><?php _e('Layout Type', 'instagram-feed'); ?></label><br /><span class="sbi_note" style="margin: 5px 0 0 0; font-weight: normal;"><?php _e('Select a layout to see associated<br />options', 'instagram-feed'); ?></span></th>
                 <td>
                     <div class="sbi_layouts">
     	                <?php foreach( $layout_types as $layout_type => $label ) : ?>
@@ -718,7 +718,8 @@ function sb_instagram_settings_page() {
                                 <label><?php _e('Interval Time', 'instagram-feed'); ?></label><code class="sbi_shortcode"> carouseltime
                                     Eg: carouseltime=8000</code>
                                 <br>
-                                <input name="sb_instagram_carousel_interval" type="text" value="5000" size="6">miliseconds                                </div>
+                                <input name="sb_instagram_carousel_interval" type="text" value="5000" size="6"><?php _e("miliseconds", 'instagram-feed'); ?>
+                            </div>
                         </div>
 
                         <div class="sb_instagram_layout_settings sbi_layout_type_highlight">
@@ -969,7 +970,7 @@ function sb_instagram_settings_page() {
             <table class="form-table">
                 <tbody>
                     <tr valign="top" class="sbi_pro">
-                        <th scope="row"><label><?php _e("Enable Carousel"); ?></label></th>
+                        <th scope="row"><label><?php _e("Enable Carousel", 'instagram-feed'); ?></label></th>
                         <td>
                             <input type="checkbox" disabled />
                             &nbsp;<a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e("What is this?", 'instagram-feed'); ?></a>
@@ -1347,7 +1348,7 @@ function sb_instagram_settings_page() {
 
         <p style="padding-bottom: 18px;">
             <a href="https://smashballoon.com/instagram-feed/?utm_source=plugin-free&utm_campaign=sbi" target="_blank"><?php _e('Upgrade to Pro to enable Moderation options', 'instagram-feed'); ?></a><br />
-            <a href="javascript:void(0);" class="button button-secondary sbi-show-pro"><b>+</b> <?php _e('Show Pro Options', 'instagram-feed'); ?>Show Pro Options</a>
+            <a href="javascript:void(0);" class="button button-secondary sbi-show-pro"><b>+</b> <?php _e('Show Pro Options', 'instagram-feed'); ?></a>
         </p>
 
         <div class="sbi-pro-options" style="margin-top: -15px;">
@@ -1578,9 +1579,9 @@ function sb_instagram_settings_page() {
                 </tr>
 
                 <tr class="sbi_table_header"><td colspan=3><?php _e("Layout Options", 'instagram-feed'); ?></td></tr>
-                <tr>
+                <tr class="sbi_pro">
                     <td>layout</td>
-                    <td><?php _e("How posts are arranged visually in the feed.", 'instagram-feed' ); ?> 'grid', 'carousel', 'masonry', or 'highlight'</td>
+                    <td><?php _e("How posts are arranged visually in the feed. There are four layouts: Grid, Carousel Slider, Masonry Grid, or Highlight Grid.  Options:", 'instagram-feed' ); ?> 'grid', 'carousel', 'masonry', or 'highlight'</td>
                     <td><code>[instagram-feed layout=grid]</code></td>
                 </tr>
                 <tr>
@@ -1649,7 +1650,7 @@ function sb_instagram_settings_page() {
                 <tr class="sbi_table_header"><td colspan=3><?php _e("Highlight Options", 'instagram-feed'); ?></td></tr>
                 <tr class="sbi_pro">
                     <td>highlighttype</td>
-                    <td><?php _e("Choose from 3 different ways of highlighting posts.", 'instagram-feed'); ?> 'pattern', 'hashtag', 'id'.</td>
+                    <td><?php _e("Choose from 3 different ways of highlighting posts including by pattern, hashtag, post id or. Options:", 'instagram-feed'); ?> 'pattern', 'hashtag', 'id'.</td>
                     <td><code>[instagram-feed highlighttype=hashtag]</code></td>
                 </tr>
                 <tr class="sbi_pro">
@@ -1680,7 +1681,7 @@ function sb_instagram_settings_page() {
                 </tr>
                 <tr>
                     <td>imageres</td>
-                    <td><?php _e("The resolution/size of the photos. 'auto', full', 'medium' or 'thumb'.", 'instagram-feed'); ?></td>
+                    <td><?php _e("The resolution/size of the photos including full, medium, thumbnail, and auto (based on size of image on page). Options:", 'instagram-feed'); ?> 'auto', full', 'medium' or 'thumb'.</td>
                     <td><code>[instagram-feed imageres=full]</code></td>
                 </tr>
                 <tr class="sbi_pro">
@@ -1695,7 +1696,7 @@ function sb_instagram_settings_page() {
                 </tr>
                 <tr>
                     <td>disablemobile</td>
-                    <td><?php _e("Disable the mobile layout. 'true' or 'false'.", 'instagram-feed'); ?></td>
+                    <td><?php _e("Disable the mobile layout. Options:", 'instagram-feed'); ?> 'true' or 'false'.</td>
                     <td><code>[instagram-feed disablemobile=true]</code></td>
                 </tr>
                 <tr class="sbi_pro">
@@ -1729,24 +1730,24 @@ function sb_instagram_settings_page() {
                 </tr>
                 <tr class="sbi_pro">
                     <td>hoverdisplay</td>
-                    <td><?php _e("The info to display when hovering over the photo. Available options:", 'instagram-feed'); ?><br />username, date, instagram, location, caption, likes</td>
+                    <td><?php _e("The info to display when hovering over the photo such as the user name, post date, Instagram icon, location, caption, and like counts. Options:", 'instagram-feed'); ?><br />username, date, instagram, location, caption, likes</td>
                     <td><code>[instagram-feed hoverdisplay="date, location, likes"]</code></td>
                 </tr>
 
                 <tr class="sbi_table_header"><td colspan=3><?php _e("Header Options", 'instagram-feed'); ?></td></tr>
                 <tr>
                     <td>showheader</td>
-                    <td><?php _e("Whether to show the feed Header. 'true' or 'false'.", 'instagram-feed'); ?></td>
+                    <td><?php _e("Whether to show the feed Header. Options:", 'instagram-feed'); ?> 'true' or 'false'.</td>
                     <td><code>[instagram-feed showheader=false]</code></td>
                 </tr>
                 <tr>
                     <td>showbio</td>
-                    <td><?php _e("Display the bio in the header. 'true' or 'false'."); ?></td>
+                    <td><?php _e("Display the bio in the header. Options:", 'instagram-feed'); ?> 'true' or 'false'</td>
                     <td><code>[instagram-feed showbio=true]</code></td>
                 </tr>
                 <tr>
                     <td>headersize</td>
-                    <td><?php _e("Size of the header. Choose from small, medium, or large.", 'instagram-feed'); ?></td>
+                    <td><?php _e("Size of the header including small, medium and large. Options:", 'instagram-feed'); ?> small, medium, or large.</td>
                     <td><code>[instagram-feed headersize=medium]</code></td>
                 </tr>
                 <tr>
@@ -1758,7 +1759,7 @@ function sb_instagram_settings_page() {
                 <tr class="sbi_table_header"><td colspan=3><?php _e("'Load More' Button Options", 'instagram-feed'); ?></td></tr>
                 <tr>
                     <td>showbutton</td>
-                    <td><?php _e("Whether to show the 'Load More' button. 'true' or 'false'.", 'instagram-feed'); ?></td>
+                    <td><?php _e("Whether to show the 'Load More' button. Options:", 'instagram-feed'); ?> 'true' or 'false'.</td>
                     <td><code>[instagram-feed showbutton=false]</code></td>
                 </tr>
                 <tr>
@@ -1780,7 +1781,7 @@ function sb_instagram_settings_page() {
                 <tr class="sbi_table_header"><td colspan=3><?php _e("'Follow on Instagram' Button Options", 'instagram-feed'); ?></td></tr>
                 <tr>
                     <td>showfollow</td>
-                    <td><?php _e("Whether to show the 'Follow on Instagram' button. 'true' or 'false'.", 'instagram-feed'); ?></td>
+                    <td><?php _e("Whether to show the 'Follow on Instagram' button. Options:", 'instagram-feed'); ?> 'true' or 'false'.</td>
                     <td><code>[instagram-feed showfollow=false]</code></td>
                 </tr>
                 <tr>
@@ -1802,7 +1803,7 @@ function sb_instagram_settings_page() {
                 <tr class="sbi_table_header"><td colspan=3><?php _e("Caption Options", 'instagram-feed'); ?></td></tr>
                 <tr class="sbi_pro">
                     <td>showcaption</td>
-                    <td><?php _e("Whether to show the photo caption. 'true' or 'false'.", 'instagram-feed'); ?></td>
+                    <td><?php _e("Whether to show the photo caption. Options:", 'instagram-feed'); ?> 'true' or 'false'.</td>
                     <td><code>[instagram-feed showcaption=false]</code></td>
                 </tr>
                 <tr class="sbi_pro">
@@ -1824,7 +1825,7 @@ function sb_instagram_settings_page() {
                 <tr class="sbi_table_header"><td colspan=3><?php _e("Likes &amp; Comments Options", 'instagram-feed'); ?></td></tr>
                 <tr class="sbi_pro">
                     <td>showlikes</td>
-                    <td><?php _e("Whether to show the Likes &amp; Comments. 'true' or 'false'.", 'instagram-feed'); ?></td>
+                    <td><?php _e("Whether to show the Likes &amp; Comments. Options:", 'instagram-feed'); ?> 'true' or 'false'.</td>
                     <td><code>[instagram-feed showlikes=false]</code></td>
                 </tr>
                 <tr class="sbi_pro">
@@ -1880,7 +1881,7 @@ function sb_instagram_settings_page() {
 		    <p>
 			    <span class="sbi-support-title"><i class="fa fa-life-ring" aria-hidden="true"></i>&nbsp; <a
 					    href="https://smashballoon.com/instagram-feed/free/?utm_source=plugin-free&utm_campaign=sbi"
-					    target="_blank"><?php _e( 'Setup Directions' ); ?></a></span>
+					    target="_blank"><?php _e( 'Setup Directions', 'instagram-feed' ); ?></a></span>
 			    <?php _e( 'A step-by-step guide on how to setup and use the plugin.', 'instagram-feed' ); ?>
 		    </p>
 
@@ -1905,7 +1906,7 @@ function sb_instagram_settings_page() {
 		    <div class="sbi-support-faqs">
 
 			    <ul>
-				    <li><b>FAQs</b></li>
+				    <li><b><?php _e( 'FAQs', 'instagram-feed' ); ?></b></li>
                     <li>&bull;&nbsp; <?php _e( '<a href="https://smashballoon.com/my-photos-wont-load/?utm_source=plugin-free&utm_campaign=sbi" target="_blank">My Instagram Feed Won\'t Load</a>', 'instagram-feed' ); ?></li>
 				    <li>&bull;&nbsp; <?php _e( '<a href="https://smashballoon.com/my-instagram-access-token-keep-expiring/?utm_source=plugin-free&utm_campaign=sbi" target="_blank">My Access Token Keeps Expiring</a>', 'instagram-feed' ); ?></li>
 				    <li style="margin-top: 8px; font-size: 12px;"><a href="https://smashballoon.com/instagram-feed/support/faq/?utm_source=plugin-free&utm_campaign=sbi" target="_blank"><?php _e( 'See All', 'instagram-feed' ); ?><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
@@ -2040,16 +2041,16 @@ var_export($sb_expired_tokens);
 
 
     <div class="sbi_quickstart">
-        <h3><i class="fa fa-rocket" aria-hidden="true"></i>&nbsp; Display your feed</h3>
-        <p>Copy and paste this shortcode directly into the page, post or widget where you'd like to display the feed:        <input type="text" value="[instagram-feed]" size="15" readonly="readonly" style="text-align: center;" onclick="this.focus();this.select()" title="To copy, click the field then press Ctrl + C (PC) or Cmd + C (Mac)."></p>
-        <p>Find out how to display <a href="?page=sb-instagram-feed&amp;tab=display">multiple feeds</a>.</p>
+        <h3><i class="fa fa-rocket" aria-hidden="true"></i>&nbsp; <?php _e('Display your feed', 'instagram-feed'); ?></h3>
+        <p><?php _e('Copy and paste this shortcode directly into the page, post or widget where you\'d like to display the feed:', 'instagram-feed'); ?>        <input type="text" value="[instagram-feed]" size="15" readonly="readonly" style="text-align: center;" onclick="this.focus();this.select()" title="To copy, click the field then press Ctrl + C (PC) or Cmd + C (Mac)."></p>
+        <p><?php _e('Find out how to display <a href="?page=sb-instagram-feed&amp;tab=display">multiple feeds</a>.', 'instagram-feed'); ?></p>
     </div>
 
     <a href="https://smashballoon.com/instagram-feed/demo/?utm_source=plugin-free&utm_campaign=sbi" target="_blank" class="sbi-pro-notice">
         <img src="<?php echo plugins_url( 'img/instagram-pro-promo.png' , __FILE__ ) ?>" alt="<?php esc_attr_e( 'Instagram Feed Pro', 'instagram-feed' ); ?>">
     </a>
 
-    <p class="sbi_plugins_promo dashicons-before dashicons-admin-plugins"> <?php _e('Check out our other free plugins:', 'instagram-feed' ); ?> <a href="https://wordpress.org/plugins/custom-facebook-feed/" target="_blank">Facebook</a> and <a href="https://wordpress.org/plugins/custom-twitter-feeds/" target="_blank">Twitter</a>.</p>
+    <p class="sbi_plugins_promo dashicons-before dashicons-admin-plugins"> <?php _e('Check out our other free plugins: <a href="https://wordpress.org/plugins/custom-facebook-feed/" target="_blank">Facebook</a> and <a href="https://wordpress.org/plugins/custom-twitter-feeds/" target="_blank">Twitter</a>.', 'instagram-feed' ); ?></p>
 
     <div class="sbi_share_plugin">
         <h3><?php _e('Like the plugin? Help spread the word!', 'instagram-feed'); ?></h3>
