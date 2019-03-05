@@ -1133,6 +1133,8 @@ if(!sbi_js_exists){
 
                                     //Replace any escaped single quotes as it results in invalid JSON
                                     data = data.replace(/\\'/g, "'");
+                                    data = data.replace(/\\'/g, "'");
+
                                     //Convert the cached JSON string back to a JSON object
                                     jsonobj = JSON.parse( data.trim() );
                                 }
