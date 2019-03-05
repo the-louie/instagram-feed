@@ -326,6 +326,7 @@ We understand that sometimes you need help, have issues or just have questions. 
 == Changelog ==
 = 1.11.3 =
 * Fix: Escaped single quotes causing a JSON parse error under certain circumstances.
+* Fix: Translatable code errors in the admin area causing some text to not be translatable.
 
 = 1.11.2 =
 * Fix: Unable to connect new accounts due to changes with Instagram's API. Remote requests to connect accounts are now made server-side.
