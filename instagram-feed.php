@@ -292,6 +292,11 @@ function display_instagram($atts, $content = null) {
 	$feed_expires = get_option( '_transient_timeout_'.$sbi_transient_name );
 	$sbi_cache_exists = $feed_expires !== false && ($feed_expires - time()) > 60 ? 'true' : 'false';
 
+	if ( $sbi_cache_exists === 'false' ) {
+		$sbi_cache_exists = 'true';
+		sbi_pre_cache_photos( $sbi_transient_name, trim($atts['num']), $the_token_array );
+	}
+
 	$sbiHeaderCache = 'false';
 	//If it's a user then add the header cache check to the feed
 	$sb_instagram_user_id_arr = explode(',', $sb_instagram_user_id);
@@ -302,6 +307,11 @@ function display_instagram($atts, $content = null) {
 	$header_expires = get_option( '_transient_timeout_'.$sbi_header_transient_name );
 	$sbi_header_cache_exists = $header_expires !== false && ($header_expires - time()) > 60 ? 'true' : 'false';
 	$sbiHeaderCache = $sbi_header_cache_exists;
+
+	if ( $sbi_header_cache_exists === 'false' ) {
+		sbi_pre_cache_photos( $sbi_header_transient_name, 1, array( $access_token ) );
+		$sbiHeaderCache = 'true';
+	}
 
 	if ( isset( $options['check_api'] ) && ( $options['check_api'] === 'on' || $options['check_api']) && ( !isset( $options['sb_instagram_cache_time'] ) || ( isset( $options['sb_instagram_cache_time'] ) && (int)$options['sb_instagram_cache_time'] > 0 ) ) ) {
 		if ( ! get_transient( '&'.$sbi_transient_name, false ) ) {
@@ -355,7 +365,6 @@ function display_instagram($atts, $content = null) {
     $sb_instagram_ajax_theme = $atts['ajaxtheme'];
     ( $sb_instagram_ajax_theme == 'on' || $sb_instagram_ajax_theme == 'true' || $sb_instagram_ajax_theme == true ) ? $sb_instagram_ajax_theme = true : $sb_instagram_ajax_theme = false;
     if( $atts[ 'disablemobile' ] === 'false' ) $sb_instagram_ajax_theme = false;
-
 
     /******************* CONTENT ********************/
 
@@ -456,7 +465,7 @@ function sbi_should_use_backup_cache( $token, $cache_name, $is_filtered, $always
 	return false;
 }
 
-function sbi_cache_photos() {
+function sbi_pre_cache_photos( $transient, $num_images, $tokens ) {
 	$sb_instagram_settings = get_option('sb_instagram_settings');
 
 	//If the caching time doesn't exist in the database then set it to be 1 hour
@@ -469,18 +478,18 @@ function sbi_cache_photos() {
 	if($sb_instagram_cache_time_unit == 'days') $sb_instagram_cache_time_unit = 60*60*24;
 	$cache_seconds = intval($sb_instagram_cache_time) * intval($sb_instagram_cache_time_unit);
 
-	$transient_name = $_POST['transientName'];
+	$transient_name = $transient;
 	if ( is_array( $transient_name ) ) {
 		$transient_name = isset( $transient_name['feed'] ) ? sanitize_text_field( $transient_name['feed'] ) : 'sbi_other';
 	}
 
 	$cache_type = strpos( $transient_name, 'sbi_header_' ) !== 0 ? 'feed' : 'header';
-	$num_images = isset( $_POST['num_images'] ) ? (int)$_POST['num_images'] : 33;
+	$num_images = isset( $num_images ) ? (int)$num_images : 33;
 
 	if ( $num_images > 0 ) {
-	    $feed_tokens = isset( $_POST['feed_tokens'] ) ? $_POST['feed_tokens'] : array();
-	    $new_cache = ! empty( $feed_tokens ) ? sbi_get_post_data_from_tokens( $feed_tokens, $cache_type, $num_images ) : '';
-        echo $new_cache;
+		$feed_tokens = $tokens ? $tokens : array();
+		$new_cache = ! empty( $feed_tokens ) ? sbi_get_post_data_from_tokens( $feed_tokens, $cache_type, $num_images ) : '';
+
 		set_transient( $transient_name, $new_cache, $cache_seconds );
 
 		$backups_enabled = isset( $sb_instagram_settings['sb_instagram_backup'] ) ? $sb_instagram_settings['sb_instagram_backup'] !== '' : true;
@@ -494,14 +503,7 @@ function sbi_cache_photos() {
 		}
 
 	}
-
-	if ( strlen( $new_cache ) < 2000 && strpos( $transient_name, 'sbi_header_' ) !== 0 && get_option( '!'.$transient_name ) ) {
-		echo 'too much filtering';
-	}
-
 }
-add_action('wp_ajax_cache_photos', 'sbi_cache_photos');
-add_action('wp_ajax_nopriv_cache_photos', 'sbi_cache_photos');
 
 function sbi_get_post_data_from_tokens( $access_tokens = array(), $cache_type = 'feed', $num_needed = 33 ) {
     $images = array();

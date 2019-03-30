@@ -1282,7 +1282,7 @@ if(!sbi_js_exists){
                     return;
                 }
             };
-            jQuery.ajax(setCacheOpts);
+            //jQuery.ajax(setCacheOpts);
         }
 
     }
