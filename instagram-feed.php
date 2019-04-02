@@ -292,7 +292,7 @@ function display_instagram($atts, $content = null) {
 	$feed_expires = get_option( '_transient_timeout_'.$sbi_transient_name );
 	$sbi_cache_exists = $feed_expires !== false && ($feed_expires - time()) > 60 ? 'true' : 'false';
 
-	if ( $sbi_cache_exists === 'false' ) {
+	if ( $sbi_cache_exists === 'false'  && isset( $access_token ) ) {
 		$sbi_cache_exists = 'true';
 		sbi_pre_cache_photos( $sbi_transient_name, trim($atts['num']), $the_token_array );
 	}
@@ -308,7 +308,7 @@ function display_instagram($atts, $content = null) {
 	$sbi_header_cache_exists = $header_expires !== false && ($header_expires - time()) > 60 ? 'true' : 'false';
 	$sbiHeaderCache = $sbi_header_cache_exists;
 
-	if ( $sbi_header_cache_exists === 'false' ) {
+	if ( $sbi_header_cache_exists === 'false' && isset( $access_token ) ) {
 		sbi_pre_cache_photos( $sbi_header_transient_name, 1, array( $access_token ) );
 		$sbiHeaderCache = 'true';
 	}
