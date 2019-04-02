@@ -488,17 +488,19 @@ function sbi_pre_cache_photos( $transient, $num_images, $tokens ) {
 
 	if ( $num_images > 0 ) {
 		$feed_tokens = $tokens ? $tokens : array();
-		$new_cache = ! empty( $feed_tokens ) ? sbi_get_post_data_from_tokens( $feed_tokens, $cache_type, $num_images ) : '';
+		$new_cache = ! empty( $feed_tokens ) ? sbi_get_post_data_from_tokens( $feed_tokens, $cache_type, $num_images ) : '{"meta": {"code": 400, "error_type": "OAuthAccessTokenException", "error_message": "The access_token provided is invalid."}}"';
 
-		set_transient( $transient_name, $new_cache, $cache_seconds );
+		if ( ! is_wp_error( $new_cache ) ) {
+			set_transient( $transient_name, $new_cache, $cache_seconds );
 
-		$backups_enabled = isset( $sb_instagram_settings['sb_instagram_backup'] ) ? $sb_instagram_settings['sb_instagram_backup'] !== '' : true;
+			$backups_enabled = isset( $sb_instagram_settings['sb_instagram_backup'] ) ? $sb_instagram_settings['sb_instagram_backup'] !== '' : true;
 
-		if ( $backups_enabled ) {
-			if ( strlen( $new_cache ) > 1999 && strpos( $transient_name, 'sbi_header_' ) !== 0 ) {
-				update_option( '!'.$transient_name, $new_cache, false );
-			} elseif ( strpos( $transient_name, 'sbi_header_' ) === 0 ) {
-				update_option( '!'.$transient_name, $new_cache, false );
+			if ( $backups_enabled ) {
+				if ( strlen( $new_cache ) > 1999 && strpos( $transient_name, 'sbi_header_' ) !== 0 ) {
+					update_option( '!'.$transient_name, $new_cache, false );
+				} elseif ( strpos( $transient_name, 'sbi_header_' ) === 0 ) {
+					update_option( '!'.$transient_name, $new_cache, false );
+				}
 			}
 		}
 
@@ -536,13 +538,15 @@ function sbi_cache_photos() {
 		$feed_tokens = isset( $_POST['feed_tokens'] ) ? $_POST['feed_tokens'] : array();
 		$new_cache = ! empty( $feed_tokens ) ? sbi_get_post_data_from_tokens( $feed_tokens, $cache_type, $num_images, $existing_cache_decoded ) : '';
 
-		set_transient( $transient_name, $new_cache, $cache_seconds );
-		$backups_enabled = isset( $sb_instagram_settings['sb_instagram_backup'] ) ? $sb_instagram_settings['sb_instagram_backup'] !== '' : true;
-		if ( $backups_enabled ) {
-			if ( strlen( $new_cache ) > 1999 && strpos( $transient_name, 'sbi_header_' ) !== 0 ) {
-				update_option( '!'.$transient_name, $new_cache, false );
-			} elseif ( strpos( $transient_name, 'sbi_header_' ) === 0 ) {
-				update_option( '!'.$transient_name, $new_cache, false );
+		if ( ! is_wp_error( $new_cache ) ) {
+			set_transient( $transient_name, $new_cache, $cache_seconds );
+			$backups_enabled = isset( $sb_instagram_settings['sb_instagram_backup'] ) ? $sb_instagram_settings['sb_instagram_backup'] !== '' : true;
+			if ( $backups_enabled ) {
+				if ( strlen( $new_cache ) > 1999 && strpos( $transient_name, 'sbi_header_' ) !== 0 ) {
+					update_option( '!' . $transient_name, $new_cache, false );
+				} elseif ( strpos( $transient_name, 'sbi_header_' ) === 0 ) {
+					update_option( '!' . $transient_name, $new_cache, false );
+				}
 			}
 		}
 	}
@@ -565,7 +569,7 @@ function sbi_get_post_data_from_tokens( $access_tokens = array(), $cache_type = 
 		$pagination = array(
 			'next_url' => $existing_cache['pagination']['next_url']
 		);
-		$images = $existing_cache['data'];
+		$images = isset( $existing_cache['data'] ) ? $existing_cache['data'] : array();
 	}
 
 	if ( empty( $pagination['next_url'] ) ) {
@@ -585,18 +589,21 @@ function sbi_get_post_data_from_tokens( $access_tokens = array(), $cache_type = 
 			$result = wp_remote_get( $api_call, $args );
 			if ( ! is_wp_error( $result ) ) {
 				$decoded_results = json_decode( $result['body'], true );
-				$num_images_returned = 0;
-				if ( is_array( $decoded_results['data'] ) ) {
+
+				if ( isset( $decoded_results['data'] ) && is_array( $decoded_results['data'] ) ) {
 					$num_images_returned = count( $decoded_results['data'] );
+					$num_images_overall += $num_images_returned;
+					$images = array_merge( $images, $decoded_results['data'] );
+					if ( !empty( $decoded_results['pagination']['next_url'] ) ) {
+						$pagination['next_url'][] = $decoded_results['pagination']['next_url'];
+					}
+				} else {
+					return $result['body'];
 				}
-				$num_images_overall += $num_images_returned;
-				$images = array_merge( $images, $decoded_results['data'] );
-				if ( !empty( $decoded_results['pagination']['next_url'] ) ) {
-					$pagination['next_url'][] = $decoded_results['pagination']['next_url'];
-				}
+
 			} else {
 				// error
-				return json_encode( $result );
+				return $result;
 			}
 		}
 	}
@@ -615,17 +622,20 @@ function sbi_get_post_data_from_tokens( $access_tokens = array(), $cache_type = 
             if ( ! is_wp_error( $result ) ) {
                 $decoded_results = json_decode( $result['body'], true );
                 $num_images_returned = 0;
-                if ( is_array( $decoded_results['data'] ) ) {
+	            if ( isset( $decoded_results['data'] ) && is_array( $decoded_results['data'] ) ) {
                     $num_images_returned = count( $decoded_results['data'] );
-                }
-                $num_images_overall += $num_images_returned;
-                $images = array_merge( $images, $decoded_results['data'] );
-                if ( !empty( $decoded_results['pagination']['next_url'] ) ) {
-                    $pagination['next_url'][] = $decoded_results['pagination']['next_url'];
-                }
+		            $num_images_overall += $num_images_returned;
+		            $images = array_merge( $images, $decoded_results['data'] );
+		            if ( !empty( $decoded_results['pagination']['next_url'] ) ) {
+			            $pagination['next_url'][] = $decoded_results['pagination']['next_url'];
+		            }
+                } else {
+		            return $result['body'];
+	            }
+
             } else {
                 // error
-                return json_encode( $result );
+                return $result;
             }
 
         }
@@ -750,6 +760,7 @@ function sbi_get_cache() {
 	// maybe use backup cache
 	$still_using_backup = get_transient( '&'.$transient_names['feed'], false );
 	$doing_tryfetch = (isset( $options['check_api'] ) && $options['check_api'] === 'on' || $options['check_api']);
+	$header_cache_data = '{"error":"nocache"}';
 	if ( ! empty( $header_cache_data_transient_data ) ) {
 		$header_cache_data = $header_cache_data_transient_data;
 	} elseif ( $doing_tryfetch ) {
@@ -762,7 +773,7 @@ function sbi_get_cache() {
 		$backup_header_cache = get_option( '!' . $transient_names['header'] );
 		$header_cache_data = ! empty( $backup_header_cache ) ? $backup_header_cache : '{"error":"nocache"}';
 		if ( strpos( $header_cache_data, '{"pagination":' ) !== 0 ) {
-			$header_cache_data = false;
+			$header_cache_data = '{"error":"nocache"}';
 		}
 		if ( $still_using_backup === 'falsecache' ) {
 			$warning_message_data = ',"warning":{"warning":"falsecache"}';

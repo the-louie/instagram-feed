@@ -2486,16 +2486,20 @@ function sbi_after_connection() {
 }
 add_action( 'wp_ajax_sbi_after_connection', 'sbi_after_connection' );
 
-// variables to define certain terms
-$transient = 'instagram_feed_rating_notice_waiting';
-$option = 'sbi_rating_notice';
-$nag = 'sbi_ignore_rating_notice_nag';
+function sbi_process_admin_notices() {
+	// variables to define certain terms
+	$transient = 'instagram_feed_rating_notice_waiting';
+	$option = 'sbi_rating_notice';
+	$nag = 'sbi_ignore_rating_notice_nag';
 
-sbi_check_nag_get( $_GET, $nag, $option, $transient );
-sbi_maybe_set_transient( $transient, $option );
-$notice_status = get_option( $option, false );
+	sbi_check_nag_get( $_GET, $nag, $option, $transient );
+	sbi_maybe_set_transient( $transient, $option );
+	$notice_status = get_option( $option, false );
 
 // only display the notice if the time offset has passed and the user hasn't already dismissed it
-if ( get_transient( $transient ) !== 'waiting' && $notice_status !== 'dismissed' ) {
-    add_action( 'admin_notices', 'sbi_rating_notice_html' );
+	if ( get_transient( $transient ) !== 'waiting' && $notice_status !== 'dismissed' ) {
+		add_action( 'admin_notices', 'sbi_rating_notice_html' );
+	}
 }
+add_action( 'admin_init', 'sbi_process_admin_notices' );
+
