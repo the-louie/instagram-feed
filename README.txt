@@ -324,8 +324,9 @@ We understand that sometimes you need help, have issues or just have questions. 
 * Plus more customization options added all the time!
 
 == Changelog ==
-= 1.12 =
+= 1.11.4 =
 * Tweak: Data for the feed is cached outside of the admin-ajax.php calls.
+* Fix: Fixed an issue caused by a bug in the Instagram API which was preventing some Instagram accounts from being able to be connected. If you experienced an issue connecting an Instagram account then please try again after updating.
 
 = 1.11.3 =
 * Fix: Escaped single quotes causing a JSON parse error under certain circumstances.
