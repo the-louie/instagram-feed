@@ -587,8 +587,9 @@ function sbi_get_post_data_from_tokens( $access_tokens = array(), $cache_type = 
 				'sslverify' => false
 			);
 			$result = wp_remote_get( $api_call, $args );
+
 			if ( ! is_wp_error( $result ) ) {
-				$decoded_results = json_decode( $result['body'], true );
+				$decoded_results = json_decode( str_replace( '%22', '&rdquo;', $result['body'] ), true );
 
 				if ( isset( $decoded_results['data'] ) && is_array( $decoded_results['data'] ) ) {
 					$num_images_returned = count( $decoded_results['data'] );
@@ -620,7 +621,7 @@ function sbi_get_post_data_from_tokens( $access_tokens = array(), $cache_type = 
             );
             $result = wp_remote_get( $api_call, $args );
             if ( ! is_wp_error( $result ) ) {
-                $decoded_results = json_decode( $result['body'], true );
+                $decoded_results = json_decode( str_replace( '%20', '&rdquo;', $result['body'] ), true );
                 $num_images_returned = 0;
 	            if ( isset( $decoded_results['data'] ) && is_array( $decoded_results['data'] ) ) {
                     $num_images_returned = count( $decoded_results['data'] );
