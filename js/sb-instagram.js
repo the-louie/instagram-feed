@@ -572,6 +572,16 @@ if(!sbi_js_exists){
                                     $sbi_item_transition_el.removeClass('sbi_transition');
                                 }, time)
                                 time += 10;
+
+                                $sbi_item_transition_el.find('.sbi_photo').find('img').on('error', function () {
+                                    if (!jQuery(this).hasClass('sbi_img_error')) {
+                                        jQuery(this).addClass('sbi_img_error');
+                                        if (jQuery(this).closest('.sbi_photo').attr('href') !== 'undefined') {
+                                            jQuery(this).attr('src', jQuery(this).closest('.sbi_photo').attr('href') + 'media?size=m');
+                                            jQuery(this).closest('.sbi_photo').css('background-image', 'url(' + jQuery(this).closest('.sbi_photo').attr('href') + 'media?size=m)');
+                                        }
+                                    }
+                                });
                             });
 
                             imagesHTML = '';
