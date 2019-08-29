@@ -16,7 +16,7 @@ $header_padding = (int)$settings['imagepadding'] > 0 ? 'padding: '.(int)$setting
 $username = SB_Instagram_Parse::get_username( $header_data );
 $avatar = SB_Instagram_Parse::get_avatar( $header_data, $settings );
 $name = SB_Instagram_Parse::get_name( $header_data );
-$header_text_color_style = SB_Instagram_Display_Elements::get_header_text_color_styles( $settings ); // style="color: #517fa4;"
+$header_text_color_style = SB_Instagram_Display_Elements::get_header_text_color_styles( $settings ); // style="color: #517fa4;" already escaped
 
 ?>
 <div class="sb_instagram_header" style="<?php echo $header_padding; ?>padding-bottom: 0;">

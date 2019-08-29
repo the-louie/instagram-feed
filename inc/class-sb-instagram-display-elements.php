@@ -148,7 +148,7 @@ class SB_Instagram_Display_Elements
 				$padding_percent = $settings['imagepadding'] > 0 ? 100 - ($settings['cols'] / 2 * $settings['imagepadding'] / 5) : 100;
 				$padding_bottom = $padding_percent . '%';
 			}
-			return ' style="background-image: url(&quot;' . $full_res_image . '&quot;); background-size: cover; background-position: center center; background-repeat: no-repeat; opacity: 1;height: 0;padding-bottom: '.$padding_bottom.';"';
+			return ' style="background-image: url(&quot;' . esc_url( $full_res_image ) . '&quot;); background-size: cover; background-position: center center; background-repeat: no-repeat; opacity: 1;height: 0;padding-bottom: ' . esc_attr( $padding_bottom ) . ';"';
 		}
 	}
 
@@ -194,7 +194,7 @@ class SB_Instagram_Display_Elements
 	 */
 	public static function get_sbi_images_style( $settings ) {
 		if ( ! empty ( $settings['imagepadding'] ) ) {
-			return 'style="padding: '.(int)$settings['imagepadding'] . $settings['imagepaddingunit'] . ';"';
+			return 'style="padding: '.(int)$settings['imagepadding'] . esc_attr( $settings['imagepaddingunit'] ) . ';"';
 		}
 		return '';
 	}

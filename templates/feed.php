@@ -10,8 +10,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
-$feed_styles = SB_Instagram_Display_Elements::get_feed_style( $settings );
-$sb_images_style = SB_Instagram_Display_Elements::get_sbi_images_style( $settings );
+$feed_styles = SB_Instagram_Display_Elements::get_feed_style( $settings ); // already escaped
+$sb_images_style = SB_Instagram_Display_Elements::get_sbi_images_style( $settings ); // already escaped
 $image_resolution_setting = $settings['imageres'];
 $cols_setting = $settings['cols'];
 $num_setting = $settings['num'];
@@ -22,7 +22,7 @@ if ( $settings['showheader'] && ! empty( $posts ) && $settings['headeroutside'] 
 }
 ?>
 
-<div id="sb_instagram" class="sbi sbi_col_<?php echo esc_attr( $cols_setting ); ?> <?php echo $additional_classes; ?>"<?php echo $feed_styles; ?> data-feedid="<?php echo esc_attr( $feed_id ); ?>" data-res="<?php echo esc_attr( $image_resolution_setting ); ?>" data-cols="<?php echo esc_attr( $cols_setting ); ?>" data-num="<?php echo esc_attr( $num_setting ); ?>" data-shortcode-atts="<?php echo esc_attr( $shortcode_atts ); ?>" <?php echo $other_atts; ?>>
+<div id="sb_instagram" class="sbi sbi_col_<?php echo esc_attr( $cols_setting ); ?> <?php echo esc_attr( $additional_classes ); ?>"<?php echo $feed_styles; ?> data-feedid="<?php echo esc_attr( $feed_id ); ?>" data-res="<?php echo esc_attr( $image_resolution_setting ); ?>" data-cols="<?php echo esc_attr( $cols_setting ); ?>" data-num="<?php echo esc_attr( $num_setting ); ?>" data-shortcode-atts="<?php echo esc_attr( $shortcode_atts ); ?>" <?php echo $other_atts; ?>>
 	<?php
 	if ( $settings['showheader'] && ! empty( $posts ) && !$settings['headeroutside'] ) {
 		include sbi_get_feed_template_part( 'header', $settings );

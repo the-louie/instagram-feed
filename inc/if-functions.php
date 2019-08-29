@@ -534,6 +534,7 @@ function sbi_get_database_settings() {
 		'sb_instagram_custom_js'            => '',
 		'sb_instagram_cron'                 => 'no',
 		'sb_instagram_backup' => true,
+		'sb_ajax_initial'    => false,
 		'enqueue_css_in_shortcode' => false,
 		'sb_instagram_disable_mob_swipe' => false,
 		'sbi_font_method' => 'svg',
