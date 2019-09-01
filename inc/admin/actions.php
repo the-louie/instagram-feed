@@ -574,26 +574,26 @@ function sbi_admin_error_notices() {
 	if ( isset( $_GET['page'] ) && in_array( $_GET['page'], array( 'sb-instagram-feed' )) ) {
 		$errors = $sb_instagram_posts_manager->get_errors();
 		if ( ! empty( $errors ) && ( isset( $errors['database_create_posts'] ) || isset( $errors['database_create_posts_feeds'] ) || isset( $errors['upload_dir'] ) || isset( $errors['ajax'] )  ) ) : ?>
-			<div class="notice notice-warning is-dismissible">
+            <div class="notice notice-warning is-dismissible sbi-admin-notice">
 
 				<?php foreach ( $sb_instagram_posts_manager->get_errors() as $type => $error ) : ?>
 					<?php if ( (in_array( $type, array( 'database_create_posts', 'database_create_posts_feeds', 'upload_dir' ) ) && !$sb_instagram_posts_manager->image_resizing_disabled() ) ) : ?>
-						<p><strong><?php echo $error[0]; ?></strong></p>
-						<p><?php _e( 'Note for support', 'instagram-feed' ); ?>: <?php echo $error[1]; ?></p>
+                        <p><strong><?php echo $error[0]; ?></strong></p>
+                        <p><?php _e( 'Note for support', 'instagram-feed' ); ?>: <?php echo $error[1]; ?></p>
 					<?php endif; ?>
 				<?php endforeach; ?>
 				<?php if ( ( isset( $errors['database_create_posts'] ) || isset( $errors['database_create_posts_feeds'] ) || isset( $errors['upload_dir'] ) ) && !$sb_instagram_posts_manager->image_resizing_disabled() ) : ?>
-					<p><?php _e( sprintf( 'Visit our %s page for help', '<a href="https://smashballoon.com/instagram-feed/support/faq/" target="_blank">FAQ</a>' ), 'instagram-feed' ); ?></p>
+                    <p><?php _e( sprintf( 'Visit our %s page for help', '<a href="https://smashballoon.com/instagram-feed/support/faq/" target="_blank">FAQ</a>' ), 'instagram-feed' ); ?></p>
 				<?php endif; ?>
 
-			<?php foreach ( $sb_instagram_posts_manager->get_errors() as $type => $error ) : ?>
-				<?php if (in_array( $type, array( 'ajax' ) )) : ?>
-					<p><strong><?php echo $error[0]; ?></strong></p>
-					<p><?php echo $error[1]; ?></p>
-				<?php endif; ?>
-			<?php endforeach; ?>
+				<?php foreach ( $sb_instagram_posts_manager->get_errors() as $type => $error ) : ?>
+					<?php if (in_array( $type, array( 'ajax' ) )) : ?>
+                        <p class="sbi-admin-error" data-sbi-type="ajax"><strong><?php echo $error[0]; ?></strong></p>
+                        <p><?php echo $error[1]; ?></p>
+					<?php endif; ?>
+				<?php endforeach; ?>
 
-			</div>
+            </div>
 
 		<?php endif;
 	}

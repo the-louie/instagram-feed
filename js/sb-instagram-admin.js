@@ -824,4 +824,29 @@ jQuery(document).ready(function($) {
         $self.siblings().removeClass('sbi_layout_selected');
     });
 
+    setTimeout( function() {
+        jQuery('.notice-dismiss').click(function() {
+            if (jQuery(this).closest('.sbi-admin-notice').length) {
+
+                if (jQuery(this).closest('.sbi-admin-notice').find('.sbi-admin-error').length) {
+
+                    var exemptErrorType = jQuery(this).closest('.sbi-admin-notice').find('.sbi-admin-error').attr('data-sbi-type');
+
+                    if (exemptErrorType === 'ajax') {
+                        jQuery.ajax({
+                            url: sbiA.ajax_url,
+                            type: 'post',
+                            data: {
+                                action : 'sbi_on_ajax_test_trigger',
+                                sbi_nonce: sbiA.sbi_nonce
+                            },
+                            success: function (data) {
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    },1500);
+
 });
