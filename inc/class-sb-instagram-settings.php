@@ -112,6 +112,7 @@ class SB_Instagram_Settings {
 		$this->settings['font_method'] = isset( $db['sbi_font_method'] ) ? $db['sbi_font_method'] : 'svg';
 		$this->settings['headeroutside'] = ($this->settings['headeroutside'] === true || $this->settings['headeroutside'] === 'on' || $this->settings['headeroutside'] === 'true');
 		$this->settings['disable_js_image_loading'] = isset( $db['disable_js_image_loading'] ) && ($db['disable_js_image_loading'] === 'on');
+		$this->settings['ajax_post_load'] = isset( $db['sb_ajax_initial'] ) && ($db['sb_ajax_initial'] === 'on');
 
 		switch ( $db['sbi_cache_cron_interval'] ) {
 			case '30mins' :

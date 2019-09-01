@@ -407,7 +407,9 @@ class SB_Instagram_Post
 	public function exists_in_feeds_posts_table( $transient_name ) {
 		global $wpdb;
 		$table_name = $wpdb->prefix . SBI_INSTAGRAM_FEEDS_POSTS;
-		$results = $wpdb->get_results( $wpdb->prepare( "SELECT feed_id FROM $table_name WHERE instagram_id = %s AND feed_id = %s LIMIT 1", $this->instagram_post_id, $transient_name ), ARRAY_A );
+		$feed_id_array = explode( '#', $transient_name );
+		$feed_id = $feed_id_array[0];
+		$results = $wpdb->get_results( $wpdb->prepare( "SELECT feed_id FROM $table_name WHERE instagram_id = %s AND feed_id = %s LIMIT 1", $this->instagram_post_id, $feed_id ), ARRAY_A );
 
 		return isset( $results[0]['feed_id'] );
 	}

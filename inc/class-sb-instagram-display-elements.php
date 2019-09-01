@@ -34,6 +34,8 @@ class SB_Instagram_Display_Elements
 	}
 
 	/**
+	 * Overwritten in the Pro version.
+	 *
 	 * @param string $type key of the kind of icon needed
 	 * @param string $icon_type svg or font
 	 *
@@ -167,7 +169,7 @@ class SB_Instagram_Display_Elements
 		     || ! empty( $settings['background'] )
 		     || ! empty( $settings['width'] )
 		     || ! empty( $settings['height'] ) ) {
-			$styles = 'style="';
+			$styles = ' style="';
 			if ( ! empty( $settings['imagepadding'] ) ) {
 				$styles .= 'padding-bottom: ' . ((int)$settings['imagepadding'] * 2) . esc_attr( $settings['imagepaddingunit'] ) . ';';
 			}
@@ -272,7 +274,7 @@ class SB_Instagram_Display_Elements
 	protected static function get_basic_icons( $type, $icon_type ) {
 		if ( $type === 'carousel' ) {
 			if ( $icon_type === 'svg' ) {
-				return '<svg class="svg-inline--fa fa-clone fa-w-16 sbi_lightbox_carousel_icon" aria-hidden="true" data-fa-proƒcessed="" data-prefix="far" data-icon="clone" role="img" xmlns="https://www.w3.org/2000/svg" viewBox="0 0 512 512">
+				return '<svg class="svg-inline--fa fa-clone fa-w-16 sbi_lightbox_carousel_icon" aria-hidden="true" data-fa-proƒcessed="" data-prefix="far" data-icon="clone" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 	                <path fill="currentColor" d="M464 0H144c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h320c26.51 0 48-21.49 48-48v-48h48c26.51 0 48-21.49 48-48V48c0-26.51-21.49-48-48-48zM362 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h42v224c0 26.51 21.49 48 48 48h224v42a6 6 0 0 1-6 6zm96-96H150a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h308a6 6 0 0 1 6 6v308a6 6 0 0 1-6 6z"></path>
 	            </svg>';
 			} else {
@@ -281,7 +283,7 @@ class SB_Instagram_Display_Elements
 
 		} elseif ( $type === 'video' ) {
 			if ( $icon_type === 'svg' ) {
-				return '<svg style="color: rgba(255,255,255,1)" class="svg-inline--fa fa-play fa-w-14 sbi_playbtn" aria-hidden="true" data-fa-processed="" data-prefix="fa" data-icon="play" role="presentation" xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"></path></svg>';
+				return '<svg style="color: rgba(255,255,255,1)" class="svg-inline--fa fa-play fa-w-14 sbi_playbtn" aria-hidden="true" data-fa-processed="" data-prefix="fa" data-icon="play" role="presentation" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"></path></svg>';
 			} else {
 				return '<i class="fa fa-play sbi_playbtn" aria-hidden="true"></i>';
 			}

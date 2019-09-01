@@ -197,6 +197,14 @@ class SB_Instagram_Posts_Manager
 		return $disable_resizing;
 	}
 
+	/**
+	 * Used to skip image resizing if the tables were never successfully
+	 * created
+	 *
+	 * @return bool
+	 *
+	 * @since 2.0/5.0
+	 */
 	public function does_resizing_tables_exist() {
 		global $wpdb;
 

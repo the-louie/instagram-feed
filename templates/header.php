@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 $header_padding = (int)$settings['imagepadding'] > 0 ? 'padding: '.(int)$settings['imagepadding'] . $settings['imagepaddingunit'] . ';' : '';
+$header_margin           = (int) $settings['imagepadding'] < 10 ? ' margin-bottom: 10px;' : '';
 
 $username = SB_Instagram_Parse::get_username( $header_data );
 $avatar = SB_Instagram_Parse::get_avatar( $header_data, $settings );
@@ -19,7 +20,7 @@ $name = SB_Instagram_Parse::get_name( $header_data );
 $header_text_color_style = SB_Instagram_Display_Elements::get_header_text_color_styles( $settings ); // style="color: #517fa4;" already escaped
 
 ?>
-<div class="sb_instagram_header" style="<?php echo $header_padding; ?>padding-bottom: 0;">
+<div class="sb_instagram_header" style="<?php echo $header_padding . $header_margin; ?>padding-bottom: 0;">
     <a href="https://www.instagram.com/<?php echo urlencode( $username ); ?>" target="_blank" rel="noopener" title="@<?php echo esc_attr( $username ); ?>" class="sbi_header_link">
         <div class="sbi_header_text">
             <h3 class="sbi_no_bio" <?php echo $header_text_color_style; ?>><?php echo esc_html( $username ); ?></h3>

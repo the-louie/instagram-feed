@@ -31,7 +31,9 @@ if ( $settings['showheader'] && ! empty( $posts ) && $settings['headeroutside'] 
 
     <div id="sbi_images" <?php echo $sb_images_style; ?>>
 		<?php
-		$this->posts_loop( $posts, $settings );
+		if ( ! in_array( 'ajaxPostLoad', $flags, true ) ) {
+			$this->posts_loop( $posts, $settings );
+		}
 		?>
     </div>
 

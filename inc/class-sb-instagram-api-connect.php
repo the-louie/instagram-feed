@@ -317,7 +317,8 @@ class SB_Instagram_API_Connect
 			if ( $endpoint_slug === 'header' ) {
 				$url = 'https://api.instagram.com/v1/users/' . $connected_account['user_id'] . '?access_token=' . sbi_maybe_clean( $connected_account['access_token'] );
 			} else {
-				$url = 'https://api.instagram.com/v1/users/' . $connected_account['user_id'] . '/media/recent?access_token=' . sbi_maybe_clean( $connected_account['access_token'] );
+				$num = min( $num, 33 );
+				$url = 'https://api.instagram.com/v1/users/' . $connected_account['user_id'] . '/media/recent?count='.$num.'&access_token=' . sbi_maybe_clean( $connected_account['access_token'] );
 			}
 		} else {
 			if ( $endpoint_slug === 'header' ) {

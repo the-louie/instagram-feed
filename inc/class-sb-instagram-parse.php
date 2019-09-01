@@ -187,10 +187,10 @@ class SB_Instagram_Parse
 	 */
 	public static function get_caption( $post, $default = '' ) {
 		$caption = $default;
-		if ( ! empty( $post['caption']['text'] ) ) {
-			$caption = $post['caption']['text'];
-		} elseif ( ! empty( $post['caption'] ) ) {
+		if ( ! empty( $post['caption'] ) && ! is_array( $post['caption'] ) ) {
 			$caption = $post['caption'];
+		} elseif ( ! empty( $post['caption']['text'] ) ) {
+			$caption = $post['caption']['text'];
 		}
 
 		return $caption;

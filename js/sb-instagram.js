@@ -45,6 +45,7 @@ if(!sbi_js_exists) {
                             imageLoadEnabled : (flags.indexOf('imageLoadDisable') === -1),
                             debugEnabled : (flags.indexOf('debug') > -1),
                             favorLocal : (flags.indexOf('favorLocal') > -1),
+                            ajaxPostLoad : (flags.indexOf('ajaxPostLoad') > -1),
                             autoMinRes : 1,
                             general : general
                         };
@@ -100,25 +101,31 @@ if(!sbi_js_exists) {
             this.resizedImages = {};
             this.needsResizing = [];
             this.outOfPages = false;
+            this.isInitialized = false;
         }
 
         SbiFeed.prototype = {
             init: function() {
                 var feed = this;
-                this.afterInitialImagesLoaded();
-                //Only check the width once the resize event is over
-                var sbi_delay = (function () {
-                    var sbi_timer = 0;
-                    return function (sbi_callback, sbi_ms) {
-                        clearTimeout(sbi_timer);
-                        sbi_timer = setTimeout(sbi_callback, sbi_ms);
-                    };
-                })();
-                jQuery(window).resize(function () {
-                    sbi_delay(function () {
-                        feed.afterResize();
-                    }, 500);
-                });
+                if (this.settings.ajaxPostLoad) {
+                    this.getNewPostSet();
+                } else {
+                    this.afterInitialImagesLoaded();
+                    //Only check the width once the resize event is over
+                    var sbi_delay = (function () {
+                        var sbi_timer = 0;
+                        return function (sbi_callback, sbi_ms) {
+                            clearTimeout(sbi_timer);
+                            sbi_timer = setTimeout(sbi_callback, sbi_ms);
+                        };
+                    })();
+                    jQuery(window).resize(function () {
+                        sbi_delay(function () {
+                            feed.afterResize();
+                        }, 500);
+                    });
+                }
+
             },
             initLayout: function() {
 
@@ -184,7 +191,6 @@ if(!sbi_js_exists) {
                 setTimeout(function () {
                     jQuery('#sbi_images .sbi_item.sbi_new').removeClass('sbi_new');
                     //Loop through items and remove class to reveal them
-                    feed.afterResize();
                     var time = 10;
                     $self.find('.sbi_transition').each(function() {
                         var $sbi_item_transition_el = jQuery(this);
@@ -248,7 +254,6 @@ if(!sbi_js_exists) {
             getNewPostSet: function () {
                 var $self = $(this.el),
                     feed = this;
-
                 var itemOffset = $self.find('.sbi_item').length,
                     submitData = {
                         action: 'sbi_load_more_clicked',
@@ -265,7 +270,12 @@ if(!sbi_js_exists) {
                         }
                         feed.appendNewPosts(response.html);
                         feed.addResizedImages(response.resizedImages);
-                        feed.afterNewImagesLoaded();
+                        if (feed.settings.ajaxPostLoad) {
+                            feed.settings.ajaxPostLoad = false;
+                            feed.afterInitialImagesLoaded();
+                        } else {
+                            feed.afterNewImagesLoaded();
+                        }
 
                         if (!response.feedStatus.shouldPaginate) {
                             feed.outOfPages = true;
@@ -281,9 +291,10 @@ if(!sbi_js_exists) {
             appendNewPosts: function (newPostsHtml) {
                 var $self = $(this.el),
                     feed = this;
-                $self.find('#sbi_images .sbi_item').last().after(newPostsHtml);
-                if (feed.layout === 'highlight' || feed.layout === 'masonry') {
-                    feed.appendSmashotope();
+                if ($self.find('#sbi_images .sbi_item').length) {
+                    $self.find('#sbi_images .sbi_item').last().after(newPostsHtml);
+                } else {
+                    $self.find('#sbi_images').append(newPostsHtml);
                 }
             },
             addResizedImages: function (resizedImagesToAdd) {
@@ -323,24 +334,26 @@ if(!sbi_js_exists) {
                 }
 
             },
-            maybeRaiseSingleImageResolution: function ($item, index) {
+            maybeRaiseSingleImageResolution: function ($item, index, forceChange) {
                 var feed = this,
                     imgSrcSet = feed.getImageUrls($item),
                     currentUrl = $item.find('.sbi_photo img').attr('src'),
                     currentRes = 150,
                     imagEl = $item.find('img').get(0),
-                    aspectRatio = currentUrl === window.sbi.options.placeholder ? 1 : imagEl.naturalWidth/imagEl.naturalHeight;
+                    aspectRatio = currentUrl === window.sbi.options.placeholder ? 1 : imagEl.naturalWidth/imagEl.naturalHeight,
+                    forceChange = typeof forceChange !== 'undefined' ? forceChange : false;
 
                 $.each(imgSrcSet, function (index, value) {
                     if (value === currentUrl) {
                         currentRes = parseInt(index);
+                        // If the image has already been changed to an existing real source, don't force the change
+                        forceChange = false;
                     }
                 });
 
-
                 //Image res
                 var newRes = 640;
-                switch (feed.imageResolution) {
+                switch (feed.settings.imgRes) {
                     case 150:
                         newRes = 150;
                         break;
@@ -364,8 +377,7 @@ if(!sbi_js_exists) {
                         break;
                 }
 
-
-                if (newRes > currentRes || currentUrl === window.sbi.options.placeholder) {
+                if (newRes > currentRes || currentUrl === window.sbi.options.placeholder || forceChange) {
                     if (feed.settings.debugEnabled) {
                         var reason = currentUrl === window.sbi.options.placeholder ? 'was placeholder' : 'too small';
                         console.log('rais res for ' + currentUrl, reason);
@@ -380,7 +392,7 @@ if(!sbi_js_exists) {
                         var $this_image = $(this);
                         var newAspectRatio = ($this_image.get(0).naturalWidth / $this_image.get(0).naturalHeight);
 
-                        if (newAspectRatio > aspectRatio && !checked) {
+                        if ($this_image.get(0).naturalWidth !== 1000 && newAspectRatio > aspectRatio && !checked) {
                             if (feed.settings.debugEnabled) {
                                 console.log('rais res again for aspect ratio change ' + currentUrl);
                             }
@@ -449,12 +461,16 @@ if(!sbi_js_exists) {
             },
             maybeRaiseImageResolution: function (justNew) {
                 var feed = this,
-                    itemsSelector = typeof justNew !== 'undefined' && justNew === true ? '.sbi_item.sbi_new' : '.sbi_item';
+                    itemsSelector = typeof justNew !== 'undefined' && justNew === true ? '.sbi_item.sbi_new' : '.sbi_item',
+                    forceChange = !feed.isInitialized ? true : false;
                 $(feed.el).find(itemsSelector).each(function (index) {
-                    if (!$(this).hasClass('sbi_num_diff_hide')) {
-                        feed.maybeRaiseSingleImageResolution($(this),index);
+                    if (!$(this).hasClass('sbi_num_diff_hide')
+                        && $(this).find('.sbi_photo').length
+                        && typeof $(this).find('.sbi_photo').attr('data-img-src-set') !== 'undefined') {
+                        feed.maybeRaiseSingleImageResolution($(this),index,forceChange);
                     }
                 }); //End .sbi_item each
+                feed.isInitialized = true;
             },
             getBestResolutionForAuto: function(colWidth, aspectRatio, $item) {
                 if (isNaN(aspectRatio) || aspectRatio < 1) {
@@ -730,6 +746,7 @@ if(!sbi_js_exists) {
                 //}
             },
             listenForVisibilityChange: function() {
+                var feed = this;
                 /* Detect when element becomes visible. Used for when the feed is initially hidden, in a tab for example. https://github.com/shaunbowe/jquery.visibilityChanged */
                 !function (i) {
                     var n = {
@@ -752,9 +769,9 @@ if(!sbi_js_exists) {
                 }(jQuery);
 
                 //If the feed is initially hidden (in a tab for example) then check for when it becomes visible and set then set the height
-                jQuery(".sbi").filter(':hidden').sbiVisibilityChanged({
+                $(this.el).filter(':hidden').sbiVisibilityChanged({
                     callback: function (element, visible) {
-                        sbiGetItemSize($self);
+                        feed.afterResize();
                     },
                     runOnLoad: false
                 });

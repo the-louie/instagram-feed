@@ -76,6 +76,7 @@ function sb_instagram_settings_page() {
 		'sb_instagram_custom_js'            => '',
 		'sb_instagram_cron'                 => 'no',
 		'sb_instagram_backup' => true,
+		'sb_ajax_initial' => false,
 		'sb_instagram_ajax_theme'           => false,
 		'sb_instagram_disable_resize'       => false,
 		'sb_instagram_favor_local'          => false,
@@ -140,6 +141,7 @@ function sb_instagram_settings_page() {
 	$sb_instagram_custom_js = $options[ 'sb_instagram_custom_js' ];
 	$sb_instagram_cron = $options[ 'sb_instagram_cron' ];
 	$sb_instagram_backup = $options[ 'sb_instagram_backup' ];
+	$sb_ajax_initial = $options[ 'sb_ajax_initial' ];
 	$sbi_font_method = $options[ 'sbi_font_method' ];
 	$sb_instagram_disable_awesome = $options[ 'sb_instagram_disable_awesome' ];
 
@@ -281,6 +283,7 @@ function sb_instagram_settings_page() {
 
 				if (isset($_POST[ 'sb_instagram_cron' ]) ) $sb_instagram_cron = $_POST[ 'sb_instagram_cron' ];
 				isset($_POST[ 'sb_instagram_backup' ]) ? $sb_instagram_backup = $_POST[ 'sb_instagram_backup' ] : $sb_instagram_backup = '';
+				isset($_POST[ 'sb_ajax_initial' ]) ? $sb_ajax_initial = $_POST[ 'sb_ajax_initial' ] : $sb_ajax_initial = '';
 				isset($_POST[ 'sbi_font_method' ]) ? $sbi_font_method = $_POST[ 'sbi_font_method' ] : $sbi_font_method = 'svg';
 				isset($_POST[ 'sb_instagram_disable_awesome' ]) ? $sb_instagram_disable_awesome = sanitize_text_field( $_POST[ 'sb_instagram_disable_awesome' ] ) : $sb_instagram_disable_awesome = '';
 
@@ -319,6 +322,7 @@ function sb_instagram_settings_page() {
 				$options[ 'disable_js_image_loading' ] = $disable_js_image_loading;
 				$options[ 'sb_instagram_disable_resize' ] = $sb_instagram_disable_resize;
 				$options[ 'sb_instagram_favor_local' ] = $sb_instagram_favor_local;
+				$options[ 'sb_ajax_initial' ] = $sb_ajax_initial;
 				$options[ 'sb_instagram_cron' ] = $sb_instagram_cron;
 				$options['sb_instagram_backup'] = $sb_instagram_backup;
 				$options['sbi_font_method'] = $sbi_font_method;
@@ -1731,6 +1735,18 @@ function sb_instagram_settings_page() {
 						<p class="sbi_tooltip"><?php _e('Every feed will save a duplicate version of itself in the database to be used if the normal cache is not available.', 'instagram-feed'); ?></p>
 					</td>
 				</tr>
+
+                <tr>
+                    <th class="bump-left">
+                        <label class="bump-left"><?php _e("Load initial posts with AJAX", 'instagram-feed'); ?></label>
+                    </th>
+                    <td>
+                        <input name="sb_ajax_initial" type="checkbox" id="sb_ajax_initial" <?php if($sb_ajax_initial == true) echo "checked"; ?> />
+                        <a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e('What does this mean?', 'instagram-feed'); ?></a>
+                        <p class="sbi_tooltip"><?php _e("Initial posts will be loaded using AJAX instead of added to the page directly. If you use page caching, this will allow the feed to update according to the \"Check for new posts every\" setting on the \"Configure\" tab.", 'instagram-feed'); ?></p>
+                    </td>
+                </tr>
+
 				<tr>
 					<th class="bump-left">
 						<label for="sb_instagram_cron" class="bump-left"><?php _e("Force cache to clear on interval", 'instagram-feed'); ?></label>

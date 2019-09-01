@@ -108,6 +108,7 @@ class SB_Instagram_Feed
 		// type and term.
 		// By default the limit is 10
 		$this->num_api_calls = 0;
+		$this->max_api_calls = apply_filters( 'sbi_max_concurrent_api_calls', 10 );
 		$this->should_use_backup = false;
 
 		// used for errors and the sbi_debug report
@@ -459,7 +460,7 @@ class SB_Instagram_Feed
 	 */
 	public function can_get_more_posts() {
 		$one_type_and_term_has_more_ages = $this->next_pages !== false;
-		$max_concurrent_api_calls_not_met = $this->num_api_calls < 10;
+		$max_concurrent_api_calls_not_met = $this->num_api_calls < $this->max_api_calls;
 		$max_concurrent_api_calls_not_met ? $this->add_report( 'max conccurrent requests not met' ) : $this->add_report( 'max concurrent met' );
 		$one_type_and_term_has_more_ages ? $this->add_report( 'more pages available' ) : $this->add_report( 'no next page' );
 
@@ -605,9 +606,12 @@ class SB_Instagram_Feed
 	 * @param bool $save_backup
 	 *
 	 * @since 2.0/5.0
+	 * @since 2.0/5.1 duplicate posts removed
 	 */
 	public function cache_feed_data( $cache_time, $save_backup = true ) {
 		if ( ! empty( $this->post_data ) || ! empty( $this->next_pages ) ) {
+			$this->remove_duplicate_posts();
+
 			$to_cache = array(
 				'data' => $this->post_data,
 				'pagination' => $this->next_pages
@@ -632,8 +636,11 @@ class SB_Instagram_Feed
 	 * @param bool $save_backup whether or not to also save this as a permanent cache
 	 *
 	 * @since 2.0/5.0
+	 * @since 2.0/5.1 duplicate posts removed
 	 */
 	public function set_cron_cache( $to_cache, $cache_time, $save_backup = true ) {
+		$this->remove_duplicate_posts();
+
 		$to_cache['data'] = isset( $to_cache['data'] ) ? $to_cache['data'] : $this->post_data;
 		$to_cache['pagination'] = isset( $to_cache['next_pages'] ) ? $to_cache['next_pages'] : $this->next_pages;
 		$to_cache['atts'] = isset( $to_cache['atts'] ) ? $to_cache['atts'] : $this->transient_atts;
@@ -798,6 +805,9 @@ class SB_Instagram_Feed
 		if ( $settings['disable_js_image_loading'] ) {
 			$flags[] = 'imageLoadDisable';
 		}
+		if ( $settings['ajax_post_load'] ) {
+			$flags[] = 'ajaxPostLoad';
+		}
 		if ( isset( $_GET['sbi_debug'] ) ) {
 			$flags[] = 'debug';
 		}
@@ -957,6 +967,28 @@ class SB_Instagram_Feed
 		return $post_set;
 	}
 
+	protected function remove_duplicate_posts() {
+		$posts = $this->post_data;
+
+		$ids_in_feed = array();
+		$non_duplicate_posts = array();
+		$removed = array();
+
+		foreach ( $posts as $post ) {
+			$post_id = SB_Instagram_Parse::get_post_id( $post );
+			if ( ! in_array( $post_id, $ids_in_feed, true ) ) {
+				$ids_in_feed[] = $post_id;
+				$non_duplicate_posts[] = $post;
+			} else {
+				$removed[] = $post_id;
+			}
+		}
+
+		$this->add_report( implode(', ', $removed ) );
+
+		$this->set_post_data( $non_duplicate_posts );
+	}
+
 	/**
 	 * Used for permanent feeds or white list feeds to
 	 * stop pagination if all posts are already added
@@ -967,6 +999,8 @@ class SB_Instagram_Feed
 	 * @param int $offset
 	 *
 	 * @return bool
+	 *
+	 * @since 2.0/5.0
 	 */
 	protected function feed_is_complete( $settings, $offset = 0 ) {
 		return false;
