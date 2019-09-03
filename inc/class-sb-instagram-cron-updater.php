@@ -54,7 +54,7 @@ class SB_Instagram_Cron_Updater
 				// in order to stop updating feeds not in use.
 				$last_requested = isset( $feed_data['last_requested'] ) ? (int)$feed_data['last_requested'] : false;
 				$report[ $feed_id ]['last_retrieve'] = date( 'Y-m-d H:i:s', $last_retrieve );
-				if ( $atts ) {
+				if ( $atts !== false ) {
 
 					if ( ! $last_requested || $last_requested > (time() - 60*60*24*30) ) {
 						$instagram_feed_settings = new SB_Instagram_Settings( $atts, $settings );
