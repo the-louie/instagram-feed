@@ -439,7 +439,9 @@
 .sbi_review_notice .links a:first-child{
     /*padding-left: 0;*/
 }
-.sbi_review_notice .sbi_notice_close{
+.sbi_review_notice .sbi_notice_close,
+.sbi_review_notice .sbi_bfcm_sale_notice_close,
+.sbi_review_notice .sbi_new_user_sale_notice_close {
     position: absolute;
     top: 0;
     right: 0;

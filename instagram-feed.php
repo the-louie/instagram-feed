@@ -208,6 +208,13 @@ if ( function_exists( 'sb_instagram_feed_init' ) ) {
 
 		global $wp_roles;
 		$wp_roles->add_cap( 'administrator', 'manage_instagram_feed_options' );
+
+		$sbi_statuses_option = get_option( 'sbi_statuses', array() );
+		if ( ! isset( $sbi_statuses_option['first_install'] ) ) {
+			$sbi_statuses_option['first_install'] = time();
+
+			update_option( 'sbi_statuses', $sbi_statuses_option, false );
+		}
 	}
 
 	register_activation_hook( __FILE__, 'sb_instagram_activate' );
@@ -348,39 +355,46 @@ if ( function_exists( 'sb_instagram_feed_init' ) ) {
 			global $wp_roles;
 			$wp_roles->add_cap( 'administrator', 'manage_instagram_feed_options' );
 
-//Delete all transients
+			//Delete all transients
 			global $wpdb;
 			$table_name = $wpdb->prefix . "options";
 			$wpdb->query( "
-        DELETE
-        FROM $table_name
-        WHERE `option_name` LIKE ('%\_transient\_sbi\_%')
-        " );
-			$wpdb->query( "
-        DELETE
-        FROM $table_name
-        WHERE `option_name` LIKE ('%\_transient\_timeout\_sbi\_%')
-        " );
-			$wpdb->query( "
-        DELETE
-        FROM $table_name
-        WHERE `option_name` LIKE ('%\_transient\_&sbi\_%')
-        " );
-			$wpdb->query( "
-        DELETE
-        FROM $table_name
-        WHERE `option_name` LIKE ('%\_transient\_timeout\_&sbi\_%')
-        " );
-			$wpdb->query( "
-        DELETE
-        FROM $table_name
-        WHERE `option_name` LIKE ('%\_transient\_\$sbi\_%')
-        " );
-			$wpdb->query( "
-        DELETE
-        FROM $table_name
-        WHERE `option_name` LIKE ('%\_transient\_timeout\_\$sbi\_%')
-        " );
+		        DELETE
+		        FROM $table_name
+		        WHERE `option_name` LIKE ('%\_transient\_sbi\_%')
+		        " );
+					$wpdb->query( "
+		        DELETE
+		        FROM $table_name
+		        WHERE `option_name` LIKE ('%\_transient\_timeout\_sbi\_%')
+		        " );
+					$wpdb->query( "
+		        DELETE
+		        FROM $table_name
+		        WHERE `option_name` LIKE ('%\_transient\_&sbi\_%')
+		        " );
+					$wpdb->query( "
+		        DELETE
+		        FROM $table_name
+		        WHERE `option_name` LIKE ('%\_transient\_timeout\_&sbi\_%')
+		        " );
+					$wpdb->query( "
+		        DELETE
+		        FROM $table_name
+		        WHERE `option_name` LIKE ('%\_transient\_\$sbi\_%')
+		        " );
+					$wpdb->query( "
+		        DELETE
+		        FROM $table_name
+		        WHERE `option_name` LIKE ('%\_transient\_timeout\_\$sbi\_%')
+            " );
+
+			$sbi_statuses_option = get_option( 'sbi_statuses', array() );
+			if ( ! isset( $sbi_statuses_option['first_install'] ) ) {
+				$sbi_statuses_option['first_install'] = time();
+
+				update_option( 'sbi_statuses', $sbi_statuses_option, false );
+			}
 
 			update_option( 'sbi_db_version', SBI_DBVERSION );
 		}
@@ -415,6 +429,7 @@ if ( function_exists( 'sb_instagram_feed_init' ) ) {
 		delete_option( 'sbi_cron_report' );
 		delete_option( 'sb_instagram_errors' );
 		delete_option( 'sb_instagram_ajax_status' );
+		delete_option( 'sbi_statuses' );
 
 		// Clear backup caches
 		global $wpdb;

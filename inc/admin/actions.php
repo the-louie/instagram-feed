@@ -612,3 +612,157 @@ function sbi_maybe_add_ajax_test_error() {
 	}
 }
 add_action( 'admin_init', 'sbi_maybe_add_ajax_test_error' );
+
+
+// generates the html for the admin notice
+function sbi_bfcm_sale_notice_html() {
+
+	//Only show to admins
+	if ( ! current_user_can( 'manage_options' ) ) {
+        return;
+	}
+	$thanksgiving_this_year =  sbi_get_future_date( 11, date('Y' ), 4, 4, 1 );
+	$current_time = time();
+	$thanksgiving_this_year =  time();
+	$one_week_before_black_friday_this_year = $thanksgiving_this_year - 6*24*60*60;
+	$one_day_after_cyber_monday_this_year = $thanksgiving_this_year + 5*24*60*60;
+	$could_show_bfcm_discount = ($current_time < $one_week_before_black_friday_this_year || $current_time > $one_day_after_cyber_monday_this_year);
+
+	$current_month_number = (int)date('n' );
+	$in_new_user_month_range = ($current_month_number === 12 || $current_month_number <= 7);
+	var_dump( 'month number', $in_new_user_month_range );
+
+
+
+	$sbi_statuses_option = get_option( 'sbi_statuses', array() );
+
+	var_dump( $sbi_statuses_option );
+	$should_show_new_user_discount = false;
+	if ( isset( $sbi_statuses_option['one_week_after'] ) && $current_time > (int)$sbi_statuses_option['one_week_after'] ) {
+		$should_show_new_user_discount = true;
+	} elseif ( isset( $sbi_statuses_option['first_install'] ) && $current_time > (int)$sbi_statuses_option['first_install'] + 60*60*24*30 ) {
+		$should_show_new_user_discount = true;
+	}
+
+	// december to july only for new user otherwise never displays
+    // show rating notice first priority. if dismissed
+    // logic to combine notice if rating is during bfcm
+    // 1 month min between rating and new user discount
+
+	if ( $should_show_new_user_discount ) {
+		global $current_user;
+		$user_id = $current_user->ID;
+		$ignore_new_user_sale_notice_meta = get_user_meta( $user_id, 'sbi_ignore_new_user_sale_notice' );
+		if ( $ignore_new_user_sale_notice_meta !== 'always' ) {
+
+			echo "
+        <div class='sbi_notice sbi_review_notice sbi_new_user_sale_notice'>
+            <img src='" . SBI_PLUGIN_URL . 'img/sbi-icon.png' . "' alt='Custom Feeds for Instagram'>
+            <div class='ctf-notice-text'>
+                <p>" . __( 'New user Pro discount code!', 'instagram-feed' ) . "</p>
+                <p class='links'>
+                    <a class='sbi_notice_dismiss' href='https://smashballoon.com/instagram-feed/pricing/' target='_blank'>" . __( 'Buy Now', 'instagram-feed' ) . "</a>
+                    &middot;
+                    <a class='sbi_notice_dismiss' href='" . esc_url( add_query_arg( 'sbi_ignore_new_user_sale_notice', 'always' ) ) . "'>" . __( 'I\'m not interested', 'instagram-feed' ) . "</a>
+
+                </p>
+            </div>
+            <a class='sbi_new_user_sale_notice_close' href='" . esc_url( add_query_arg( 'sbi_ignore_new_user_sale_notice', 'always' ) ) . "'><i class='fa fa-close'></i></a>
+        </div>
+        ";
+		}
+
+
+    } elseif ( $could_show_bfcm_discount ) {
+		global $current_user;
+		$user_id = $current_user->ID;
+
+		$ignore_bfcm_sale_notice_meta = get_user_meta( $user_id, 'sbi_ignore_bfcm_sale_notice' );
+
+		/* Check that the user hasn't already clicked to ignore the message */
+		if ( $ignore_bfcm_sale_notice_meta !== 'always' && $ignore_bfcm_sale_notice_meta !== date( 'Y' ) ) {
+
+			echo "
+        <div class='sbi_notice sbi_review_notice sbi_bfcm_sale_notice'>
+            <img src='". SBI_PLUGIN_URL . 'img/sbi-icon.png' ."' alt='Custom Feeds for Instagram'>
+            <div class='ctf-notice-text'>
+                <p>" . __( 'Black Friday/Cyber Monday Sale!', 'instagram-feed' ) . "</p>
+                <p class='links'>
+                    <a class='sbi_notice_dismiss' href='https://smashballoon.com/instagram-feed/pricing/' target='_blank'>" . __( 'Buy Now', 'instagram-feed' ) . "</a>
+                    &middot;
+                    <a class='sbi_notice_dismiss' href='" .esc_url( add_query_arg( 'sbi_ignore_bfcm_sale_notice', date( 'Y' ) ) ). "'>" . __( 'I\'m not interested this year', 'instagram-feed' ) . "</a>
+                </p>
+            </div>
+            <a class='sbi_bfcm_sale_notice_close' href='" .esc_url( add_query_arg( 'sbi_ignore_bfcm_sale_notice', date( 'Y' ) ) ). "'><i class='fa fa-close'></i></a>
+        </div>
+        ";
+
+		}
+    }
+
+
+
+}
+add_action( 'admin_notices', 'sbi_bfcm_sale_notice_html' );
+
+function sbi_process_nags() {
+
+	global $current_user;
+	$user_id = $current_user->ID;
+
+	$ignore_bfcm_sale_notice_meta = get_user_meta( $user_id, 'sbi_ignore_bfcm_sale_notice' );
+	$ignore_new_user_sale_notice_meta = get_user_meta( $user_id, 'sbi_ignore_new_user_sale_notice' );
+	var_dump( $ignore_new_user_sale_notice_meta );
+
+	var_dump( $ignore_bfcm_sale_notice_meta );
+
+	$sbi_statuses_option = get_option( 'sbi_statuses', array() );
+		$sbi_statuses_option['first_install'] = time() - 60*60*24*30;
+
+		//update_option( 'sbi_statuses', $sbi_statuses_option, false );
+
+	//update_user_meta( $user_id, 'sbi_ignore_bfcm_sale_notice', $meta_value );
+	//update_user_meta( $user_id, 'sbi_ignore_new_user_sale_notice', $meta_value )
+	//delete_user_meta( $user_id, 'sbi_ignore_bfcm_sale_notice' );
+	//delete_user_meta( $user_id, 'sbi_ignore_new_user_sale_notice' )
+	if ( isset( $_GET['sbi_ignore_new_user_sale_notice'] ) ) {
+	    var_dump( $_GET['sbi_ignore_new_user_sale_notice'] );
+	    $response = sanitize_text_field( $_GET['sbi_ignore_new_user_sale_notice'] );
+	    if ( $response === 'always' ) {
+		    update_user_meta( $user_id, 'sbi_ignore_new_user_sale_notice', 'always' );
+        } elseif ( $response === 'nextweek' ) {
+		    $sbi_statuses_option['one_week_after'] = time() + 7*24*60*60;
+	    }
+    }
+
+	if ( isset( $_GET['sbi_ignore_bfcm_sale_notice'] ) ) {
+		$response = sanitize_text_field( $_GET['sbi_ignore_bfcm_sale_notice'] );
+		if ( $response === 'always' ) {
+			update_user_meta( $user_id, 'sbi_ignore_bfcm_sale_notice', 'always' );
+		} elseif ( $response === date( 'Y' ) ) {
+			update_user_meta( $user_id, 'sbi_ignore_bfcm_sale_notice', date( 'Y' ) );
+		}
+		var_dump( $_GET['sbi_ignore_bfcm_sale_notice'] );
+	}
+}
+add_action( 'admin_init', 'sbi_process_nags' );
+
+
+function sbi_get_future_date( $month, $year, $week, $day, $direction ) {
+	if( $direction > 0 ) {
+		$startday = 1;
+	} else {
+		$startday = date('t', mktime(0, 0, 0, $month, 1, $year));
+	}
+
+	$start = mktime(0, 0, 0, $month, $startday, $year);
+	$weekday = date('N', $start);
+
+	$offset = 0;
+	if ( $direction * $day >= $direction * $weekday ) {
+		$offset = -$direction * 7;
+	}
+
+	$offset += $direction * ( $week * 7 ) + ( $day - $weekday );
+	return mktime( 0, 0, 0, $month, $startday + $offset, $year );
+}
