@@ -539,11 +539,10 @@ function sbi_get_current_time() {
 	$current_time = time();
 
 	// where to do tests
-	$current_time = strtotime( 'December 25, 2020' );
+	//$current_time = strtotime( 'December 25, 2020' );
 
 	return $current_time;
 }
-
 
 // generates the html for the admin notices
 function sbi_notices_html() {
@@ -567,6 +566,9 @@ function sbi_notices_html() {
 		update_option( 'sbi_statuses', $sbi_statuses_option, false );
 		delete_option( 'sbi_rating_notice');
 		delete_transient( 'instagram_feed_rating_notice_waiting' );
+
+		//set_transient( 'instagram_feed_rating_notice_waiting', 'waiting', 2 * WEEK_IN_SECONDS );
+		//update_option( 'sbi_rating_notice', 'pending', false );
 	}
 
 	//$sbi_statuses_option['rating_notice_dismissed'] = time();
@@ -614,7 +616,7 @@ function sbi_notices_html() {
     }
 
 	// for debugging
-	if ( true ) {
+	if ( false ) {
 		global $current_user;
 		$user_id = $current_user->ID;
 		$ignore_bfcm_sale_notice_meta = get_user_meta( $user_id, 'sbi_ignore_bfcm_sale_notice' );
@@ -638,11 +640,6 @@ function sbi_notices_html() {
 
 		var_dump( $sbi_statuses_option );
     }
-
-	// december to july only for new user otherwise never displays
-    // show rating notice first priority. if dismissed
-    // logic to combine notice if rating is during bfcm
-    // 1 month min between rating and new user discount
 
 	if ( $should_show_rating_notice ) {
 		$other_notice_html = '';
@@ -777,7 +774,6 @@ function sbi_process_nags() {
 
 }
 add_action( 'admin_init', 'sbi_process_nags' );
-
 
 function sbi_get_future_date( $month, $year, $week, $day, $direction ) {
 	if ( $direction > 0 ) {

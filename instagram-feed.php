@@ -406,6 +406,15 @@ if ( function_exists( 'sb_instagram_feed_init' ) ) {
 				}
 
 				update_option( 'sbi_statuses', $sbi_statuses_option, false );
+
+				$sbi_rating_notice_waiting = get_transient( 'instagram_feed_rating_notice_waiting' );
+
+				if ( $sbi_rating_notice_waiting === false
+				     && $sbi_rating_notice_option === false ) {
+					$time = 2 * WEEK_IN_SECONDS;
+					set_transient( 'instagram_feed_rating_notice_waiting', 'waiting', $time );
+					update_option( 'sbi_rating_notice', 'pending', false );
+				}
 			}
 
 			update_option( 'sbi_db_version', SBI_DBVERSION );
