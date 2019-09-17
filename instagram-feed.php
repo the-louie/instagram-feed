@@ -390,8 +390,20 @@ if ( function_exists( 'sb_instagram_feed_init' ) ) {
             " );
 
 			$sbi_statuses_option = get_option( 'sbi_statuses', array() );
+
 			if ( ! isset( $sbi_statuses_option['first_install'] ) ) {
-				$sbi_statuses_option['first_install'] = time();
+				$current_month_number = (int)date('n' );
+				$in_new_user_month_range = ($current_month_number === 12 || $current_month_number <= 7);
+				if ( $in_new_user_month_range ) {
+					$sbi_statuses_option['first_install'] = time();
+				} else {
+					$sbi_statuses_option['first_install'] = 'always';
+				}
+				$sbi_rating_notice_option = get_option( 'sbi_rating_notice', false );
+
+				if ( $sbi_rating_notice_option === 'dismissed' ) {
+					$sbi_statuses_option['rating_notice_dismissed'] = time();
+				}
 
 				update_option( 'sbi_statuses', $sbi_statuses_option, false );
 			}
