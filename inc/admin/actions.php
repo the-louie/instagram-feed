@@ -46,7 +46,7 @@ function sb_instagram_admin_scripts() {
 add_action( 'admin_enqueue_scripts', 'sb_instagram_admin_scripts' );
 
 // Add a Settings link to the plugin on the Plugins page
-$sbi_plugin_file = 'instagram-feed-pro/instagram-feed.php';
+$sbi_plugin_file = 'instagram-feed/instagram-feed.php';
 add_filter( "plugin_action_links_{$sbi_plugin_file}", 'sbi_add_settings_link', 10, 2 );
 
 //modify the link by unshifting the array
