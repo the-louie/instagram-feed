@@ -23,9 +23,12 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 add_shortcode('instagram-feed', 'display_instagram');
 function display_instagram( $atts = array() ) {
 
-	wp_enqueue_script( 'sb_instagram_scripts' );
-
 	$database_settings = sbi_get_database_settings();
+
+	if ( $database_settings['sb_instagram_ajax_theme'] !== 'on' && $database_settings['sb_instagram_ajax_theme'] !== 'true' ) {
+		wp_enqueue_script( 'sb_instagram_scripts' );
+	}
+
 	if ( $database_settings['enqueue_css_in_shortcode'] === 'on' || $database_settings['enqueue_css_in_shortcode'] === 'true' ) {
 		wp_enqueue_style( 'sb_instagram_styles' );
 	}
@@ -775,7 +778,7 @@ function sb_instagram_scripts_enqueue() {
 	}
 
 	$font_method = isset( $sb_instagram_settings['sbi_font_method'] ) ? $sb_instagram_settings['sbi_font_method'] : 'svg';
-	$disable_font_awesome = isset($sb_instagram_settings['sb_instagram_disable_font']) ? $sb_instagram_settings['sb_instagram_disable_font'] : false;
+	$disable_font_awesome = isset( $sb_instagram_settings['sb_instagram_disable_awesome'] ) ? $sb_instagram_settings['sb_instagram_disable_awesome'] === 'on' : false;
 
 	if ( $font_method === 'fontfile' && ! $disable_font_awesome ) {
 		wp_enqueue_style( 'sb-font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' );

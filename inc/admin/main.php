@@ -564,7 +564,7 @@ function sb_instagram_settings_page() {
                             <p style="margin-top: 5px;"><b style="font-size: 16px">Couldn't find Business Profile</b><br />
                             Uh oh. It looks like this Facebook account is not currently connected to an Instagram Business profile. Please check that you are logged into the <a href="https://www.facebook.com/" target="_blank">Facebook account</a> in this browser which is associated with your Instagram Business Profile.</p>
                             <p><b style="font-size: 16px">Why do I need a Business Profile?</b><br />
-                            A Business Profile is only required if you are displaying a Hashtag feed. If you want to display a regular User feed then you can do this by selecting to connect a Personal account instead. For directions on how to convert your Personal profile into a Business profile please <a href="https://smashballoon.com/instagram-business-profiles" target="_blank">see here</a>.</p>
+                            A Business Profile is not required. If you want to display a regular User feed then you can do this by selecting to connect a Personal account instead. For directions on how to convert your Personal profile into a Business profile please <a href="https://smashballoon.com/instagram-business-profiles" target="_blank">see here</a>.</p>
                             </span>
 
 								<?php elseif ( $num_accounts === 0 ): ?>
@@ -574,7 +574,7 @@ function sb_instagram_settings_page() {
                             <p>If you are, in fact, logged-in to the correct account please make sure you have Instagram accounts connected with your Facebook account by following <a href="https://smashballoon.com/reconnecting-an-instagram-business-profile/" target="_blank">this FAQ</a></p>
                             </span>
 								<?php else: ?>
-                                    <p class="sbi-managed-page-intro"><b style="font-size: 16px;">Instagram Business profiles for this account</b><br /><i style="color: #666;">Note: In order to display a Hashtag feed you first need to select a Business profile below.</i></p>
+                                    <p class="sbi-managed-page-intro"><b style="font-size: 16px;">Instagram Business profiles for this account</b></p>
 									<?php if ( $num_accounts > 1 ) : ?>
                                         <div class="sbi-managed-page-select-all"><input type="checkbox" id="sbi-select-all" class="sbi-select-all"><label for="sbi-select-all">Select All</label></div>
 									<?php endif; ?>
@@ -1036,9 +1036,7 @@ function sb_instagram_settings_page() {
 							Eg: num=6</code></th>
 					<td>
 						<input name="sb_instagram_num" type="text" value="<?php echo esc_attr( $sb_instagram_num ); ?>" size="4" maxlength="4" />
-						<span class="sbi_note"><?php _e('Number of photos to show initially. Maximum of 33.', 'instagram-feed'); ?></span>
-						&nbsp;<a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e("Using multiple IDs or hashtags?", 'instagram-feed'); ?></a>
-						<p class="sbi_tooltip"><?php _e("If you're displaying photos from multiple User IDs or hashtags then this is the number of photos which will be displayed from each.", 'instagram-feed'); ?></p>
+						<span class="sbi_note"><?php _e('Number of photos to show initially.', 'instagram-feed'); ?></span>
 					</td>
 				</tr>
 				<tr valign="top">

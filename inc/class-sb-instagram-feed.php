@@ -773,7 +773,9 @@ class SB_Instagram_Feed
 
 		$classes = array();
 		if ( empty( $settings['widthresp'] ) || $settings['widthresp'] == 'on' || $settings['widthresp'] == 'true' || $settings['widthresp'] === true ) {
-			$classes[] = 'sbi_width_resp';
+			if ( $settings['widthresp'] !== 'false' ) {
+				$classes[] = 'sbi_width_resp';
+			}
 		}
 		if ( ! empty( $settings['class'] ) ) {
 			$classes[] = esc_attr( $settings['class'] );
@@ -784,7 +786,9 @@ class SB_Instagram_Feed
 		}
 		if ( ! empty( $settings['disablemobile'] )
 		     && ($settings['disablemobile'] == 'on' || $settings['disablemobile'] == 'true' || $settings['disablemobile'] == true) ) {
-			$classes[] = 'sbi_disable_mobile';
+		    if ( $settings['disablemobile'] !== 'false' ) {
+			    $classes[] = 'sbi_disable_mobile';
+		    }
 		}
 
 		$additional_classes = '';
@@ -925,7 +929,7 @@ class SB_Instagram_Feed
 		$encoded_options = wp_json_encode( $js_options );
 
 		$js_option_html = '<script type="text/javascript">var sb_instagram_js_options = ' . $encoded_options . ';</script>';
-		$js_option_html .= "<script type='text/javascript' src='" . trailingslashit( SBI_PLUGIN_URL ) . 'js/sb-instagram.js?ver=' . SBIVER . "'></script>";
+		$js_option_html .= "<script type='text/javascript' src='" . trailingslashit( SBI_PLUGIN_URL ) . 'js/sb-instagram.min.js?ver=' . SBIVER . "'></script>";
 
 		return $js_option_html;
 	}

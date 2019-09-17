@@ -446,6 +446,7 @@ if ( function_exists( 'sb_instagram_feed_init' ) ) {
 		//Settings
 		delete_option( 'sb_instagram_settings' );
 		delete_option( 'sbi_ver' );
+		delete_option( 'sbi_db_version' );
 		delete_option( 'sb_expired_tokens' );
 		delete_option( 'sbi_cron_report' );
 		delete_option( 'sb_instagram_errors' );
