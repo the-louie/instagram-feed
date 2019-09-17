@@ -244,30 +244,38 @@ class SB_Instagram_API_Connect
 
 				$sb_instagram_posts_manager->add_frontend_error( 'hashtag_limit_reached', $error );
 			} else if ( $response['error']['type'] === 'OAuthException' ) {
-				$options = get_option( 'sb_instagram_settings', array() );
+				if ( $response['error']['code'] === 24 ) {
+					$error = '<p><b>' . __( 'Error: Hashtag does not exist.', 'instagram-feed' ) .'</b>';
+					$error .= '<p>' . __( 'Please make a post that uses this hashtag to display this feed.', 'instagram-feed' );
 
-				$connected_accounts =  isset( $options['connected_accounts'] ) ? $options['connected_accounts'] : array();
-				$user_name = '';
-				foreach ( $connected_accounts as $connected_account ) {
-					if ( $connected_account['access_token'] === $error_connected_account['access_token'] ) {
-						$connected_accounts[ $connected_account['user_id'] ]['is_valid'] = false;
-						$connected_accounts[ $connected_account['user_id'] ]['last_checked'] = time();
-						if ( isset( $connected_account['username'] ) ) {
-							$user_name = $connected_account['username'];
-						} else {
-							$user_name = $connected_account['user_id'];
+					$sb_instagram_posts_manager->add_frontend_error( 'hashtag_error', $error );
+				} else {
+					$options = get_option( 'sb_instagram_settings', array() );
+
+					$connected_accounts =  isset( $options['connected_accounts'] ) ? $options['connected_accounts'] : array();
+					$user_name = '';
+					foreach ( $connected_accounts as $connected_account ) {
+						if ( $connected_account['access_token'] === $error_connected_account['access_token'] ) {
+							$connected_accounts[ $connected_account['user_id'] ]['is_valid'] = false;
+							$connected_accounts[ $connected_account['user_id'] ]['last_checked'] = time();
+							if ( isset( $connected_account['username'] ) ) {
+								$user_name = $connected_account['username'];
+							} else {
+								$user_name = $connected_account['user_id'];
+							}
 						}
 					}
+
+					$options['connected_accounts'] = $connected_accounts;
+
+					update_option( 'sb_instagram_settings', $options );
+
+					$error = '<p><b>' . sprintf( __( 'Error: Access Token for %s is not valid or has expired.', 'instagram-feed' ), $user_name ) . ' ' . __( 'Feed will not update.', 'instagram-feed' ) . '</b>';
+					$error .= '<p>' . __( 'There\'s an issue with the Instagram Access Token that you are using. Please obtain a new Access Token on the plugin\'s Settings page.', 'instagram-feed' );
+
+					$sb_instagram_posts_manager->add_frontend_error( 'at_' . $user_name, $error );
 				}
 
-				$options['connected_accounts'] = $connected_accounts;
-
-				update_option( 'sb_instagram_settings', $options );
-
-				$error = '<p><b>' . sprintf( __( 'Error: Access Token for %s is not valid or has expired.', 'instagram-feed' ), $user_name ) . ' ' . __( 'Feed will not update.', 'instagram-feed' ) . '</b>';
-				$error .= '<p>' . __( 'There\'s an issue with the Instagram Access Token that you are using. Please obtain a new Access Token on the plugin\'s Settings page.', 'instagram-feed' );
-
-				$sb_instagram_posts_manager->add_frontend_error( 'at_' . $user_name, $error );
 			} else {
 				$error = $response['error']['message'];
 
