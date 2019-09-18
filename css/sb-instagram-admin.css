@@ -987,6 +987,13 @@
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
 }
+@media all and (max-width: 480px){
+	#sbi_config_info .sbi_config_modal{
+		max-width: 100%;
+		margin: 0 0 0 -50%;
+		box-sizing: border-box;
+	}
+}
 #sbi_config_info.sb_get_token .sbi_config_modal {
 	text-align: center;
 }
