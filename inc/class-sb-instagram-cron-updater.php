@@ -146,7 +146,7 @@ class SB_Instagram_Cron_Updater
 	 *
 	 * @since 2.0/5.0
 	 */
-	protected function get_feed_cache_option_names() {
+	public static function get_feed_cache_option_names() {
 		global $wpdb;
 		$feed_caches = array();
 
