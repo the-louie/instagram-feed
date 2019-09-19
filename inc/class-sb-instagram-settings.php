@@ -418,6 +418,25 @@ class SB_Instagram_Settings {
 
 			}
 
+		} else {
+			foreach ( $this->connected_accounts as $connected_account ) {
+				if ( empty( $feed_type_and_terms['users'] ) ) {
+					if ( isset( $connected_account['type'] ) && $connected_account['type'] === 'business' ) {
+						$feed_type_and_terms['users'][]      = array(
+							'term' => $connected_account['username'],
+							'params' => array()
+						);
+						$connected_accounts_in_feed[ $connected_account['username'] ] = $connected_account;
+					} else {
+						$feed_type_and_terms['users'][]                              = array(
+							'term' => $connected_account['user_id'],
+							'params' => array()
+						);
+						$connected_accounts_in_feed[ $connected_account['user_id'] ] = $connected_account;
+					}
+				}
+
+			}
 		}
 
 		$this->connected_accounts_in_feed = $connected_accounts_in_feed;
