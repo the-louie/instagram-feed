@@ -539,7 +539,7 @@ function sbi_get_current_time() {
 	$current_time = time();
 
 	// where to do tests
-	// $current_time = strtotime( 'November 26, 2019' );
+	// $current_time = strtotime( 'November 26, 2020' ) + 1;
 
 	return $current_time;
 }
@@ -554,6 +554,7 @@ function sbi_notices_html() {
 
 	$sbi_statuses_option = get_option( 'sbi_statuses', array() );
 	$current_time = sbi_get_current_time();
+	$sbi_bfcm_discount_code = 'happysmashgiving' . date('Y', $current_time );
 
 	// reset everything for testing
 	if ( false ) {
@@ -582,7 +583,7 @@ function sbi_notices_html() {
 	$thanksgiving_this_year = sbi_get_future_date( 11, date('Y', $current_time ), 4, 4, 1 );
 	$one_week_before_black_friday_this_year = $thanksgiving_this_year - 7*24*60*60;
 	$one_day_after_cyber_monday_this_year = $thanksgiving_this_year + 5*24*60*60;
-	$has_been_two_days_since_rating_dismissal = isset( $sbi_statuses_option['rating_notice_dismissed'] ) ? ((int)$sbi_statuses_option['rating_notice_dismissed'] + 2*24*60*60) < $current_time : true;
+	$has_been_two_days_since_rating_dismissal = isset( $sbi_statuses_option['rating_notice_dismissed'] ) ? ((int)$sbi_statuses_option['rating_notice_dismissed'] + 2*24*60*60) < $current_time + 1 : true;
 
 	$could_show_bfcm_discount = ($current_time > $one_week_before_black_friday_this_year && $current_time < $one_day_after_cyber_monday_this_year);
 	$should_show_bfcm_discount = false;
@@ -650,13 +651,13 @@ function sbi_notices_html() {
 		var_dump( $sbi_statuses_option );
     }
 
+
 	if ( $should_show_rating_notice ) {
 		$other_notice_html = '';
 		$dismiss_url = add_query_arg( 'sbi_ignore_rating_notice_nag', '1' );
 		$later_url = add_query_arg( 'sbi_ignore_rating_notice_nag', 'later' );
-
         if ( $should_show_bfcm_discount ) {
-	        $other_notice_html = '<p>' .  __( 'For Black Friday & Cyber Monday this year we\'re offering <b>20% off</b> the Pro version for a limited time only.', 'instagram-feed' ) . "<a class='sbi_notice_dismiss sbi_offer_btn' href='https://smashballoon.com/instagram-feed/?utm_source=plugin-free&utm_campaign=sbi&discount=happysmashgiving2019' target='_blank'>" . __( 'Get this offer!', 'instagram-feed' ) . "</a>" . '</p>';
+			$other_notice_html = '<p class="sbi_other_notice">' .  __( 'PS. We currently have a Black Friday/Cyber Monday deal going on for <b>20% off</b> the Pro version of the plugin.', 'instagram-feed' ) . '<a href="https://smashballoon.com/instagram-feed/?utm_source=plugin-free&utm_campaign=sbi&discount='.$sbi_bfcm_discount_code.'" target="_blank" class="sbi_offer_btn">' .  __( 'Get this deal!', 'instagram-feed' ) . '</a></p>';
 
 			$dismiss_url = add_query_arg( array(
 					'sbi_ignore_rating_notice_nag' => '1',
@@ -699,7 +700,7 @@ function sbi_notices_html() {
         <div class='sbi_notice sbi_review_notice sbi_new_user_sale_notice'>
             <img src='" . SBI_PLUGIN_URL . 'img/sbi-icon-offer.png' . "' alt='Instagram Feed'>
             <div class='ctf-notice-text'>
-                <p>" . __( '<b>Thank you!</b> We appreciate you using the Smash Balloon Instagram Feed plugin and wanted to say thank you by offering you a limited time <b>20% discount</b> on the Pro version.', 'instagram-feed' ) . "</p>
+                <p>" . __( '<b style="font-weight: 700;">Thank you!</b> We appreciate you using the Smash Balloon Instagram Feed plugin and wanted to say thank you by offering you a limited time <b>20% discount</b> on the Pro version.', 'instagram-feed' ) . "</p>
                 <p class='links'>
                     <a class='sbi_notice_dismiss sbi_offer_btn' href='https://smashballoon.com/instagram-feed/?utm_source=plugin-free&utm_campaign=sbi&discount=instagramthankyou' target='_blank'>" . __( 'Yes please!', 'instagram-feed' ) . "</a>
                     <a class='sbi_notice_dismiss' style='margin-left: 5px;' href='" . esc_url( add_query_arg( 'sbi_ignore_new_user_sale_notice', 'always' ) ) . "'>" . __( 'I\'m not interested', 'instagram-feed' ) . "</a>
@@ -717,9 +718,9 @@ function sbi_notices_html() {
         <div class='sbi_notice sbi_review_notice sbi_bfcm_sale_notice'>
             <img src='". SBI_PLUGIN_URL . 'img/sbi-icon-offer.png' ."' alt='Instagram Feed'>
             <div class='ctf-notice-text'>
-                <p>" . __( '<b>Thank you for using the Instagram Feed Free plugin!</b> For Black Friday & Cyber Monday this year we\'re offering <b>20% off</b> the Pro version for a limited time only.', 'instagram-feed' ) . "</p>
+                <p>" . __( '<b style="font-weight: 700;">Black Friday/Cyber Monday Deal!</b> Thank you for using our free Instagram Feed plugin. For a limited time, we\'re offering <b>20% off</b> the Pro version for all of our users.', 'instagram-feed' ) . "</p>
                 <p class='links'>
-                    <a class='sbi_notice_dismiss sbi_offer_btn' href='https://smashballoon.com/instagram-feed/?utm_source=plugin-free&utm_campaign=sbi&discount=happysmashgiving2019' target='_blank'>" . __( 'Get this offer!', 'instagram-feed' ) . "</a>
+                    <a class='sbi_notice_dismiss sbi_offer_btn' href='https://smashballoon.com/instagram-feed/?utm_source=plugin-free&utm_campaign=sbi&discount=".$sbi_bfcm_discount_code."' target='_blank'>" . __( 'Get this offer!', 'instagram-feed' ) . "</a>
                     <a class='sbi_notice_dismiss' style='margin-left: 5px;' href='" .esc_url( add_query_arg( 'sbi_ignore_bfcm_sale_notice', date( 'Y', $current_time ) ) ). "'>" . __( 'I\'m not interested', 'instagram-feed' ) . "</a>
                 </p>
             </div>
@@ -769,7 +770,7 @@ function sbi_process_nags() {
 		$response = sanitize_text_field( $_GET['sbi_ignore_bfcm_sale_notice'] );
 		if ( $response === 'always' ) {
 			update_user_meta( $user_id, 'sbi_ignore_bfcm_sale_notice', 'always' );
-		} elseif ( $response === date( 'Y' ) ) {
+		} elseif ( $response === date( 'Y', sbi_get_current_time() ) ) {
 			update_user_meta( $user_id, 'sbi_ignore_bfcm_sale_notice', date( 'Y', sbi_get_current_time() ) );
 		}
 		update_user_meta( $user_id, 'sbi_ignore_new_user_sale_notice', 'always' );
