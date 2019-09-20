@@ -539,7 +539,7 @@ function sbi_get_current_time() {
 	$current_time = time();
 
 	// where to do tests
-	$current_time = strtotime( 'November 26, 2019' );
+	// $current_time = strtotime( 'November 26, 2019' );
 
 	return $current_time;
 }
