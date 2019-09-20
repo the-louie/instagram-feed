@@ -2376,7 +2376,7 @@ echo 'test not successful';
 		</div>
 
 		<a href="https://smashballoon.com/instagram-feed/demo/?utm_source=plugin-free&utm_campaign=sbi" target="_blank" class="sbi-pro-notice">
-			<img src="<?php echo SBI_PLUGIN_URL . 'img/instagram-pro-promo.png'; ?>" alt="<?php esc_attr_e( 'Instagram Feed Pro', 'instagram-feed' ); ?>">
+			<img src="<?php echo SBI_PLUGIN_URL . 'img/instagram-pro-promo.png?2019'; ?>" alt="<?php esc_attr_e( 'Instagram Feed Pro', 'instagram-feed' ); ?>">
 		</a>
 
 		<p class="sbi_plugins_promo dashicons-before dashicons-admin-plugins"> <?php _e('Check out our other free plugins: <a href="https://wordpress.org/plugins/custom-facebook-feed/" target="_blank">Facebook</a> and <a href="https://wordpress.org/plugins/custom-twitter-feeds/" target="_blank">Twitter</a>.', 'instagram-feed' ); ?></p>
@@ -2384,34 +2384,7 @@ echo 'test not successful';
 		<div class="sbi_share_plugin">
 			<h3><?php _e('Like the plugin? Help spread the word!', 'instagram-feed'); ?></h3>
 
-			<!-- TWITTER -->
-			<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://wordpress.org/plugins/instagram-feed/" data-text="Display beautifully clean, customizable, and responsive feeds from multiple Instagram accounts" data-via="smashballoon" data-dnt="true">Tweet</a>
-			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-			<style type="text/css">
-				#twitter-widget-0{ float: left; width: 100px !important; }
-				.IN-widget{ margin-right: 20px; }
-			</style>
-
-			<!-- FACEBOOK -->
-			<div id="fb-root" style="display: none;"></div>
-			<script>(function(d, s, id) {
-                    var js, fjs = d.getElementsByTagName(s)[0];
-                    if (d.getElementById(id)) return;
-                    js = d.createElement(s); js.id = id;
-                    js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&appId=&version=v2.0";
-                    fjs.parentNode.insertBefore(js, fjs);
-                }(document, 'script', 'facebook-jssdk'));</script>
-			<div class="fb-like" data-href="https://wordpress.org/plugins/instagram-feed/" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true" style="display: block; float: left; margin-right: 20px;"></div>
-
-			<!-- LINKEDIN -->
-			<script src="//platform.linkedin.com/in.js" type="text/javascript">
-                lang: en_US
-			</script>
-			<script type="IN/Share" data-url="https://wordpress.org/plugins/instagram-feed/"></script>
-
-			<!-- GOOGLE + -->
-			<script src="https://apis.google.com/js/platform.js" async defer></script>
-			<div class="g-plusone" data-size="medium" data-href="https://wordpress.org/plugins/instagram-feed/"></div>
+			<button id="sbi_admin_show_share_links" class="button secondary" style="margin-bottom: 1px;"><i class="fa fa-share-alt" aria-hidden="true"></i>&nbsp;&nbsp;Share the plugin</button> <div id="sbi_admin_share_links"></div>
 		</div>
 
 	</div> <!-- end #sbi_admin -->
