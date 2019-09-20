@@ -1367,3 +1367,6 @@
 	background: #049404;
 	color: #fff;
 }
+.sbi_review_notice .sbi_other_notice{
+	font-size: 13px; font-style: italic; margin-top: 5px !important;
+}
