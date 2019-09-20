@@ -390,7 +390,7 @@ function sb_instagram_settings_page() {
 	<div id="sbi_admin" class="wrap">
 
 		<div id="header">
-			<h1><?php _e( 'Custom Feeds for Instagram', 'instagram-feed' ); ?></h1>
+			<h1><?php _e( 'Instagram Feed', 'instagram-feed' ); ?></h1>
 		</div>
 
 		<form name="form1" method="post" action="">
@@ -2253,7 +2253,7 @@ foreach ( $plugins as $plugin_path => $plugin ) {
 ?>
 
 ## PLUGIN SETTINGS: ##
-sb_instagram_plugin_type => Custom Feeds for Instagram Free
+sb_instagram_plugin_type => Instagram Feed Free
 <?php
 foreach( $sbi_options as $key => $val ) {
 	if ( is_array( $val ) ) {
@@ -2376,7 +2376,7 @@ echo 'test not successful';
 		</div>
 
 		<a href="https://smashballoon.com/instagram-feed/demo/?utm_source=plugin-free&utm_campaign=sbi" target="_blank" class="sbi-pro-notice">
-			<img src="<?php echo SBI_PLUGIN_URL . 'img/instagram-pro-promo.png'; ?>" alt="<?php esc_attr_e( 'Custom Feeds for Instagram Pro', 'instagram-feed' ); ?>">
+			<img src="<?php echo SBI_PLUGIN_URL . 'img/instagram-pro-promo.png'; ?>" alt="<?php esc_attr_e( 'Instagram Feed Pro', 'instagram-feed' ); ?>">
 		</a>
 
 		<p class="sbi_plugins_promo dashicons-before dashicons-admin-plugins"> <?php _e('Check out our other free plugins: <a href="https://wordpress.org/plugins/custom-facebook-feed/" target="_blank">Facebook</a> and <a href="https://wordpress.org/plugins/custom-twitter-feeds/" target="_blank">Twitter</a>.', 'instagram-feed' ); ?></p>

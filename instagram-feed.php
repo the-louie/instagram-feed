@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: Custom Feeds for Instagram
+Plugin Name: Smash Balloon Instagram Feed
 Plugin URI: https://smashballoon.com/instagram-feed
-Description: Formerly "Instagram Feed". Display beautifully clean, customizable, and responsive Instagram feeds.
+Description: Display beautifully clean, customizable, and responsive Instagram feeds.
 Version: 2.0
 Author: Smash Balloon
 Author URI: https://smashballoon.com/

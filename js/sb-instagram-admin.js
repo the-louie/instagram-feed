@@ -11,11 +11,14 @@ jQuery(document).ready(function($) {
 
             '<div class="sbi_login_button_row">' +
             '<input type="radio" id="sbi_personal_login" name="sbi_login_type" value="personal" checked>' +
-            '<label for="sbi_personal_login"><b>Personal</b> <i>(Available for All Account Types)</i></label>&nbsp;<a href="JavaScript:void(0);" class="sbi_tooltip_link"><i class="fa fa-question-circle"></i></a><div class="sbi_tooltip">Used for displaying User Feeds from either a Personal or Business account</div>' +
+            '<label for="sbi_personal_login"><b>Personal</b></label>&nbsp;<a href="JavaScript:void(0);" class="sbi_tooltip_link"><i class="fa fa-question-circle"></i></a><div class="sbi_tooltip">Select this to connect a Personal Instagram profile. This option can also be used to connect a Business profile too if needed.</div>' +
             '</div>' +
             '<div class="sbi_login_button_row">' +
             '<input type="radio" id="sbi_business_login" name="sbi_login_type" value="business">' +
-            '<label for="sbi_business_login"><b>Business</b> </label>&nbsp;<a href="JavaScript:void(0);" class="sbi_tooltip_link"><i class="fa fa-question-circle"></i></a><div class="sbi_tooltip">You only need to connect a Business Profile if you are having trouble with a personal account. If you are displaying a User feed from a Business Profile then you can select the "Personal" option above. See <a href="https://smashballoon.com/instagram-business-profiles" target="_blank">this FAQ</a> for more info.</div>' +
+            '<label for="sbi_business_login"><b>Business</b> </label><a href="JavaScript:void(0);" class="sbi_tooltip_link"><i class="fa fa-question-circle"></i></a><div class="sbi_tooltip">Select this to connect a Business Instagram profile. If you have trouble using this method then try using the "Personal" option above. If you wish to convert your Personal profile into a Business profile then follow the directions <a href="https://smashballoon.com/instagram-business-profiles" target="_blank">here</a>.</div>' +
+            '</div>' +
+            '<div class="sbi_login_button_row">' +
+            '<a href="JavaScript:void(0);" class="sbi_tooltip_link" style="margin-left: 0; font-size: 12px;">I\'m not sure</a><div class="sbi_tooltip">If you are unsure then select the "Personal" option, as this can be used to connect both Personal and Business profiles.</div>' +
             '</div>' +
 
             '<a href="'+oldApiURL+'" class="sbi_admin_btn">Connect</a>' +

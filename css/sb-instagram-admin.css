@@ -1052,9 +1052,9 @@
 .sbi_config_modal .sbi_login_button_row{
 	display: block;
 	padding: 3px 0;
-	width: 350px;
-	margin: 0 0 0 88px;
-	text-align: left;
+	width: 90%;
+	margin: 0 auto;
+	text-align: center;
 }
 #sbi_admin .sbi_login_button_row label{
 	top: -2px;
@@ -1351,4 +1351,19 @@
 	top: 50%;
 	left: 1%;
 	margin-top: -10px;
+}
+
+.sbi_review_notice .sbi_offer_btn{
+	padding: 4px 12px 6px 12px;
+    background: green;
+    color: #fff;
+    border-radius: 4px;
+    display: inline-block;
+    text-decoration: none;
+    margin-left: 9px;
+}
+.sbi_review_notice .sbi_offer_btn:hover,
+.sbi_review_notice .sbi_offer_btn:focus{
+	background: #049404;
+	color: #fff;
 }

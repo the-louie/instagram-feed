@@ -1,4 +1,4 @@
-=== Custom Feeds for Instagram ===
+=== Smash Balloon Social Photo Feed ===
 Contributors: smashballoon, craig-at-smash-balloon
 Tags: Instagram, Instagram feed, Instagram photos, Instagram widget, Instagram gallery
 Requires at least: 3.4
@@ -7,7 +7,7 @@ Stable tag: 2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Formerly "Instagram Feed". Display beautifully clean, customizable, and responsive feeds from multiple Instagram accounts
+Formerly "Instagram Feed". Display beautifully clean, customizable, and responsive Instagram feeds from multiple Instagram accounts
 
 == Description ==
 
