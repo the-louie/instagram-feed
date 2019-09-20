@@ -208,13 +208,6 @@ if ( function_exists( 'sb_instagram_feed_init' ) ) {
 
 		global $wp_roles;
 		$wp_roles->add_cap( 'administrator', 'manage_instagram_feed_options' );
-
-		$sbi_statuses_option = get_option( 'sbi_statuses', array() );
-		if ( ! isset( $sbi_statuses_option['first_install'] ) ) {
-			$sbi_statuses_option['first_install'] = time();
-
-			update_option( 'sbi_statuses', $sbi_statuses_option, false );
-		}
 	}
 
 	register_activation_hook( __FILE__, 'sb_instagram_activate' );
@@ -392,20 +385,20 @@ if ( function_exists( 'sb_instagram_feed_init' ) ) {
 			$sbi_statuses_option = get_option( 'sbi_statuses', array() );
 
 			if ( ! isset( $sbi_statuses_option['first_install'] ) ) {
-				$current_month_number = (int)date('n' );
-				$in_new_user_month_range = ($current_month_number === 12 || $current_month_number <= 7);
-				if ( $in_new_user_month_range ) {
-					$sbi_statuses_option['first_install'] = time();
+
+				$options_set = get_option( 'sb_instagram_settings', false );
+
+				if ( $options_set ) {
+					$sbi_statuses_option['first_install'] = 'from_update';
 				} else {
-					$sbi_statuses_option['first_install'] = 'always';
+					$sbi_statuses_option['first_install'] = time();
 				}
+
 				$sbi_rating_notice_option = get_option( 'sbi_rating_notice', false );
 
 				if ( $sbi_rating_notice_option === 'dismissed' ) {
 					$sbi_statuses_option['rating_notice_dismissed'] = time();
 				}
-
-				update_option( 'sbi_statuses', $sbi_statuses_option, false );
 
 				$sbi_rating_notice_waiting = get_transient( 'instagram_feed_rating_notice_waiting' );
 
@@ -415,6 +408,9 @@ if ( function_exists( 'sb_instagram_feed_init' ) ) {
 					set_transient( 'instagram_feed_rating_notice_waiting', 'waiting', $time );
 					update_option( 'sbi_rating_notice', 'pending', false );
 				}
+
+				update_option( 'sbi_statuses', $sbi_statuses_option, false );
+
 			}
 
 			update_option( 'sbi_db_version', SBI_DBVERSION );
