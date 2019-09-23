@@ -539,7 +539,7 @@ function sbi_get_current_time() {
 	$current_time = time();
 
 	// where to do tests
-	//$current_time = strtotime( 'November 25, 2022' ) + 1;
+	// $current_time = strtotime( 'November 25, 2022' ) + 1;
 
 	return $current_time;
 }
@@ -675,7 +675,7 @@ function sbi_notices_html() {
 		echo"
             <div class='sbi_notice sbi_review_notice'>
                 <img src='". SBI_PLUGIN_URL . 'img/sbi-icon.png' ."' alt='" . __( 'Instagram Feed', 'instagram-feed' ) . "'>
-                <div class='ctf-notice-text'>
+                <div class='sbi-notice-text'>
                     <p>" . __( "It's great to see that you've been using the <strong>Smash Balloon Instagram Feed</strong> plugin for a while now. Hopefully you're happy with it!&nbsp; If so, would you consider leaving a positive review? It really helps to support the plugin and helps others to discover it too!", 'instagram-feed' ) . "</p>
                     <p class='links'>
                         <a class='sbi_notice_dismiss' href='https://wordpress.org/support/plugin/instagram-feed/reviews/' target='_blank'>" . __( 'Sure, I\'d love to!', 'instagram-feed' ) . "</a>
@@ -700,7 +700,7 @@ function sbi_notices_html() {
 			echo "
         <div class='sbi_notice sbi_review_notice sbi_new_user_sale_notice'>
             <img src='" . SBI_PLUGIN_URL . 'img/sbi-icon-offer.png' . "' alt='Instagram Feed'>
-            <div class='ctf-notice-text'>
+            <div class='sbi-notice-text'>
                 <p>" . __( '<b style="font-weight: 700;">Thank you!</b> We appreciate you using the Smash Balloon Instagram Feed plugin and wanted to say thank you by offering you a limited time <b>20% discount</b> on the Pro version.', 'instagram-feed' ) . "</p>
                 <p class='links'>
                     <a class='sbi_notice_dismiss sbi_offer_btn' href='https://smashballoon.com/instagram-feed/?utm_source=plugin-free&utm_campaign=sbi&discount=instagramthankyou' target='_blank'>" . __( 'Yes please!', 'instagram-feed' ) . "</a>
@@ -718,7 +718,7 @@ function sbi_notices_html() {
 		echo "
         <div class='sbi_notice sbi_review_notice sbi_bfcm_sale_notice'>
             <img src='". SBI_PLUGIN_URL . 'img/sbi-icon-offer.png' ."' alt='Instagram Feed'>
-            <div class='ctf-notice-text'>
+            <div class='sbi-notice-text'>
                 <p>" . __( '<b style="font-weight: 700;">Black Friday/Cyber Monday Deal!</b> Thank you for using our free Instagram Feed plugin. For a limited time, we\'re offering <b>20% off</b> the Pro version for all of our users.', 'instagram-feed' ) . "</p>
                 <p class='links'>
                     <a class='sbi_notice_dismiss sbi_offer_btn' href='https://smashballoon.com/instagram-feed/?utm_source=plugin-free&utm_campaign=sbi&discount=".$sbi_bfcm_discount_code."' target='_blank'>" . __( 'Get this offer!', 'instagram-feed' ) . "</a>
