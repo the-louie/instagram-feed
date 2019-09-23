@@ -2272,6 +2272,22 @@ foreach( $sbi_options as $key => $val ) {
 }
 ?>
 
+##CACHES: ##
+<?php global $wpdb;
+$table_name = esc_sql( $wpdb->prefix . "options" );
+$result = $wpdb->get_results( "
+SELECT *
+FROM $table_name
+WHERE `option_name` LIKE ('%\_transient\_sbi\_%')
+LIMIT 1;
+", ARRAY_A );
+if ( is_array($result) && count($result) > 0 ) {
+	echo 'Most recent cache: ' . substr( $result[0]['option_value'], 0, 400 ) . "\n";
+} else {
+	echo 'No feed caches found' . "\n";
+}
+?>
+
 ## API RESPONSE: ##
 <?php
 $con_accounts = isset( $sbi_options['connected_accounts'] ) ? $sbi_options['connected_accounts'] : array();
