@@ -176,6 +176,7 @@ class SB_Instagram_API_Connect
 	public static function handle_instagram_error( $response, $error_connected_account, $request_type ) {
 		global $sb_instagram_posts_manager;
 
+		$error_time = 300;
 		if ( isset( $response['meta']['error_type'] ) ) {
 			if ( $response['meta']['error_type'] === 'OAuthAccessTokenException' ) {
 				$options = get_option( 'sb_instagram_settings', array() );
@@ -202,6 +203,9 @@ class SB_Instagram_API_Connect
 				$error .= '<p>' . __( 'There\'s an issue with the Instagram Access Token that you are using. Please obtain a new Access Token on the plugin\'s Settings page.<br />If you continue to have an issue with your Access Token then please see <a href="https://smashballoon.com/my-instagram-access-token-keep-expiring/" target="_blank" rel="noopener">this FAQ</a> for more information.', 'instagram-feed' );
 
 				$sb_instagram_posts_manager->add_frontend_error( 'at_' . $user_name, $error );
+
+				$error_time = 3600;
+				$account_id = $error_connected_account['user_id'];
 			} else {
 				$error = $response['meta']['error_message'];
 
@@ -243,6 +247,7 @@ class SB_Instagram_API_Connect
 				$error .= '<p>' . __( 'If you need to display more than 30 hashtag feeds on your site, consider connecting an additional business account from a separate Instagram and Facebook account.', 'instagram-feed' );
 
 				$sb_instagram_posts_manager->add_frontend_error( 'hashtag_limit_reached', $error );
+
 			} else if ( $response['error']['type'] === 'OAuthException' ) {
 				if ( $response['error']['code'] === 24 ) {
 					$error = '<p><b>' . __( 'Error: Hashtag does not exist.', 'instagram-feed' ) .'</b>';
@@ -274,6 +279,9 @@ class SB_Instagram_API_Connect
 					$error .= '<p>' . __( 'There\'s an issue with the Instagram Access Token that you are using. Please obtain a new Access Token on the plugin\'s Settings page.', 'instagram-feed' );
 
 					$sb_instagram_posts_manager->add_frontend_error( 'at_' . $user_name, $error );
+
+					$error_time = 3600;
+					$account_id = $error_connected_account['user_id'];
 				}
 
 			} else {
@@ -281,6 +289,13 @@ class SB_Instagram_API_Connect
 
 				$sb_instagram_posts_manager->add_frontend_error( $response['error']['type'], $error );
 			}
+
+		}
+
+		if ( ! empty( $account_id ) ) {
+			$sb_instagram_posts_manager->add_api_request_delay( $error_time, $account_id );
+		} else {
+			$sb_instagram_posts_manager->add_api_request_delay( $error_time );
 		}
 
 	}
@@ -301,6 +316,8 @@ class SB_Instagram_API_Connect
 				$message .= ' '.$key . ' - ' . $item[0] . ' |';
 			}
 		}
+
+		$sb_instagram_posts_manager->add_api_request_delay( 300 );
 
 		$sb_instagram_posts_manager->add_error( 'connection', array( 'Error connecting', $message ) );
 	}

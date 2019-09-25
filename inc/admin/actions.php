@@ -732,7 +732,7 @@ function sbi_notices_html() {
 	}
 
 }
-add_action( 'admin_notices', 'sbi_notices_html' );
+add_action( 'admin_notices', 'sbi_notices_html', 8 ); // priority 12 for Twitter, priority 10 for Facebook
 
 function sbi_process_nags() {
 

@@ -124,6 +124,13 @@ class SB_Instagram_Settings {
 			default :
 				$this->settings['sbi_cache_cron_interval'] = 60*60*12;
 		}
+
+
+		global $sb_instagram_posts_manager;
+
+		if ( $sb_instagram_posts_manager->are_current_api_request_delays() ) {
+			$this->settings['alwaysUseBackup'] = true;
+		}
 	}
 
 	/**

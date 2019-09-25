@@ -359,4 +359,36 @@ class SB_Instagram_Posts_Manager
 	public function reset_frontend_errors() {
 		return $this->frontend_errors = array();
 	}
+
+	/**
+	 * @since 2.0/5.1.2
+	 */
+	public function add_api_request_delay( $time_in_seconds = 300, $account_id = false ) {
+		if ( $account_id ) {
+			set_transient( SBI_USE_BACKUP_PREFIX . 'sbi_'  . $account_id, '1', $time_in_seconds );
+		} else {
+			set_transient( SBI_USE_BACKUP_PREFIX . 'sbi_delay_requests', '1', $time_in_seconds );
+		}
+	}
+
+	/**
+	 * @since 2.0/5.1.2
+	 */
+	public function are_current_api_request_delays( $account_id = false ) {
+		$is_delay = (get_transient( SBI_USE_BACKUP_PREFIX . 'sbi_delay_requests' ) !== false);
+
+		if ( $is_delay ) {
+			$error = '<p><b>' . sprintf( __( 'Error: API requests are being delayed.', 'instagram-feed' ) ) . ' ' . __( 'New posts will not be retrieved.', 'instagram-feed' ) . '</b>';
+			$error .= '<p>' . __( 'There may be an issue with the Instagram access token that you are using. Your server might also be unable to connect to Instagram at this time.', 'instagram-feed' );
+
+			$this->add_frontend_error( 'api_delay', $error );
+
+		}
+
+		if ( ! $is_delay && $account_id ) {
+			$is_delay = (get_transient( SBI_USE_BACKUP_PREFIX . 'sbi_'  . $account_id ) !== false);
+		}
+
+		return $is_delay;
+	}
 }

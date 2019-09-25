@@ -36,12 +36,10 @@ function display_instagram( $atts = array() ) {
 
 	if ( empty( $database_settings['connected_accounts'] ) && empty( $atts['accesstoken'] ) ) {
 		$style = current_user_can( 'manage_instagram_feed_options' ) ? ' style="display: block;"' : '';
-		ob_start();
-		$html = ob_get_contents();
-		ob_get_clean();		?>
+		ob_start(); ?>
         <div id="sbi_mod_error" <?php echo $style; ?>>
             <span><?php _e('This error message is only visible to WordPress admins', 'instagram-feed' ); ?></span><br />
-            <p><b><?php _e( 'Error: No connected account.', 'instagram-feed' ); ?></b>;
+            <p><b><?php _e( 'Error: No connected account.', 'instagram-feed' ); ?></b>
             <p><?php _e( 'Please go to the Instagram Feed settings page to connect an account.', 'instagram-feed' ); ?></p>
         </div>
 		<?php
@@ -778,7 +776,12 @@ function sb_instagram_scripts_enqueue() {
 	}
 
 	$font_method = isset( $sb_instagram_settings['sbi_font_method'] ) ? $sb_instagram_settings['sbi_font_method'] : 'svg';
-	$disable_font_awesome = isset( $sb_instagram_settings['sb_instagram_disable_awesome'] ) ? $sb_instagram_settings['sb_instagram_disable_awesome'] === 'on' : false;
+
+	if ( isset( $sb_instagram_settings['sb_instagram_disable_awesome'] ) ) {
+		$disable_font_awesome = isset( $sb_instagram_settings['sb_instagram_disable_awesome'] ) ? $sb_instagram_settings['sb_instagram_disable_awesome'] === 'on' : false;
+	} else {
+		$disable_font_awesome = isset( $sb_instagram_settings['sb_instagram_disable_font'] ) ? $sb_instagram_settings['sb_instagram_disable_font'] === 'on' : false;
+	}
 
 	if ( $font_method === 'fontfile' && ! $disable_font_awesome ) {
 		wp_enqueue_style( 'sb-font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' );

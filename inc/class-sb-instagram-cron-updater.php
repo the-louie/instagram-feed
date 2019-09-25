@@ -27,6 +27,7 @@ class SB_Instagram_Cron_Updater
 	 */
 	public static function do_feed_updates() {
 		$feed_caches = SB_Instagram_Cron_Updater::get_feed_cache_option_names();
+		shuffle(  $feed_caches );
 		$settings = sbi_get_database_settings();
 
 		// this is outputted in system info

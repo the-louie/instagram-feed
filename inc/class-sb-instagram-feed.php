@@ -253,6 +253,7 @@ class SB_Instagram_Feed
 	 * if it was created
 	 *
 	 * @since 2.0/5.0
+	 * @since 2.0/5.1.2 if backup feed data used, header data also set from backup
 	 */
 	public function maybe_set_post_data_from_backup() {
 		$backup_data = get_option( $this->backup_feed_transient_name, false );
@@ -268,6 +269,8 @@ class SB_Instagram_Feed
 				$this->transient_atts = $backup_data['atts'];
 				$this->last_retrieve = $backup_data['last_retrieve'];
 			}
+
+			$this->maybe_set_header_data_from_backup();
 
 			return true;
 		} else {
@@ -477,10 +480,14 @@ class SB_Instagram_Feed
 	 *  feed types and terms
 	 *
 	 * @since 2.0/5.0
+	 * @since 2.0/5.1 added logic to make a second attempt at an API connection
+	 * @since 2.0/5.1.2 remote posts only retrieved if API requests are not
+	 *  delayed, terms shuffled if there are more than 5
 	 */
 	public function add_remote_posts( $settings, $feed_types_and_terms, $connected_accounts_for_feed ) {
 		$new_post_sets = array();
 		$next_pages = $this->next_pages;
+		global $sb_instagram_posts_manager;
 
 		$num = apply_filters( 'sbi_num_in_request', $settings['minnum'], $settings );
 
@@ -492,15 +499,22 @@ class SB_Instagram_Feed
 		$next_page_found = false;
 
 		foreach ( $feed_types_and_terms as $type => $terms ) {
+			if ( is_array( $terms ) && count( $terms ) > 5 ) {
+				shuffle( $terms );
+			}
 			foreach ( $terms as $term_and_params ) {
 				$term = $term_and_params['term'];
 				$params = array_merge( $params, $term_and_params['params'] );
+				$connected_account_for_term = $connected_accounts_for_feed[ $term ];
 
-				if ( ! isset( $next_pages[ $term . '_' . $type ] ) || $next_pages[ $term . '_' . $type ] !== false ) {
+				$api_requests_delayed = $sb_instagram_posts_manager->are_current_api_request_delays( $connected_account_for_term['user_id'] );
+
+				if ( ! $api_requests_delayed
+				     && (! isset( $next_pages[ $term . '_' . $type ] ) || $next_pages[ $term . '_' . $type ] !== false) ) {
 					if ( ! empty( $next_pages[ $term . '_' . $type ] ) ) {
 						$connection = $this->make_api_connection( $next_pages[ $term . '_' . $type ] );
 					} else {
-						$connection = $this->make_api_connection( $connected_accounts_for_feed[ $term ], $type, $params );
+						$connection = $this->make_api_connection( $connected_account_for_term, $type, $params );
 					}
 					$this->add_report( 'api call made for ' . $term . ' - ' . $type );
 
@@ -511,6 +525,11 @@ class SB_Instagram_Feed
 						$one_successful_connection = true;
 
 						$data = $connection->get_data();
+
+						if ( !$connected_account_for_term['is_valid'] ) {
+							$this->add_report( 'clearing invalid token' );
+							$this->clear_expired_access_token_notice( $connected_account_for_term );
+						}
 
 						if ( isset( $data[0]['id'] ) ) {
 							$post_set = $this->filter_posts( $data, $settings );
@@ -526,14 +545,82 @@ class SB_Instagram_Feed
 							$next_pages[ $term . '_' . $type ] = false;
 						}
 					} else {
-						if ( $connection->is_wp_error() ) {
-							SB_Instagram_API_Connect::handle_wp_remote_get_error( $connection->get_wp_error() );
-						} else {
-							SB_Instagram_API_Connect::handle_instagram_error( $connection->get_data(), $connected_accounts_for_feed[ $term ], $type );
-						}
 
-						$next_pages[ $term . '_' . $type ] = false;
+						if ( $this->can_try_another_request( $type, $connected_accounts_for_feed[ $term ] ) ) {
+							$this->add_report( 'trying other accounts' );
+							$i = 0;
+							$attempted = array( $connected_accounts_for_feed[ $term ]['user_id'] );
+							$success = false;
+							$different = true;
+							$error = false;
+
+							while ( $different
+							        && ! $success
+							        && $this->can_try_another_request( $type, $connected_accounts_for_feed[ $term ], $i ) ) {
+								$different = $this->get_different_connected_account( $type, $attempted );
+								$this->add_report( 'trying the account ' . $different['user_id'] );
+
+								if ( $different ) {
+									$connected_accounts_for_feed[ $term ] = $this->get_different_connected_account( $type, $attempted );
+									$attempted[] = $connected_accounts_for_feed[ $term ]['user_id'];
+									if ( ! empty( $next_pages[ $term . '_' . $type ] ) ) {
+										$connection = $this->make_api_connection( $next_pages[ $term . '_' . $type ] );
+									} else {
+										$connection = $this->make_api_connection( $connected_accounts_for_feed[ $term ], $type, $params );
+									}
+									$connection->connect();
+									$this->num_api_calls++;
+									if ( ! $connection->is_wp_error() && ! $connection->is_instagram_error() ) {
+										$one_successful_connection = true;
+										$data = $connection->get_data();
+										if ( isset( $data[0]['id'] ) ) {
+											$post_set = $this->filter_posts( $data, $settings );
+											$new_post_sets[] = $post_set;
+										}
+										$next_page = $connection->get_next_page();
+										if ( ! empty( $next_page ) ) {
+											$next_pages[ $term . '_' . $type ] = $next_page;
+											$next_page_found = true;
+										} else {
+											$next_pages[ $term . '_' . $type ] = false;
+										}
+									} else {
+										if ( $connection->is_wp_error() ) {
+											$error = $connection->get_wp_error();
+										} else {
+											$error = $connection->get_data();
+										}
+									}
+									$i++;
+								}
+							}
+
+							if ( ! $success && $error ) {
+								if ( is_wp_error( $error ) ) {
+									SB_Instagram_API_Connect::handle_wp_remote_get_error( $error );
+								} else {
+									SB_Instagram_API_Connect::handle_instagram_error( $error, $connected_accounts_for_feed[ $term ], $type );
+								}
+								$next_pages[ $term . '_' . $type ] = false;
+							}
+						} else {
+
+							if ( $connection->is_wp_error() ) {
+								SB_Instagram_API_Connect::handle_wp_remote_get_error( $connection->get_wp_error() );
+							} else {
+								SB_Instagram_API_Connect::handle_instagram_error( $connection->get_data(), $connected_accounts_for_feed[ $term ], $type );
+							}
+
+							$next_pages[ $term . '_' . $type ] = false;
+						}
 					}
+				} elseif ( $api_requests_delayed ) {
+					$this->add_report( 'delaying API request for ' . $term . ' - ' . $type );
+
+					$error = '<p><b>' . sprintf( __( 'Error: API requests are being delayed for this account.', 'instagram-feed' ), $connected_account_for_term['username'] ) . ' ' . __( 'New posts will not be retrieved.', 'instagram-feed' ) . '</b>';
+					$error .= '<p>' . __( 'There may be an issue with the Instagram Access Token that you are using. Your server might also be unable to connect to Instagram at this time.', 'instagram-feed' );
+
+					$sb_instagram_posts_manager->add_frontend_error( 'at_' . $connected_account_for_term['username'], $error );
 				}
 
 			}
@@ -611,6 +698,7 @@ class SB_Instagram_Feed
 	public function cache_feed_data( $cache_time, $save_backup = true ) {
 		if ( ! empty( $this->post_data ) || ! empty( $this->next_pages ) ) {
 			$this->remove_duplicate_posts();
+			$this->trim_posts_to_max();
 
 			$to_cache = array(
 				'data' => $this->post_data,
@@ -636,10 +724,11 @@ class SB_Instagram_Feed
 	 * @param bool $save_backup whether or not to also save this as a permanent cache
 	 *
 	 * @since 2.0/5.0
-	 * @since 2.0/5.1 duplicate posts removed
+	 * @since 2.0/5.1 duplicate posts removed, cache set trimmed to a maximum
 	 */
 	public function set_cron_cache( $to_cache, $cache_time, $save_backup = true ) {
 		$this->remove_duplicate_posts();
+		$this->trim_posts_to_max();
 
 		$to_cache['data'] = isset( $to_cache['data'] ) ? $to_cache['data'] : $this->post_data;
 		$to_cache['pagination'] = isset( $to_cache['next_pages'] ) ? $to_cache['next_pages'] : $this->next_pages;
@@ -786,9 +875,9 @@ class SB_Instagram_Feed
 		}
 		if ( ! empty( $settings['disablemobile'] )
 		     && ($settings['disablemobile'] == 'on' || $settings['disablemobile'] == 'true' || $settings['disablemobile'] == true) ) {
-		    if ( $settings['disablemobile'] !== 'false' ) {
-			    $classes[] = 'sbi_disable_mobile';
-		    }
+			if ( $settings['disablemobile'] !== 'false' ) {
+				$classes[] = 'sbi_disable_mobile';
+			}
 		}
 
 		$additional_classes = '';
@@ -973,7 +1062,6 @@ class SB_Instagram_Feed
 
 	protected function remove_duplicate_posts() {
 		$posts = $this->post_data;
-
 		$ids_in_feed = array();
 		$non_duplicate_posts = array();
 		$removed = array();
@@ -988,9 +1076,23 @@ class SB_Instagram_Feed
 			}
 		}
 
-		$this->add_report( implode(', ', $removed ) );
-
+		$this->add_report( 'removed duplicates: ' . implode(', ', $removed ) );
 		$this->set_post_data( $non_duplicate_posts );
+	}
+
+	/**
+	 * Used for limiting the cache size
+	 *
+	 * @since 2.0/5.1.1
+	 */
+	protected function trim_posts_to_max() {
+		if ( ! is_array( $this->post_data ) ) {
+			return;
+		}
+
+		$max = apply_filters( 'sbi_max_cache_size', 200 );
+		$this->set_post_data( array_slice( $this->post_data , 0, $max ) );
+
 	}
 
 	/**
@@ -1008,6 +1110,29 @@ class SB_Instagram_Feed
 	 */
 	protected function feed_is_complete( $settings, $offset = 0 ) {
 		return false;
+	}
+
+	/**
+	 * @param $connected_account_for_term
+	 *
+	 * @since 2.0/5.1.2
+	 */
+	private function clear_expired_access_token_notice( $connected_account_for_term ) {
+		$sbi_options = get_option( 'sb_instagram_settings' );
+		$ca_to_save = isset( $sbi_options['connected_accounts'] ) ? $sbi_options['connected_accounts'] : array();
+
+		if ( ! empty( $ca_to_save ) && ! empty( $connected_account_for_term ) ) {
+
+			foreach ( $ca_to_save as $account ) {
+				if ( $connected_account_for_term['access_token'] === $account['access_token'] ) {
+					$ca_to_save[ $account['user_id'] ]['is_valid'] = true;
+				}
+			}
+
+			$sbi_options['connected_accounts'] = $ca_to_save;
+
+			update_option( 'sb_instagram_settings', $sbi_options );
+		}
 	}
 
 	/**
@@ -1052,7 +1177,6 @@ class SB_Instagram_Feed
 	 */
 	private function merge_posts( $post_sets, $settings ) {
 		$merged_posts = array();
-
 		if ( $settings['sortby'] === 'alternate' ) {
 			// don't bother merging posts if there is only one post set
 			if ( isset( $post_sets[1] ) ) {
@@ -1119,6 +1243,39 @@ class SB_Instagram_Feed
 
 			return $post_set;
 		}
+	}
+
+	/**
+	 * Can trigger a second attempt at getting posts from the API
+	 *
+	 * Overwritten in the Pro version
+	 *
+	 * @param string $type
+	 * @param array $connected_account_with_error
+	 * @param int $attempts
+	 *
+	 * @return bool
+	 *
+	 * @since 2.0/5.1.1
+	 */
+	protected function can_try_another_request( $type, $connected_account_with_error, $attempts = 0 ) {
+		return false;
+	}
+
+	/**
+	 * returns a second connected account if it exists
+	 *
+	 * Overwritten in the Pro version
+	 *
+	 * @param string $type
+	 * @param array $attempted_connected_accounts
+	 *
+	 * @return bool
+	 *
+	 * @since 2.0/5.1.1
+	 */
+	protected function get_different_connected_account( $type, $attempted_connected_accounts ) {
+		return false;
 	}
 
 }
