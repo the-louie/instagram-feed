@@ -345,6 +345,15 @@ if ( function_exists( 'sb_instagram_feed_init' ) ) {
 
 		if ( (float) $db_ver < 1.2 ) {
 
+			$upload     = wp_upload_dir();
+			$upload_dir = $upload['basedir'];
+			$upload_dir = trailingslashit( $upload_dir ) . SBI_UPLOADS_NAME;
+			if ( ! file_exists( $upload_dir ) ) {
+				$created = wp_mkdir_p( $upload_dir );
+			}
+
+			sbi_create_database_table();
+
 			global $wp_roles;
 			$wp_roles->add_cap( 'administrator', 'manage_instagram_feed_options' );
 
@@ -484,6 +493,10 @@ if ( function_exists( 'sb_instagram_feed_init' ) ) {
 				unlink( $file );
 			} // delete file
 		}
+
+		global $wp_filesystem;
+
+		$wp_filesystem->delete( trailingslashit( $upload['basedir'] ) . trailingslashit( 'sb-instagram-feed-images' ) , true );
 		//Delete tables
 		$wpdb->query( "DROP TABLE IF EXISTS $posts_table_name" );
 		$wpdb->query( "DROP TABLE IF EXISTS $feeds_posts_table_name" );
