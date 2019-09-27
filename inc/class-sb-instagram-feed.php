@@ -1090,7 +1090,7 @@ class SB_Instagram_Feed
 			return;
 		}
 
-		$max = apply_filters( 'sbi_max_cache_size', 200 );
+		$max = apply_filters( 'sbi_max_cache_size', 500 );
 		$this->set_post_data( array_slice( $this->post_data , 0, $max ) );
 
 	}

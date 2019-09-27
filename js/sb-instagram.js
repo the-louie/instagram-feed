@@ -504,13 +504,13 @@ if(!sbi_js_exists) {
                 //Image res
                 var newRes = 640;
                 switch (feed.settings.imgRes) {
-                    case 150:
+                    case 'thumb':
                         newRes = 150;
                         break;
-                    case 320:
+                    case 'medium':
                         newRes = 320;
                         break;
-                    case 640:
+                    case 'full':
                         newRes = 640;
                         break;
                     default:
