@@ -827,7 +827,14 @@ if(!sbi_js_exists) {
     })(jQuery);
 
     jQuery(document).ready(function($) {
+        if (typeof window.sb_instagram_js_options.resized_url !== 'undefined' && window.sb_instagram_js_options.resized_url.indexOf(location.protocol) === -1) {
+            if (location.protocol === 'http:') {
+                window.sb_instagram_js_options.resized_url = window.sb_instagram_js_options.resized_url.replace('http:','https:');
+            } else {
+                window.sb_instagram_js_options.resized_url = window.sb_instagram_js_options.resized_url.replace('https:','http:');
+            }
+        }
         sbi_init();
     });
 
-} // if sbi_js_existsƒ
+} // if sbi_js_exists
