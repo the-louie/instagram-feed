@@ -2296,11 +2296,12 @@ $first_con_business_account = array();
 
 if ( ! empty( $con_accounts ) ) {
 	foreach ( $con_accounts as $account ) {
-		if ( empty( $first_con_personal_account ) && isset( $account['type'] ) && $account['type'] !== 'business' ) {
-			$first_con_personal_account = $account;
-		} elseif ( empty( $first_con_business_account ) ) {
+	    $account_type = isset( $account['type'] ) && $account['type'] === 'business' ? 'business' : 'personal';
+		if ( empty( $first_con_business_account ) && $account_type === 'business' ) {
 			$first_con_business_account = $account;
-        }
+		} elseif ( empty( $first_con_personal_account ) && $account_type === 'personal' ) {
+			$first_con_personal_account = $account;
+		}
 	}
 
 }
@@ -2322,7 +2323,7 @@ if ( ! empty( $first_con_personal_account ) ) {
 		}
 	} else {
 		if ( $connection->is_wp_error() ) {
-		    $response = $connection->get_data();
+		    $response = $connection->get_wp_error();
 			if ( isset( $response ) && isset( $response->errors ) ) {
 				foreach ( $response->errors as $key => $item ) {
 					echo $key . ' => ' . $item[0] . "\n";
@@ -2355,7 +2356,7 @@ if ( ! empty( $first_con_business_account ) ) {
 	    }
 	} else {
 		if ( $connection->is_wp_error() ) {
-			$response = $connection->get_data();
+			$response = $connection->get_wp_error();
 			if ( isset( $response ) && isset( $response->errors ) ) {
 				foreach ( $response->errors as $key => $item ) {
 					echo $key . ' => ' . $item[0] . "\n";
@@ -2368,7 +2369,7 @@ if ( ! empty( $first_con_business_account ) ) {
 	}
 	echo "\n";
 } else {
-	echo 'no connected personal accounts';
+	echo 'no connected business accounts';
 	echo "\n";
 } ?>
 ## Cron Events: ##

@@ -363,7 +363,17 @@ function sbi_account_data_for_token( $access_token ) {
 	} elseif ( isset( $data->error_type ) && $data->error_type === 'OAuthRateLimitException' ) {
 		$return['error_message'] = 'This account\'s access token is currently over the rate limit. Try removing this access token from all feeds and wait an hour before reconnecting.';
 	} else {
-		$return = false;
+		if ( is_wp_error( $result ) ) {
+			$return['error_message'] = '';
+
+			if ( isset( $result->errors  ) ) {
+			    foreach ( $result->errors as $key => $item ) {
+				    $return['error_message'] .= ' '.$key . ' - ' . $item[0] . ' |';
+			    }
+            }
+		} elseif ( isset( $data->error_message ) ) {
+			$return['error_message'] = $data->error_message;
+		}
 
 	}
 
