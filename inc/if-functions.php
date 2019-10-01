@@ -103,14 +103,16 @@ function display_instagram( $atts = array() ) {
 			$instagram_feed->add_remote_posts( $settings, $feed_type_and_terms, $instagram_feed_settings->get_connected_accounts_in_feed() );
 		}
 
-		if ( $instagram_feed->should_use_backup() ) {
-			$instagram_feed->add_report( 'trying to use backup' );
-			$instagram_feed->maybe_set_post_data_from_backup();
-			$instagram_feed->maybe_set_header_data_from_backup();
-		} else {
+		if ( ! $instagram_feed->should_use_backup() ) {
 			$instagram_feed->cache_feed_data( $instagram_feed_settings->get_cache_time_in_seconds(), $settings['backup_cache_enabled'] );
 		}
 
+	}
+
+	if ( $instagram_feed->should_use_backup() ) {
+		$instagram_feed->add_report( 'trying to use backup' );
+		$instagram_feed->maybe_set_post_data_from_backup();
+		$instagram_feed->maybe_set_header_data_from_backup();
 	}
 
 	// if need a header

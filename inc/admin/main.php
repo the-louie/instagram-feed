@@ -2291,49 +2291,86 @@ if ( is_array($result) && count($result) > 0 ) {
 ## API RESPONSE: ##
 <?php
 $con_accounts = isset( $sbi_options['connected_accounts'] ) ? $sbi_options['connected_accounts'] : array();
-$first_at = '';
+$first_con_personal_account = array();
+$first_con_business_account = array();
+
 if ( ! empty( $con_accounts ) ) {
 	foreach ( $con_accounts as $account ) {
-		if ( empty( $first_at ) && isset( $account['type'] ) && $account['type'] === 'personal' ) {
-			$first_at = $account['access_token'];
-		}
+		if ( empty( $first_con_personal_account ) && isset( $account['type'] ) && $account['type'] !== 'business' ) {
+			$first_con_personal_account = $account;
+		} elseif ( empty( $first_con_business_account ) ) {
+			$first_con_business_account = $account;
+        }
 	}
 
 }
 
-$url = ! empty( $first_at ) ? 'https://api.instagram.com/v1/users/self/?access_token=' . sbi_maybe_clean( $first_at ) : 'no_at';
-if ( $url !== 'no_at' ) {
-	$args = array(
-		'timeout' => 60,
-		'sslverify' => false
-	);
-	$result = wp_remote_get( $url, $args );
-
-	if ( ! is_wp_error( $result ) ) {
-		$data = json_decode( $result['body'] );
-
-		if ( isset( $data->data->id ) ) {
-			echo 'id: ' . $data->data->id . "\n";
-			echo 'username: ' . $data->data->username . "\n";
-			echo 'posts: ' . $data->data->counts->media . "\n";
-
-		} else {
-			echo 'No id returned' . "\n";
-			echo 'code: ' . $data->meta->code . "\n";
-			if ( isset( $data->meta->error_message ) ) {
-				echo 'error_message: ' . $data->meta->error_message . "\n";
+if ( ! empty( $first_con_personal_account ) ) {
+	echo '*PERSONAL ACCOUNT*';
+	echo "\n";
+	$connection = new SB_Instagram_API_Connect( $first_con_personal_account, 'header' );
+	$connection->connect();
+	if ( ! $connection->is_wp_error() && ! $connection->is_instagram_error() ) {
+		foreach ( $connection->get_data() as $key => $item ) {
+			if ( is_array ( $item ) ) {
+                foreach ( $item as $key2 => $item2 ) {
+	                echo $key2 . ' => ' . esc_html( $item2 ) . "\n";
+                }
+			} else {
+				echo $key . ' => ' . esc_html( $item ) . "\n";
 			}
 		}
 	} else {
-		var_export( $result );
+		if ( $connection->is_wp_error() ) {
+		    $response = $connection->get_data();
+			if ( isset( $response ) && isset( $response->errors ) ) {
+				foreach ( $response->errors as $key => $item ) {
+					echo $key . ' => ' . $item[0] . "\n";
+				}
+			}
+		} else {
+			$error = $connection->get_data();
+			var_export( $error );
+		}
 	}
-
-
+	echo "\n";
 } else {
-	echo 'No Access Token';
-}?>
-
-
+    echo 'no connected personal accounts';
+	echo "\n";
+}
+if ( ! empty( $first_con_business_account ) ) {
+	echo '*BUSINESS ACCOUNT*';
+	echo "\n";
+	$connection = new SB_Instagram_API_Connect( $first_con_business_account, 'header' );
+	$connection->connect();
+	if ( ! $connection->is_wp_error() && ! $connection->is_instagram_error() ) {
+	    foreach ( $connection->get_data() as $key => $item ) {
+		    if ( is_array ( $item ) ) {
+			    foreach ( $item as $key2 => $item2 ) {
+				    echo $key2 . ' => ' . esc_html( $item2 ) . "\n";
+			    }
+		    } else {
+			    echo $key . ' => ' . esc_html( $item ) . "\n";
+		    }
+	    }
+	} else {
+		if ( $connection->is_wp_error() ) {
+			$response = $connection->get_data();
+			if ( isset( $response ) && isset( $response->errors ) ) {
+				foreach ( $response->errors as $key => $item ) {
+					echo $key . ' => ' . $item[0] . "\n";
+				}
+			}
+		} else {
+			$error = $connection->get_data();
+			var_export( $error );
+		}
+	}
+	echo "\n";
+} else {
+	echo 'no connected personal accounts';
+	echo "\n";
+} ?>
 ## Cron Events: ##
 <?php
 $cron = _get_cron_array();
@@ -2360,6 +2397,71 @@ if ( ! empty( $cron_report ) ) {
 	var_export( $cron_report );
 }
 echo "\n";
+?>
+
+## Resizing: ##
+<?php $upload     = wp_upload_dir();
+$upload_dir = $upload['basedir'];
+$upload_dir = trailingslashit( $upload_dir ) . SBI_UPLOADS_NAME;
+if ( file_exists( $upload_dir ) ) {
+	echo 'upload directory exists';
+} else {
+	$created = wp_mkdir_p( $upload_dir );
+
+	if ( ! $created ) {
+		echo 'cannot create upload directory';
+	}
+}
+echo "\n";
+echo "\n";
+
+$table_name      = esc_sql( $wpdb->prefix . SBI_INSTAGRAM_POSTS_TYPE );
+$feeds_posts_table_name = esc_sql( $wpdb->prefix . SBI_INSTAGRAM_FEEDS_POSTS );
+
+if ( $wpdb->get_var( "show tables like '$feeds_posts_table_name'" ) != $feeds_posts_table_name ) {
+	echo 'no feeds posts table';
+	echo "\n";
+} else {
+	$last_result = $wpdb->get_results( "SELECT * FROM $feeds_posts_table_name LIMIT 1;" );
+	if ( is_array( $last_result ) && isset( $last_result[0] ) ) {
+		echo '*FEEDS POSTS TABLE*';
+		echo "\n";
+
+		foreach ( $last_result as $column ) {
+
+			foreach ( $column as $key => $value ) {
+				echo $key . ' => ' . esc_html( $value ) . "\n";;
+			}
+		}
+
+	} else {
+		echo 'feeds posts has no rows';
+		echo "\n";
+	}
+}
+echo "\n";
+
+if ( $wpdb->get_var( "show tables like '$table_name'" ) != $table_name ) {
+	echo 'no posts table';
+	echo "\n";
+
+} else {
+	$last_result = $wpdb->get_results( "SELECT * FROM $table_name LIMIT 1;" );
+	if ( is_array( $last_result ) && isset( $last_result[0] ) ) {
+		echo '*POSTS TABLE*';
+		echo "\n";
+		foreach ( $last_result as $column ) {
+
+			foreach ( $column as $key => $value ) {
+				echo $key . ' => ' . esc_html( $value ) . "\n";;
+			}
+		}
+
+	} else {
+		echo 'feeds posts has no rows';
+		echo "\n";
+	}
+}
 ?>
 
 ## Error Log: ##

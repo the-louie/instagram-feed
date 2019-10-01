@@ -152,9 +152,9 @@ class SB_Instagram_Feed
 	 */
 	public function regular_cache_exists() {
 		//Check whether the cache transient exists in the database and is available for more than one more minute
-		$feed_expires = get_option( '_transient_timeout_' . $this->regular_feed_transient_name );
+		$transient_exists = get_transient( $this->regular_feed_transient_name );
 
-		return ($feed_expires !== false && ($feed_expires - time()) > 60);
+		return $transient_exists;
 	}
 
 	/**
@@ -166,9 +166,9 @@ class SB_Instagram_Feed
 	 * @since 2.0/5.0
 	 */
 	public function regular_header_cache_exists() {
-		$header_expires = get_option( '_transient_timeout_' . $this->header_transient_name );
+		$header_transient = get_transient( $this->header_transient_name );
 
-		return ($header_expires !== false && ($header_expires - time()) > 60);
+		return $header_transient;
 	}
 
 	/**

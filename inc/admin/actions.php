@@ -548,7 +548,12 @@ function sbi_get_current_time() {
 function sbi_notices_html() {
 
 	//Only show to admins
-	if ( ! current_user_can( 'manage_options' ) ) {
+	$current_screen = get_current_screen();
+	$is_plugins_page = isset( $current_screen->id ) && $current_screen->id === 'plugins';
+	$page = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : '';
+	//Only show to admins
+	if ( ! current_user_can( 'manage_options' )
+	     || ($page !== 'sb-instagram-feed'  && !$is_plugins_page) ) {
 		return;
 	}
 
@@ -652,6 +657,8 @@ function sbi_notices_html() {
 		var_dump( $sbi_statuses_option );
 	}
 
+	$should_show_bfcm_discount = false; // temporary to not show notices on update
+	$should_show_new_user_discount = false; // temporary to not show notices on update
 
 	if ( $should_show_rating_notice ) {
 		$other_notice_html = '';
