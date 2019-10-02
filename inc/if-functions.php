@@ -15,6 +15,8 @@
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+add_filter( 'widget_text', 'do_shortcode' );
+
 /**
  * The main function the creates the feed from a shortcode.
  * Can be safely added directly to templates using

@@ -325,6 +325,7 @@ We understand that sometimes you need help, have issues or just have questions. 
 
 == Changelog ==
 = 2.0.1 =
+* Fix: Add back filter to allow using shortcode in a custom html widget
 * Fix: Added back settings to display bio information in header and change header size which were mistakenly removed in the last update
 * Fix: Fixed a PHP notice which might display under certain circumstances
 * Tweak: Force cache of major caching plugins to clear when updating plugin to avoid issues with previous CSS/JavaScript files being cached
