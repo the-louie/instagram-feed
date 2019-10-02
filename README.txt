@@ -327,7 +327,7 @@ We understand that sometimes you need help, have issues or just have questions. 
 = 2.0.1 =
 * Tweak: Force cache of major caching plugins to clear when updating plugin to avoid issues with previous CSS/JavaScript files being cached
 * Tweak: Added version number to the end of JavaScript and CSS files to clear browser caches that are causing errors
-* Fix: Add back filter to allow using shortcode in a custom html widget
+* Fix: Added back filter to allow using shortcode in a custom HTML widget
 * Fix: Added back settings to display bio information in header and change header size which were mistakenly removed in the last update
 * Fix: Fixed a PHP notice which might display under certain circumstances
 
