@@ -217,6 +217,20 @@ class SB_Instagram_Display_Elements
 	}
 
 	/**
+	 * Header icon and text size is styled using the class added here.
+	 *
+	 * @param $settings
+	 *
+	 * @return string
+	 *
+	 * @since 2.0.1/5.0
+	 */
+	public static function get_header_size_class( $settings ) {
+		$header_size_class = in_array( strtolower( $settings['headersize'] ), array( 'medium', 'large' ) ) ? ' sbi_'.strtolower( $settings['headersize'] ) : '';
+		return $header_size_class;
+	}
+
+	/**
 	 * Creates a style attribute for the follow button. Can be in
 	 * the feed footer or in a boxed header.
 	 *

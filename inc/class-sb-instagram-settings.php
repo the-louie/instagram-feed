@@ -106,6 +106,10 @@ class SB_Instagram_Settings {
 			), $atts );
 
 		$this->settings['minnum'] = max( (int)$this->settings['num'], (int)$this->settings['nummobile'] );
+		$this->settings['showbio'] = $this->settings['showbio'] === 'true' || $this->settings['showbio'] === 'on' || $this->settings['showbio'] === true;
+		if ( $atts['showbio'] === 'false' ) {
+			$this->settings['showbio'] = false;
+		}
 		$this->settings['disable_resize'] = isset( $db['sb_instagram_disable_resize'] ) && ($db['sb_instagram_disable_resize'] === 'on');
 		$this->settings['favor_local'] = isset( $db['sb_instagram_favor_local'] ) && ($db['sb_instagram_favor_local'] === 'on');
 		$this->settings['backup_cache_enabled'] = ! isset( $db['sb_instagram_backup'] ) || ($db['sb_instagram_backup'] === 'on');

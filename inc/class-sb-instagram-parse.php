@@ -259,6 +259,26 @@ class SB_Instagram_Parse
 	}
 
 	/**
+	 * Account bio/description used in header
+	 *
+	 * @param $header_data
+	 *
+	 * @return string
+	 *
+	 * @since 2.0.1/5.0
+	 */
+	public static function get_bio( $header_data ) {
+		if ( isset( $header_data['data']['bio'] ) ) {
+			return $header_data['data']['bio'];
+		} elseif ( isset( $header_data['bio'] ) ){
+			return $header_data['bio'];
+		} elseif ( isset( $header_data['biography'] ) ){
+			return $header_data['biography'];
+		}
+		return '';
+	}
+
+	/**
 	 * There seems to be occasional bugs with the Instagram API
 	 * and permalinks. This corrects it.
 	 *

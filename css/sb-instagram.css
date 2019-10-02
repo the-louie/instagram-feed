@@ -281,7 +281,7 @@
 .sbi-screenreader{text-indent: -9999px !important;display: block !important;width: 0 !important;height: 0 !important;line-height: 0 !important;}
 
 /* HEADER */
-#sb_instagram .sb_instagram_header{
+.sb_instagram_header{
     float: left;
     clear: both;
     margin: 0 0 15px 0;
@@ -289,7 +289,7 @@
     line-height: 1.2;
     width: 100%;
 }
-#sb_instagram .sb_instagram_header a{
+.sb_instagram_header a{
     float: left;
     display: block;
     /*width: 100%;*/
@@ -300,75 +300,75 @@
 /** Medium Header */
 /* Only use medium & large headers on devices above 480px */
 @media all and (min-width: 480px){
-    #sb_instagram .sb_instagram_header.sbi_medium .sbi_header_img {
+    .sb_instagram_header.sbi_medium .sbi_header_img {
         width: 80px;
         height: 80px;
         border-radius: 40px;
     }
-    #sb_instagram .sb_instagram_header.sbi_medium .sbi_header_img img {
+    .sb_instagram_header.sbi_medium .sbi_header_img img {
         width: 80px;
         height: 80px;
         border-radius: 40px;
     }
-    #sb_instagram .sb_instagram_header.sbi_medium .sbi_header_text h3 {
+    .sb_instagram_header.sbi_medium .sbi_header_text h3 {
         font-size: 20px;
     }
-    #sb_instagram .sb_instagram_header.sbi_medium .sbi_header_text .sbi_bio_info,
-    #sb_instagram .sb_instagram_header.sbi_medium .sbi_header_text .sbi_bio{
+    .sb_instagram_header.sbi_medium .sbi_header_text .sbi_bio_info,
+    .sb_instagram_header.sbi_medium .sbi_header_text .sbi_bio{
         font-size: 14px;
     }
-    #sb_instagram .sb_instagram_header.sbi_medium .sbi_header_text h3,
-    #sb_instagram .sb_instagram_header.sbi_medium .sbi_header_text .sbi_bio_info,
-    #sb_instagram .sb_instagram_header.sbi_medium .sbi_header_text .sbi_bio{
+    .sb_instagram_header.sbi_medium .sbi_header_text h3,
+    .sb_instagram_header.sbi_medium .sbi_header_text .sbi_bio_info,
+    .sb_instagram_header.sbi_medium .sbi_header_text .sbi_bio{
         margin-left: 95px !important;
         line-height: 1.4
     }
-    #sb_instagram .sbi_medium .sbi_header_text h3{
+    .sb_instagram_header.sbi_medium .sbi_header_text h3{
         margin-right: -85px !important;
     }
     #sb_instagram .sb_instagram_header.sbi_medium .sbi_header_text .sbi_bio_info{
         margin-top: 4px !important;
     }
-    #sb_instagram .sbi_medium .sbi_header_text.sbi_no_info h3{
+    .sb_instagram_header.sbi_medium .sbi_header_text.sbi_no_info h3{
         padding-top: 20px !important;
     }
     /** Large Header */
-    #sb_instagram .sb_instagram_header.sbi_large .sbi_header_img {
+    .sb_instagram_header.sbi_large .sbi_header_img {
         width: 120px;
         height: 120px;
         border-radius: 60px;
     }
-    #sb_instagram .sb_instagram_header.sbi_large .sbi_header_img img {
+    .sb_instagram_header.sbi_large .sbi_header_img img {
         width: 120px;
         height: 120px;
         border-radius: 60px;
     }
-    #sb_instagram .sb_instagram_header.sbi_large .sbi_header_text h3 {
+    .sb_instagram_header.sbi_large .sbi_header_text h3 {
         font-size: 28px;
     }
-    #sb_instagram .sb_instagram_header.sbi_large .sbi_header_text .sbi_bio_info,
-    #sb_instagram .sb_instagram_header.sbi_large .sbi_header_text .sbi_bio{
+    .sb_instagram_header.sbi_large .sbi_header_text .sbi_bio_info,
+    .sb_instagram_header.sbi_large .sbi_header_text .sbi_bio{
         font-size: 16px;
     }
-    #sb_instagram .sb_instagram_header.sbi_large .sbi_header_text h3,
-    #sb_instagram .sb_instagram_header.sbi_large .sbi_header_text .sbi_bio_info,
-    #sb_instagram .sb_instagram_header.sbi_large .sbi_header_text .sbi_bio{
+    .sb_instagram_header.sbi_large .sbi_header_text h3,
+    .sb_instagram_header.sbi_large .sbi_header_text .sbi_bio_info,
+    .sb_instagram_header.sbi_large .sbi_header_text .sbi_bio{
         margin-left: 140px !important;
         line-height: 1.5;
     }
     #sb_instagram .sbi_large .sbi_header_text h3{
         margin-right: -120px !important;
     }
-    #sb_instagram .sb_instagram_header.sbi_large .sbi_header_text .sbi_bio_info{
+    .sb_instagram_header.sbi_large .sbi_header_text .sbi_bio_info{
         margin-top: 12px !important;
     }
-    #sb_instagram .sbi_large .sbi_header_text.sbi_no_info h3{
+    .sb_instagram_header .sbi_large .sbi_header_text.sbi_no_info h3{
         padding-top: 32px !important;
     }
 }
 
 /* Header profile pic */
-#sb_instagram .sbi_header_img{
+.sb_instagram_header .sbi_header_img{
     float: left;
     position: relative;
     width: 50px;
@@ -379,7 +379,7 @@
     -webkit-border-radius: 40px;
     border-radius: 40px;
 }
-#sb_instagram .sbi_header_img img{
+.sb_instagram_header .sbi_header_img img{
     float: left;
     margin: 0 !important;
     padding: 0 !important;
@@ -391,7 +391,7 @@
 }
 /* Profile pic hover */
 /* Profile pic hover */
-#sb_instagram .sbi_header_img_hover{
+.sb_instagram_header .sbi_header_img_hover{
     opacity: 0;
     position: absolute;
     width: 100%;
@@ -403,7 +403,7 @@
     background: rgba(0,0,0,0.75);
 }
 
-#sb_instagram .sbi_header_img_hover .sbi_new_logo{
+.sb_instagram_header .sbi_header_img_hover .sbi_new_logo{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -413,19 +413,19 @@
     height: 24px;
     font-size: 24px;
 }
-#sb_instagram .sbi_header_img_hover i {
+.sb_instagram_header .sbi_header_img_hover i {
     overflow: hidden;
     background: url('../img/small-logo.png') no-repeat 0 0;
 }
-#sb_instagram .sbi_header_img_hover{
+.sb_instagram_header .sbi_header_img_hover{
     z-index: 2;
     transition: opacity 0.4s ease-in-out;
 }
-#sb_instagram .sb_instagram_header .sbi_fade_in{
+.sb_instagram_header .sbi_fade_in{
     opacity: 1;
     transition: opacity 0.2s ease-in-out;
 }
-#sb_instagram .sbi_header_img_hover{
+.sb_instagram_header .sbi_header_img_hover{
     position: absolute;
     width: 100%;
     top: 0;
@@ -444,40 +444,45 @@
     transition: opacity 0.2s;
 }
 /* Fade the Instagram icon in when hovering on the header */
-#sb_instagram .sb_instagram_header a:hover .sbi_header_img_hover,
-#sb_instagram .sb_instagram_header a:focus .sbi_header_img_hover{
+.sb_instagram_header a:hover .sbi_header_img_hover,
+.sb_instagram_header a:focus .sbi_header_img_hover{
     opacity: 1;
 }
 /* Header text */
-#sb_instagram .sbi_header_text{
+.sb_instagram_header .sbi_header_text{
     float: left;
     width: 100%;
     padding-top: 5px;
 }
-#sb_instagram .sb_instagram_header a{
+.sb_instagram_header a{
     text-decoration: none;
 }
-#sb_instagram .sbi_header_text .sbi_bio,
-#sb_instagram .sbi_header_text h3{
+.sb_instagram_header .sbi_header_text .sbi_bio,
+.sb_instagram_header .sbi_header_text h3{
     float: left;
     clear: both;
     width: auto;
     margin: 0 0 0 60px !important;
     padding: 0 !important;
 }
-#sb_instagram .sb_instagram_header h3{
+.sb_instagram_header h3{
     font-size: 16px;
     line-height: 1.3;
 }
-#sb_instagram .sb_instagram_header p{
+.sb_instagram_header p{
     font-size: 13px;
     line-height: 1.3;
 }
-#sb_instagram .sb_instagram_header h3.sbi_no_bio{
+.sb_instagram_header .sbi_header_text img.emoji{
+    margin-right: 3px !important;
+}
+
+/* No bio */
+.sb_instagram_header .sbi_header_text.sbi_no_bio h3{
     padding-top: 9px !important;
 }
-#sb_instagram .sbi_header_text img.emoji{
-    margin-right: 3px !important;
+.sb_instagram_header .sbi_header_text.sbi_no_bio .sbi_bio_info{
+    clear: both;
 }
 
 

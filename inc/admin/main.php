@@ -1276,6 +1276,26 @@ function sb_instagram_settings_page() {
 						<input type="checkbox" name="sb_instagram_show_header" id="sb_instagram_show_header" <?php if($sb_instagram_show_header == true) echo 'checked="checked"' ?> />
 					</td>
 				</tr>
+                <tr valign="top">
+                    <th scope="row"><label><?php _e('Header Size', 'instagram-feed'); ?></label><code class="sbi_shortcode"> headersize
+                            Eg: headersize=medium</code></th>
+                    <td>
+                        <select name="sb_instagram_header_size" id="sb_instagram_header_size" style="float: left;">
+                            <option value="small" <?php if($sb_instagram_header_size == "small") echo 'selected="selected"' ?> ><?php _e('Small', 'instagram-feed'); ?></option>
+                            <option value="medium" <?php if($sb_instagram_header_size == "medium") echo 'selected="selected"' ?> ><?php _e('Medium', 'instagram-feed'); ?></option>
+                            <option value="large" <?php if($sb_instagram_header_size == "large") echo 'selected="selected"' ?> ><?php _e('Large', 'instagram-feed'); ?></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><label><?php _e("Show Bio Text", 'instagram-feed'); ?></label><code class="sbi_shortcode"> showbio
+                            Eg: showbio=false</code></th>
+                    <td>
+						<?php $sb_instagram_show_bio = isset( $sb_instagram_show_bio ) ? $sb_instagram_show_bio  : true; ?>
+                        <input type="checkbox" name="sb_instagram_show_bio" id="sb_instagram_show_bio" <?php if($sb_instagram_show_bio == true) echo 'checked="checked"' ?> />
+                        <span class="sbi_note"><?php _e("Only applies for Instagram accounts with bios", 'instagram-feed'); ?></span>
+                    </td>
+                </tr>
 				<tr valign="top">
 					<th scope="row"><label><?php _e('Header Text Color', 'instagram-feed'); ?></label><code class="sbi_shortcode"> headercolor
 							Eg: headercolor=fff</code></th>
@@ -1304,26 +1324,6 @@ function sb_instagram_settings_page() {
 							</select>
 						</td>
 					</tr>
-                    <tr valign="top" class="sbi_pro">
-                        <th scope="row"><label><?php _e('Header Size', 'instagram-feed'); ?></label><code class="sbi_shortcode"> headersize
-                                Eg: headersize=medium</code></th>
-                        <td>
-                            <select name="sb_instagram_header_size" id="sb_instagram_header_size" style="float: left;">
-                                <option value="small" <?php if($sb_instagram_header_size == "small") echo 'selected="selected"' ?> ><?php _e('Small', 'instagram-feed'); ?></option>
-                                <option value="medium" <?php if($sb_instagram_header_size == "medium") echo 'selected="selected"' ?> ><?php _e('Medium', 'instagram-feed'); ?></option>
-                                <option value="large" <?php if($sb_instagram_header_size == "large") echo 'selected="selected"' ?> ><?php _e('Large', 'instagram-feed'); ?></option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr valign="top" class="sbi_pro">
-                        <th scope="row"><label><?php _e("Show Bio Text", 'instagram-feed'); ?></label><code class="sbi_shortcode"> showbio
-                                Eg: showbio=false</code></th>
-                        <td>
-							<?php $sb_instagram_show_bio = isset( $sb_instagram_show_bio ) ? $sb_instagram_show_bio  : true; ?>
-                            <input type="checkbox" name="sb_instagram_show_bio" id="sb_instagram_show_bio" <?php if($sb_instagram_show_bio == true) echo 'checked="checked"' ?> />
-                            <span class="sbi_note"><?php _e("Only applies for Instagram accounts with bios", 'instagram-feed'); ?></span>
-                        </td>
-                    </tr>
 					<tr valign="top" class="sbi_pro">
 						<th scope="row"><label><?php _e("Show Number of Followers",'instagram-feed'); ?></label></th>
 						<td>
