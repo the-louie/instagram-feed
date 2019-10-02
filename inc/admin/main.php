@@ -2034,12 +2034,12 @@ function sb_instagram_settings_page() {
 					<td><?php _e("Whether to show the feed Header. Options:", 'instagram-feed'); ?> 'true' or 'false'.</td>
 					<td><code>[instagram-feed showheader=false]</code></td>
 				</tr>
-				<tr class="sbi_pro">
+				<tr>
 					<td>showbio</td>
 					<td><?php _e("Display the bio in the header. Options:", 'instagram-feed'); ?> 'true' or 'false'</td>
 					<td><code>[instagram-feed showbio=true]</code></td>
 				</tr>
-				<tr class="sbi_pro">
+				<tr>
 					<td>headersize</td>
 					<td><?php _e("Size of the header including small, medium and large. Options:", 'instagram-feed'); ?> small, medium, or large.</td>
 					<td><code>[instagram-feed headersize=medium]</code></td>
