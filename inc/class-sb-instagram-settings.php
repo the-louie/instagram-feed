@@ -110,6 +110,9 @@ class SB_Instagram_Settings {
 		if ( isset( $atts['showbio'] ) && $atts['showbio'] === 'false' ) {
 			$this->settings['showbio'] = false;
 		}
+		if ( isset( $atts['showheader'] ) && $atts['showheader'] === 'false' ) {
+			$this->settings['showheader'] = false;
+		}
 		$this->settings['disable_resize'] = isset( $db['sb_instagram_disable_resize'] ) && ($db['sb_instagram_disable_resize'] === 'on');
 		$this->settings['favor_local'] = isset( $db['sb_instagram_favor_local'] ) && ($db['sb_instagram_favor_local'] === 'on');
 		$this->settings['backup_cache_enabled'] = ! isset( $db['sb_instagram_backup'] ) || ($db['sb_instagram_backup'] === 'on');

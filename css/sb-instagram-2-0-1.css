@@ -41,6 +41,7 @@
 #sb_instagram #sbi_images .sbi_item{
     display: -moz-inline-stack;
     display: inline-block;
+    float: left;
     vertical-align: top;
     zoom: 1;
     *display: inline;
@@ -216,6 +217,14 @@
     border-radius: 100%;
     -webkit-animation: sbi-sk-scaleout 1.0s infinite ease-in-out;
     animation: sbi-sk-scaleout 1.0s infinite ease-in-out;
+}
+#sb_instagram br {
+    display: none;
+}
+#sbi_load p {
+    display: inline;
+    padding: 0;
+    margin: 0;
 }
 /* Loader in button */
 #sb_instagram #sbi_load .sbi_loader{
@@ -472,7 +481,10 @@
 #sb_instagram .sb_instagram_header p{
     font-size: 13px;
     line-height: 1.3;
+    margin: 0;
+    padding: 0;
 }
+#sb_instagram p:empty { display: none; }
 #sb_instagram .sb_instagram_header .sbi_header_text img.emoji{
     margin-right: 3px !important;
 }

@@ -3,7 +3,7 @@ Contributors: smashballoon, craig-at-smash-balloon
 Tags: Instagram, Instagram feed, Instagram photos, Instagram widget, Instagram gallery
 Requires at least: 3.4
 Tested up to: 5.2
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -324,6 +324,10 @@ We understand that sometimes you need help, have issues or just have questions. 
 * Plus more customization options added all the time!
 
 == Changelog ==
+= 2.0.2 =
+* Fix: HTML for header would still be visible in the source of the page when removing the header using showheader=false in the shortcode
+* Fix: CSS added to prevent layout issues when adding the feed to a "text" widget for certain themes
+
 = 2.0.1 =
 * Tweak: Force cache of major caching plugins to clear when updating plugin to avoid issues with previous CSS/JavaScript files being cached
 * Tweak: Added version number to the end of JavaScript and CSS files to clear browser caches that are causing errors
