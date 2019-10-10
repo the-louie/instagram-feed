@@ -552,20 +552,54 @@ function sbi_get_database_settings() {
 
 /**
  * May include support for templates in theme folders in the future
+ *
+ * @since 2.1 custom templates supported
  */
 function sbi_get_feed_template_part( $part, $settings = array() ) {
-    $file = '';
-    if ( $part === 'header' ) {
-        $file = trailingslashit( SBI_PLUGIN_DIR ) . 'templates/header.php';
-    } elseif ( $part === 'item' ) {
-	    $file = trailingslashit( SBI_PLUGIN_DIR ) . 'templates/item.php';
-    } elseif ( $part === 'footer' ) {
-	    $file = trailingslashit( SBI_PLUGIN_DIR ) . 'templates/footer.php';
-    } elseif ( $part === 'feed' ) {
-	    $file = trailingslashit( SBI_PLUGIN_DIR ) . 'templates/feed.php';
-    }
+	$file = '';
 
-    return $file;
+	$using_custom_templates_in_theme = apply_filters( 'sbi_use_theme_templates', $settings['customtemplates'] );
+	$generic_path = trailingslashit( SBI_PLUGIN_DIR ) . 'templates/';
+
+	if ( $using_custom_templates_in_theme ) {
+		$custom_header_template = locate_template( 'sbi/header.php', false, false );
+		$custom_item_template = locate_template( 'sbi/item.php', false, false );
+		$custom_footer_template = locate_template( 'sbi/footer.php', false, false );
+		$custom_feed_template = locate_template( 'sbi/feed.php', false, false );
+	} else {
+		$custom_header_template = false;
+		$custom_item_template = false;
+		$custom_footer_template = false;
+		$custom_feed_template = false;
+	}
+
+	if ( $part === 'header' ) {
+        if ( $custom_header_template ) {
+            $file = $custom_header_template;
+        } else {
+            $file = $generic_path . 'header.php';
+        }
+	} elseif ( $part === 'item' ) {
+		if ( $custom_item_template ) {
+			$file = $custom_item_template;
+		} else {
+			$file = $generic_path . 'item.php';
+		}
+	} elseif ( $part === 'footer' ) {
+		if ( $custom_footer_template ) {
+			$file = $custom_footer_template;
+		} else {
+			$file = $generic_path . 'footer.php';
+		}
+	} elseif ( $part === 'feed' ) {
+		if ( $custom_feed_template ) {
+			$file = $custom_feed_template;
+		} else {
+			$file = $generic_path . 'feed.php';
+		}
+	}
+
+	return $file;
 }
 
 /**

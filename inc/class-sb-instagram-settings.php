@@ -103,15 +103,17 @@ class SB_Instagram_Settings {
 				'user'             => isset( $db['sb_instagram_user'] ) ? $db['sb_instagram_user'] : false,
 				'feedid'           => isset( $db['sb_instagram_feed_id'] ) ? $db['sb_instagram_feed_id'] : false,
 				'resizeprocess'    => isset( $db['sb_instagram_resizeprocess'] ) ? $db['sb_instagram_resizeprocess'] : 'background',
-			), $atts );
+				'customtemplates'    => isset( $db['customtemplates'] ) ? $db['customtemplates'] : '',
 
+			), $atts );
+		$this->settings['customtemplates'] = $this->settings['customtemplates'] === 'true' || $this->settings['customtemplates'] === 'on';
+		if ( isset( $_GET['sbi_debug'] ) ) {
+			$this->settings['customtemplates'] = false;
+		}
 		$this->settings['minnum'] = max( (int)$this->settings['num'], (int)$this->settings['nummobile'] );
 		$this->settings['showbio'] = $this->settings['showbio'] === 'true' || $this->settings['showbio'] === 'on' || $this->settings['showbio'] === true;
 		if ( isset( $atts['showbio'] ) && $atts['showbio'] === 'false' ) {
 			$this->settings['showbio'] = false;
-		}
-		if ( isset( $atts['showheader'] ) && $atts['showheader'] === 'false' ) {
-			$this->settings['showheader'] = false;
 		}
 		$this->settings['disable_resize'] = isset( $db['sb_instagram_disable_resize'] ) && ($db['sb_instagram_disable_resize'] === 'on');
 		$this->settings['favor_local'] = isset( $db['sb_instagram_favor_local'] ) && ($db['sb_instagram_favor_local'] === 'on');
@@ -132,6 +134,8 @@ class SB_Instagram_Settings {
 				$this->settings['sbi_cache_cron_interval'] = 60*60*12;
 		}
 
+		$this->settings['sb_instagram_cache_time'] = isset( $this->db['sb_instagram_cache_time'] ) ? $this->db['sb_instagram_cache_time'] : 1;
+		$this->settings['sb_instagram_cache_time_unit'] = isset( $this->db['sb_instagram_cache_time_unit'] ) ? $this->db['sb_instagram_cache_time_unit'] : 'hours';
 
 		global $sb_instagram_posts_manager;
 
@@ -467,13 +471,14 @@ class SB_Instagram_Settings {
 			return SBI_CRON_UPDATE_CACHE_TIME;
 		} else {
 			//If the caching time doesn't exist in the database then set it to be 1 hour
-			$cache_time = isset( $settings['sb_instagram_cache_time'] ) ? (int)$this->settings['sb_instagram_cache_time'] : 1;
-			$cache_time_unit = isset( $settings['sb_instagram_cache_time_unit'] ) ? $this->settings['sb_instagram_cache_time_unit'] : 'hours';
+			$cache_time = isset( $this->settings['sb_instagram_cache_time'] ) ? (int)$this->settings['sb_instagram_cache_time'] : 1;
+			$cache_time_unit = isset( $this->settings['sb_instagram_cache_time_unit'] ) ? $this->settings['sb_instagram_cache_time_unit'] : 'hours';
 
 			//Calculate the cache time in seconds
 			if ( $cache_time_unit == 'minutes' ) $cache_time_unit = 60;
 			if ( $cache_time_unit == 'hours' ) $cache_time_unit = 60*60;
 			if ( $cache_time_unit == 'days' ) $cache_time_unit = 60*60*24;
+
 			return $cache_time * $cache_time_unit;
 		}
 	}

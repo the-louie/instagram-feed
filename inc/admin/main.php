@@ -85,7 +85,8 @@ function sb_instagram_settings_page() {
 		'enqueue_css_in_shortcode' => false,
 		'sb_instagram_disable_mob_swipe' => false,
 		'sbi_font_method' => 'svg',
-		'sb_instagram_disable_awesome'      => false
+		'sb_instagram_disable_awesome'      => false,
+        'custom_template' => false
 	);
 	//Save defaults in an array
 	$options = wp_parse_args(get_option('sb_instagram_settings'), $sb_instagram_settings_defaults);
@@ -144,6 +145,8 @@ function sb_instagram_settings_page() {
 	$sb_ajax_initial = $options[ 'sb_ajax_initial' ];
 	$sbi_font_method = $options[ 'sbi_font_method' ];
 	$sb_instagram_disable_awesome = $options[ 'sb_instagram_disable_awesome' ];
+	$sb_instagram_custom_template = $options[ 'custom_template' ];
+
 
 
 	//Check nonce before saving data
@@ -327,6 +330,9 @@ function sb_instagram_settings_page() {
 				$options['sb_instagram_backup'] = $sb_instagram_backup;
 				$options['sbi_font_method'] = $sbi_font_method;
 				$options[ 'sb_instagram_disable_awesome' ] = $sb_instagram_disable_awesome;
+
+				isset($_POST[ 'sb_instagram_custom_template' ]) ? $sb_instagram_custom_template = $_POST[ 'sb_instagram_custom_template' ] : $sb_instagram_custom_template = '';
+				$options['custom_template'] = $sb_instagram_custom_template;
 
 				//clear expired tokens
 				delete_option( 'sb_expired_tokens' );
@@ -1781,7 +1787,16 @@ function sb_instagram_settings_page() {
 						<p class="sbi_tooltip"><?php _e("This plugin uses SVGs for all icons in the feed. Use this setting to switch to font icons.", 'instagram-feed'); ?></p>
 					</td>
 				</tr>
-				</tbody>
+                <tr>
+                    <th class="bump-left"><label class="bump-left"><?php _e("Enable Custom Templates", 'instagram-feed'); ?></label></th>
+                    <td>
+                        <input name="sb_instagram_custom_template" type="checkbox" id="sb_instagram_custom_template" <?php if($sb_instagram_custom_template == true) echo "checked"; ?> />
+                        <label for="ssb_instagram_custom_template"><?php _e('Yes', 'instagram-feed'); ?></label>
+                        <a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e('What does this mean?', 'instagram-feed'); ?></a>
+                        <p class="sbi_tooltip"><?php _e("The default html for the feed can be replaced with custom templates added to your theme's folder. Enable this setting to use these templates.", 'instagram-feed'); ?></p>
+                    </td>
+                </tr>
+                </tbody>
 			</table>
 
 			<?php submit_button(); ?>

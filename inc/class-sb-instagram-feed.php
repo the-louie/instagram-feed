@@ -177,7 +177,7 @@ class SB_Instagram_Feed
 	 * @since 2.0/5.0
 	 */
 	public function should_use_backup() {
-		return $this->should_use_backup;
+		return $this->should_use_backup || empty( $this->post_data );
 	}
 
 	/**
@@ -497,6 +497,7 @@ class SB_Instagram_Feed
 
 		$one_successful_connection = false;
 		$next_page_found = false;
+		$one_api_request_delayed = false;
 
 		foreach ( $feed_types_and_terms as $type => $terms ) {
 			if ( is_array( $terms ) && count( $terms ) > 5 ) {
@@ -615,6 +616,8 @@ class SB_Instagram_Feed
 						}
 					}
 				} elseif ( $api_requests_delayed ) {
+					$one_api_request_delayed = true;
+
 					$this->add_report( 'delaying API request for ' . $term . ' - ' . $type );
 
 					$error = '<p><b>' . sprintf( __( 'Error: API requests are being delayed for this account.', 'instagram-feed' ), $connected_account_for_term['username'] ) . ' ' . __( 'New posts will not be retrieved.', 'instagram-feed' ) . '</b>';
@@ -626,7 +629,7 @@ class SB_Instagram_Feed
 			}
 		}
 
-		if ( ! $one_successful_connection ) {
+		if ( ! $one_successful_connection || ($one_api_request_delayed && empty( $new_post_sets )) ) {
 			$this->should_use_backup = true;
 		}
 		$posts = $this->merge_posts( $new_post_sets, $settings );
@@ -727,20 +730,27 @@ class SB_Instagram_Feed
 	 * @since 2.0/5.1 duplicate posts removed, cache set trimmed to a maximum
 	 */
 	public function set_cron_cache( $to_cache, $cache_time, $save_backup = true ) {
-		$this->remove_duplicate_posts();
-		$this->trim_posts_to_max();
+		if ( ! empty( $this->post_data )
+		     || ! empty( $this->next_pages )
+		     || ! empty( $to_cache['data'] ) ) {
+			$this->remove_duplicate_posts();
+			$this->trim_posts_to_max();
 
-		$to_cache['data'] = isset( $to_cache['data'] ) ? $to_cache['data'] : $this->post_data;
-		$to_cache['pagination'] = isset( $to_cache['next_pages'] ) ? $to_cache['next_pages'] : $this->next_pages;
-		$to_cache['atts'] = isset( $to_cache['atts'] ) ? $to_cache['atts'] : $this->transient_atts;
-		$to_cache['last_requested'] = isset( $to_cache['last_requested'] ) ? $to_cache['last_requested'] : time();
-		$to_cache['last_retrieve'] = isset( $to_cache['last_retrieve'] ) ? $to_cache['last_retrieve'] : $this->last_retrieve;
+			$to_cache['data'] = isset( $to_cache['data'] ) ? $to_cache['data'] : $this->post_data;
+			$to_cache['pagination'] = isset( $to_cache['next_pages'] ) ? $to_cache['next_pages'] : $this->next_pages;
+			$to_cache['atts'] = isset( $to_cache['atts'] ) ? $to_cache['atts'] : $this->transient_atts;
+			$to_cache['last_requested'] = isset( $to_cache['last_requested'] ) ? $to_cache['last_requested'] : time();
+			$to_cache['last_retrieve'] = isset( $to_cache['last_retrieve'] ) ? $to_cache['last_retrieve'] : $this->last_retrieve;
 
-		set_transient( $this->regular_feed_transient_name, wp_json_encode( $to_cache ), $cache_time );
+			set_transient( $this->regular_feed_transient_name, wp_json_encode( $to_cache ), $cache_time );
 
-		if ( $save_backup ) {
-			update_option( $this->backup_feed_transient_name, wp_json_encode( $to_cache ), false );
+			if ( $save_backup ) {
+				update_option( $this->backup_feed_transient_name, wp_json_encode( $to_cache ), false );
+			}
+		} else {
+			$this->add_report( 'no data not caching' );
 		}
+
 	}
 
 	/**
@@ -1018,7 +1028,7 @@ class SB_Instagram_Feed
 		$encoded_options = wp_json_encode( $js_options );
 
 		$js_option_html = '<script type="text/javascript">var sb_instagram_js_options = ' . $encoded_options . ';</script>';
-		$js_option_html .= "<script type='text/javascript' src='" . trailingslashit( SBI_PLUGIN_URL ) . 'js/sb-instagram-2-0-1.min.js?ver=' . SBIVER . "'></script>";
+		$js_option_html .= "<script type='text/javascript' src='" . trailingslashit( SBI_PLUGIN_URL ) . 'js/sb-instagram.min.js?ver=' . SBIVER . "'></script>";
 
 		return $js_option_html;
 	}
