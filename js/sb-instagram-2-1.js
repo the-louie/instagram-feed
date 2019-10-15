@@ -262,19 +262,19 @@ if(!sbi_js_exists) {
                 } else {
                     this.afterInitialImagesLoaded();
                     //Only check the width once the resize event is over
-                    var sbi_delay = (function () {
-                        var sbi_timer = 0;
-                        return function (sbi_callback, sbi_ms) {
-                            clearTimeout(sbi_timer);
-                            sbi_timer = setTimeout(sbi_callback, sbi_ms);
-                        };
-                    })();
-                    jQuery(window).resize(function () {
-                        sbi_delay(function () {
-                            feed.afterResize();
-                        }, 500);
-                    });
                 }
+                var sbi_delay = (function () {
+                    var sbi_timer = 0;
+                    return function (sbi_callback, sbi_ms) {
+                        clearTimeout(sbi_timer);
+                        sbi_timer = setTimeout(sbi_callback, sbi_ms);
+                    };
+                })();
+                jQuery(window).resize(function () {
+                    sbi_delay(function () {
+                        feed.afterResize();
+                    }, 500);
+                });
 
             },
             initLayout: function() {
@@ -500,7 +500,6 @@ if(!sbi_js_exists) {
                         forceChange = false;
                     }
                 });
-
                 //Image res
                 var newRes = 640;
                 switch (feed.settings.imgRes) {
@@ -550,6 +549,7 @@ if(!sbi_js_exists) {
                             minImageWidth = $item.find('.sbi_photo').innerWidth();
                             thisImageReplace = feed.getBestResolutionForAuto(minImageWidth, newAspectRatio, $item);
                             newRes = 640;
+
                             switch (thisImageReplace) {
                                 case 320:
                                     newRes = 320;
@@ -759,6 +759,32 @@ if(!sbi_js_exists) {
                 }
 
                 return srcSet;
+            },
+            getAvatarUrl: function (username,favorType) {
+                if (username === '') {
+                    return '';
+                }
+
+                var availableAvatars = this.settings.general.avatars,
+                    favorType = typeof favorType !== 'undefined' ? favorType : 'local';
+
+                if (favorType === 'local') {
+                    if (typeof availableAvatars['LCL'+username] !== 'undefined' && parseInt(availableAvatars['LCL'+username]) === 1) {
+                        return sb_instagram_js_options.resized_url + username + '.jpg';
+                    } else if (typeof availableAvatars[username] !== 'undefined') {
+                        return availableAvatars[username];
+                    } else {
+                        return '';
+                    }
+                } else {
+                    if (typeof availableAvatars[username] !== 'undefined') {
+                        return availableAvatars[username];
+                    } else if (typeof availableAvatars['LCL'+username] !== 'undefined' && parseInt(availableAvatars['LCL'+username]) === 1)  {
+                        return sb_instagram_js_options.resized_url + username + '.jpg';
+                    } else {
+                        return '';
+                    }
+                }
             },
             addToNeedsResizing: function (id) {
                 if (this.needsResizing.indexOf(id) === -1) {

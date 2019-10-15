@@ -489,6 +489,14 @@ class SB_Instagram_Feed
 		$next_pages = $this->next_pages;
 		global $sb_instagram_posts_manager;
 
+		/**
+		 * Number of posts to retrieve in each API call
+		 *
+		 * @param int               Minimum number of posts needed in each API request
+		 * @param array $settings   Settings for this feed
+		 *
+		 * @since 2.0/5.0
+		 */
 		$num = apply_filters( 'sbi_num_in_request', $settings['minnum'], $settings );
 
 		$params = array(
@@ -856,6 +864,10 @@ class SB_Instagram_Feed
 		$first_username = false;
 		if ( $first_user ) {
 			$first_username = isset( $connected_accounts_for_feed[ $first_user ]['username'] ) ? $connected_accounts_for_feed[ $first_user ]['username'] : $first_user;
+		} elseif ( $header_data ) { // in case no connected account for feed
+			$first_username = SB_Instagram_Parse::get_username( $header_data );
+		} elseif ( isset( $feed_types_and_terms['users'] ) && isset( $this->post_data[0] ) ) { // in case no connected account and no header
+			$first_username = SB_Instagram_Parse::get_username( $this->post_data[0] );
 		}
 		$use_pagination = $this->should_use_pagination( $settings, 0 );
 
@@ -1229,6 +1241,7 @@ class SB_Instagram_Feed
 	 * @return mixed|array
 	 *
 	 * @since 2.0/5.0
+	 * @since 2.1/5.2 added filter hook for applying custom sorting
 	 */
 	private function sort_posts( $post_set, $settings ) {
 		if ( empty( $post_set ) ) {
@@ -1237,22 +1250,32 @@ class SB_Instagram_Feed
 
 		// sorting done with "merge_posts" to be more efficient
 		if ( $settings['sortby'] === 'alternate' ) {
-			return $post_set;
-		} elseif ( $settings['sortby'] !== 'random' ) {
+			$return_post_set = $post_set;
+		} elseif ( $settings['sortby'] === 'random' ) {
+			/*
+             * randomly selects posts in a random order. Cache saves posts
+             * in this random order so paginating does not cause some posts to show up
+             * twice or not at all
+             */
+			usort($post_set, 'sbi_rand_sort' );
+			$return_post_set = $post_set;
+
+		} else {
 			// compares posted on dates of posts
 			usort($post_set, 'sbi_date_sort' );
-
-			return $post_set;
-		} else {
-			/*
-			 * randomly selects posts in a random order. Cache saves posts
-			 * in this random order so paginating does not cause some posts to show up
-			 * twice or not at all
-			 */
-			usort($post_set, 'sbi_rand_sort' );
-
-			return $post_set;
+			$return_post_set = $post_set;
 		}
+
+		/**
+		 * Apply a custom sorting of posts
+		 *
+		 * @param array $return_post_set    Ordered set of filtered posts
+		 * @param array $settings           Settings for this feed
+		 *
+		 * @since 2.1/5.2
+		 */
+
+		return apply_filters( 'sbi_sorted_posts', $return_post_set, $settings );
 	}
 
 	/**

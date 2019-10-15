@@ -796,7 +796,7 @@ function sb_instagram_scripts_enqueue() {
 	//Options to pass to JS file
 	$sb_instagram_settings = get_option( 'sb_instagram_settings' );
 
-	$js_file = 'js/sb-instagram-2-0-1.min.js';
+	$js_file = 'js/sb-instagram-2-1.min.js';
 	if ( isset( $_GET['sbi_debug'] ) ) {
 		$js_file = 'js/sb-instagram.js';
 	}
