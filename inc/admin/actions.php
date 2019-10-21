@@ -254,11 +254,13 @@ function sbi_test_token() {
 				);
 			}
 
+			delete_transient( SBI_USE_BACKUP_PREFIX . 'sbi_'  . $json['id'] );
+
 		}
 
 		if ( isset( $test_connection_data['error_message'] ) ) {
 			echo $test_connection_data['error_message'];
-		} elseif ( $test_connection_data !== false ) {
+		} elseif ( $test_connection_data !== false && ! empty( $new_user_id ) ) {
 			$username = $test_connection_data['username'] ? $test_connection_data['username'] : $connected_accounts[ $new_user_id ]['username'];
 			$user_id = $test_connection_data['id'] ? $test_connection_data['id'] : $connected_accounts[ $new_user_id ]['user_id'];
 			$profile_picture = $test_connection_data['profile_picture'] ? $test_connection_data['profile_picture'] : $connected_accounts[ $new_user_id ]['profile_picture'];
@@ -268,7 +270,7 @@ function sbi_test_token() {
 				'user_id' => $user_id,
 				'username' => $username,
 				'type' => $type,
-				'is_valid' => $test_connection_data['is_valid'],
+				'is_valid' => true,
 				'last_checked' => $test_connection_data['last_checked'],
 				'profile_picture' => $profile_picture
 			);
@@ -280,6 +282,8 @@ function sbi_test_token() {
 			} else {
 				$connected_accounts[ $new_user_id ]['local_avatar'] = false;
 			}
+
+			delete_transient( SBI_USE_BACKUP_PREFIX . 'sbi_'  . $user_id );
 
 			$options['connected_accounts'] = $connected_accounts;
 
@@ -306,29 +310,31 @@ function sbi_delete_account() {
 	$options = get_option( 'sb_instagram_settings', array() );
 	$connected_accounts =  isset( $options['connected_accounts'] ) ? $options['connected_accounts'] : array();
 
-	if ( $account_id ) {
-		wp_cache_delete ( 'alloptions', 'options' );
-		$username = $connected_accounts[ $account_id ]['username'];
+	wp_cache_delete ( 'alloptions', 'options' );
+	$username = $connected_accounts[ $account_id ]['username'];
 
-		$num_times_used = 0;
-		foreach ( $connected_accounts as $connected_account ) {
+	$num_times_used = 0;
 
-		    if ( $connected_account['username'] === $username ) {
-		        $num_times_used++;
-            }
-        }
+	$new_con_accounts = array();
+	foreach ( $connected_accounts as $connected_account ) {
 
-		if ( $num_times_used < 2 ) {
-			sbi_delete_local_avatar( $username );
-        }
+		if ( $connected_account['username'] === $username ) {
+			$num_times_used++;
+		}
 
-		unset( $connected_accounts[ $account_id ] );
-
-		$options['connected_accounts'] = $connected_accounts;
-
-		update_option( 'sb_instagram_settings', $options );
-
+		if ( $connected_account['username'] !== '' && $account_id !== $connected_account['user_id'] && ! empty( $connected_account['user_id'] ) ) {
+			$new_con_accounts[ $connected_account['user_id'] ] = $connected_account;
+		}
 	}
+
+	if ( $num_times_used < 2 ) {
+		sbi_delete_local_avatar( $username );
+	}
+
+	$options['connected_accounts'] = $new_con_accounts;
+
+	update_option( 'sb_instagram_settings', $options );
+
 
 	die();
 }
@@ -667,8 +673,8 @@ function sbi_notices_html() {
 		var_dump( $sbi_statuses_option );
 	}
 
-	$should_show_bfcm_discount = false; // temporary to not show notices on update
-	$should_show_new_user_discount = false; // temporary to not show notices on update
+	//$should_show_bfcm_discount = false; // temporary to not show notices on update
+	//$should_show_new_user_discount = false; // temporary to not show notices on update
 
 	if ( $should_show_rating_notice ) {
 		$other_notice_html = '';

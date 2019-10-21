@@ -3,7 +3,7 @@
  * Custom Feeds for Instagram Main Template
  * Creates the wrapping HTML and adds settings as attributes
  *
- * @version 2.1 Custom Feeds for Instagram Free by Smash Balloon
+ * @version 2.1 Instagram Feed by Smash Balloon
  *
  */
 // Don't load directly

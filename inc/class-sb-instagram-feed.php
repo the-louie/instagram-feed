@@ -184,6 +184,8 @@ class SB_Instagram_Feed
 	 * The header is only displayed when the setting is enabled and
 	 * an account has been connected
 	 *
+	 * Overwritten in the Pro version
+	 *
 	 * @param array $settings settings specific to this feed
 	 * @param array $feed_types_and_terms organized settings related to feed data
 	 *  (ex. 'user' => array( 'smashballoon', 'custominstagramfeed' )
@@ -669,7 +671,7 @@ class SB_Instagram_Feed
 	 * @since 2.0/5.0
 	 */
 	public function set_remote_header_data( $settings, $feed_types_and_terms, $connected_accounts_for_feed ) {
-		$first_user = isset( $feed_types_and_terms['users'][0] ) ? $feed_types_and_terms['users'][0]['term'] : '';
+		$first_user = $this->get_first_user( $feed_types_and_terms );
 		$this->header_data = false;
 
 		if ( isset( $connected_accounts_for_feed[ $first_user ] ) ) {
@@ -955,21 +957,6 @@ class SB_Instagram_Feed
 	}
 
 	/**
-	 * Additional options/settings added to the main div
-	 * for the feed
-	 *
-	 * Overwritten in the Pro version
-	 *
-	 * @param $other_atts
-	 * @param $settings
-	 *
-	 * @return string
-	 */
-	protected function add_other_atts( $other_atts, $settings ) {
-		return '';
-	}
-
-	/**
 	 * Generates HTML for individual sbi_item elements
 	 *
 	 * @param array $settings
@@ -1046,6 +1033,23 @@ class SB_Instagram_Feed
 	}
 
 	/**
+	 * Overwritten in the Pro version
+	 *
+	 * @param $feed_types_and_terms
+	 *
+	 * @return string
+	 *
+	 * @since 2.1/5.2
+	 */
+	public function get_first_user( $feed_types_and_terms ) {
+		if ( isset( $feed_types_and_terms['users'][0] ) ) {
+			return $feed_types_and_terms['users'][0]['term'];
+		} else {
+			return '';
+		}
+	}
+
+	/**
 	 * Adds recorded strings to an array
 	 *
 	 * @param $to_add
@@ -1063,6 +1067,21 @@ class SB_Instagram_Feed
 	 */
 	public function get_report() {
 		return $this->report;
+	}
+
+	/**
+	 * Additional options/settings added to the main div
+	 * for the feed
+	 *
+	 * Overwritten in the Pro version
+	 *
+	 * @param $other_atts
+	 * @param $settings
+	 *
+	 * @return string
+	 */
+	protected function add_other_atts( $other_atts, $settings ) {
+		return '';
 	}
 
 	/**

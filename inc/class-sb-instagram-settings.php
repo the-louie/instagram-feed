@@ -103,9 +103,10 @@ class SB_Instagram_Settings {
 				'user'             => isset( $db['sb_instagram_user'] ) ? $db['sb_instagram_user'] : false,
 				'feedid'           => isset( $db['sb_instagram_feed_id'] ) ? $db['sb_instagram_feed_id'] : false,
 				'resizeprocess'    => isset( $db['sb_instagram_resizeprocess'] ) ? $db['sb_instagram_resizeprocess'] : 'background',
-				'customtemplates'    => isset( $db['customtemplates'] ) ? $db['customtemplates'] : '',
+				'customtemplates'    => isset( $db['custom_template'] ) ? $db['custom_template'] : '',
 
 			), $atts );
+		
 		$this->settings['customtemplates'] = $this->settings['customtemplates'] === 'true' || $this->settings['customtemplates'] === 'on';
 		if ( isset( $_GET['sbi_debug'] ) ) {
 			$this->settings['customtemplates'] = false;
@@ -157,6 +158,8 @@ class SB_Instagram_Settings {
 	 * The plugin will output settings on the frontend for debugging purposes.
 	 * Safe settings to display are added here.
 	 *
+	 * Overwritten in the Pro version.
+	 *
 	 * @return array
 	 *
 	 * @since 2.0/5.0
@@ -204,7 +207,9 @@ class SB_Instagram_Settings {
 			'disable_js_image_loading',
 			'enqueue_js_in_head',
 			'sbi_font_method',
-			'sb_instagram_disable_awesome'
+			'sb_instagram_disable_awesome',
+			'sb_ajax_initial',
+			'use_custom'
 		);
 
 		return $public;

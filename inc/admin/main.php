@@ -419,7 +419,7 @@ function sb_instagram_settings_page() {
 				<h3><?php _e( 'Configure', 'instagram-feed' ); ?></h3>
 
                 <div id="sbi_config">
-                    <a data-new-api="https://www.facebook.com/dialog/oauth?client_id=254638078422287&redirect_uri=https://api.smashballoon.com/instagram-graph-api-redirect.php&scope=manage_pages,instagram_basic,instagram_manage_insights&state=<?php echo admin_url('admin.php?page=sb-instagram-feed'); ?>"
+                    <a data-new-api="https://www.facebook.com/dialog/oauth?client_id=254638078422287&redirect_uri=https://api.smashballoon.com/instagram-graph-api-redirect.php&scope=manage_pages,instagram_basic,instagram_manage_insights,instagram_manage_comments&state=<?php echo admin_url('admin.php?page=sb-instagram-feed'); ?>"
                        data-old-api="https://instagram.com/oauth/authorize/?client_id=3a81a9fa2a064751b8c31385b91cc25c&scope=basic&redirect_uri=https://smashballoon.com/instagram-feed/instagram-token-plugin/?return_uri=<?php echo admin_url('admin.php?page=sb-instagram-feed'); ?>&response_type=token&state=<?php echo admin_url('admin.php?page-sb-instagram-feed'); ?>&hl=en"
                        href="https://instagram.com/oauth/authorize/?client_id=3a81a9fa2a064751b8c31385b91cc25c&scope=basic&redirect_uri=https://smashballoon.com/instagram-feed/instagram-token-plugin/?return_uri=<?php echo admin_url('admin.php?page=sb-instagram-feed'); ?>&response_type=token&state=<?php echo admin_url('admin.php?page-sb-instagram-feed'); ?>&hl=en" class="sbi_admin_btn"><i class="fa fa-user-plus" aria-hidden="true" style="font-size: 20px;"></i>&nbsp; <?php _e('Connect an Instagram Account', 'instagram-feed' ); ?></a>
 
@@ -1791,9 +1791,9 @@ function sb_instagram_settings_page() {
                     <th class="bump-left"><label class="bump-left"><?php _e("Enable Custom Templates", 'instagram-feed'); ?></label></th>
                     <td>
                         <input name="sb_instagram_custom_template" type="checkbox" id="sb_instagram_custom_template" <?php if($sb_instagram_custom_template == true) echo "checked"; ?> />
-                        <label for="ssb_instagram_custom_template"><?php _e('Yes', 'instagram-feed'); ?></label>
+                        <label for="sb_instagram_custom_template"><?php _e('Yes', 'instagram-feed'); ?></label>
                         <a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e('What does this mean?', 'instagram-feed'); ?></a>
-                        <p class="sbi_tooltip"><?php _e("The default html for the feed can be replaced with custom templates added to your theme's folder. Enable this setting to use these templates.", 'instagram-feed'); ?></p>
+                        <p class="sbi_tooltip"><?php _e("The default HTML for the feed can be replaced with custom templates added to your theme's folder. Enable this setting to use these templates. See <a href=\"https://smashballoon.com/guide-to-creating-custom-templates/\" target=\"_blank\">this guide</a>", 'instagram-feed'); ?></p>
                     </td>
                 </tr>
                 </tbody>
