@@ -402,8 +402,12 @@
     border: 1px solid #6AB074;
     color: #214F28;
 }
+.sbi_bfcm_sale_notice,
+.sbi_new_user_sale_notice{
+	max-width: 672px;
+}
 .sbi_review_notice img{
-    width: 84px;
+	width: 74px;
     margin: 0 0 0 -100% !important;
 
     -moz-border-radius: 4px;
@@ -414,14 +418,18 @@
     float: left;
     clear: none;
     width: 100%;
-    padding: 4px 0;
+    padding: 0;
+}
+.sbi_review_notice .sbi-links{
+	margin-top: 4px !important;
 }
 .sbi_review_notice p{
     float: left;
     clear: both;
     width: auto;
-    margin: 0 0 0 100px !important;
-    padding: 4px 40px 4px 0;
+	margin: 0 0 0 90px !important;
+	padding: 2px 40px 2px 0;
+	line-height: 1.4;
 }
 .sbi_review_notice a{
     display: inline-block;
@@ -433,11 +441,11 @@
     color: #0c7abf;
 }
 .sbi_review_notice .links{
-    margin: 0 0 0 92px !important;
+	margin: 0 0 0 82px !important;
     padding: 4px 0 0 0;
 }
 .sbi_review_notice .links a:first-child{
-    /*padding-left: 0;*/
+	margin-top: 6px !important;
 }
 .sbi_review_notice .sbi_notice_close,
 .sbi_review_notice .sbi_bfcm_sale_notice_close,
@@ -1372,6 +1380,20 @@
 	font-size: 13px;
 	font-style: italic;
 	margin-top: 5px !important;
+}
+
+.sbi_review_notice .sbi_offer_btn {
+	padding: 4px 12px 6px 12px;
+	background: green;
+	color: #fff;
+	border-radius: 4px;
+	display: inline-block;
+	text-decoration: none;
+	margin-left: 0;
+}
+.sbi_review_notice .sbi_offer_btn:hover, .sbi_review_notice .sbi_offer_btn:focus {
+	background: #049404;
+	color: #fff;
 }
 
 /* Admin footer share icons */
