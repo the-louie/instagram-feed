@@ -351,12 +351,13 @@ class SB_Instagram_Feed
 			$ids = $num_or_array_of_ids;
 
 			$id_string = '"' . implode( '","', $ids ) . '"';
-			$results = $wpdb->get_results( "
+			$results = $wpdb->get_results( $wpdb->prepare( "
 			SELECT p.media_id, p.instagram_id, p.aspect_ratio, p.sizes
 			FROM $posts_table_name AS p 
 			INNER JOIN $feeds_posts_table_name AS f ON p.id = f.id 
+			WHERE f.feed_id = %s
 			AND p.instagram_id IN($id_string)
-		  	AND p.images_done = 1", ARRAY_A );
+		  	AND p.images_done = 1", $feed_id ), ARRAY_A );
 
 			$return = array();
 			if ( !empty( $results ) && is_array( $results ) ) {
