@@ -182,7 +182,8 @@ function sbi_connect_business_accounts() {
 			'last_checked' => time(),
 			'profile_picture' => $profile_picture,
 			'name' => $name,
-			'type' => $type
+			'type' => $type,
+			'use_tagged' => '1'
 		);
 
 		if ( !$options['sb_instagram_disable_resize'] ) {
@@ -281,6 +282,23 @@ function sbi_test_token() {
 				}
 			} else {
 				$connected_accounts[ $new_user_id ]['local_avatar'] = false;
+			}
+
+			if ( $type === 'business' ) {
+				$url = 'https://graph.facebook.com/'.$user_id.'/tags?user_id='.$user_id.'&fields=id&limit=1&access_token='.sbi_maybe_clean( $access_token );
+				$args = array(
+					'timeout' => 60,
+					'sslverify' => false
+				);
+				$response = wp_remote_get( $url, $args );
+
+				if ( ! is_wp_error( $response ) ) {
+					// certain ways of representing the html for double quotes causes errors so replaced here.
+					$response = json_decode( str_replace( '%22', '&rdquo;', $response['body'] ), true );
+					if ( isset( $response['data'] ) ) {
+						$connected_accounts[ $new_user_id ]['use_tagged'] = '1';
+					}
+				}
 			}
 
 			delete_transient( SBI_USE_BACKUP_PREFIX . 'sbi_'  . $user_id );

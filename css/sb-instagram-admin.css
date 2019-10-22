@@ -1259,6 +1259,7 @@
 }
 #sbi_admin .sbi_pro_tooltip{
 	text-align: center;
+	z-index:99;
 	display: none;
 	position: absolute;
     background: #333;
