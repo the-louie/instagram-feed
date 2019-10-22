@@ -437,7 +437,6 @@ if ( function_exists( 'sb_instagram_feed_init' ) ) {
 			}
 
 			update_option( 'sbi_db_version', SBI_DBVERSION );
-
 		}
 
 	}
