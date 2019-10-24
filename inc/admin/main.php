@@ -708,7 +708,7 @@ function sb_instagram_settings_page() {
 							</div>
 							<div class="sbi_col sbi_two">
 
-								<p class="sbi_pro_tooltip"><?php _e( 'Upgrade to the Pro version to display hashtag feeds', 'instagram-feed' ); ?><i class="fa fa-caret-down" aria-hidden="true"></i></p>
+								<p class="sbi_pro_tooltip"><?php _e( 'Upgrade to the Pro version to display Hashtag and Tagged feeds', 'instagram-feed' ); ?><i class="fa fa-caret-down" aria-hidden="true"></i></p>
 								<a href="https://smashballoon.com/instagram-feed/?utm_source=plugin-free&utm_campaign=sbi" target="_blank" class="sbi_lock"><i class="fa fa-rocket"></i><?php _e('Pro', 'instagram-feed'); ?></a>
 
 								<input readonly type="text" size="25" style="height: 32px; top: -2px; position: relative; box-shadow: none;" />
@@ -724,10 +724,6 @@ function sb_instagram_settings_page() {
                                 <label class="sbi_radio_label" for="sb_instagram_type_tagged"><?php _e( 'Tagged:', 'instagram-feed' ); ?></label>
                             </div>
                             <div class="sbi_col sbi_two">
-
-                                <p class="sbi_pro_tooltip"><?php _e( 'Upgrade to the Pro version to display tagged feeds', 'instagram-feed' ); ?><i class="fa fa-caret-down" aria-hidden="true"></i></p>
-                                <a href="https://smashballoon.com/instagram-feed/?utm_source=plugin-free&utm_campaign=sbi" target="_blank" class="sbi_lock"><i class="fa fa-rocket"></i><?php _e('Pro', 'instagram-feed'); ?></a>
-
                                 <input readonly type="text" size="25" style="height: 32px; top: -2px; position: relative; box-shadow: none;" />
                                 &nbsp;<a class="sbi_tooltip_link sbi_pro" href="JavaScript:void(0);"><?php _e( 'What is this?', 'instagram-feed' ); ?></a>
 
