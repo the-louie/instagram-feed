@@ -324,6 +324,9 @@ We understand that sometimes you need help, have issues or just have questions. 
 * Plus more customization options added all the time!
 
 == Changelog ==
+= 2.1.1 =
+* Fix: HTML for header would still be visible in the source of the page when removing the header using showheader=false in the shortcode
+
 = 2.1 =
 * New: Added the ability to overwrite default templates in your theme. View [this article](https://smashballoon.com/guide-to-creating-custom-templates/) for more information.
 * New: Added several PHP hooks for modifying feeds settings and functionality.
