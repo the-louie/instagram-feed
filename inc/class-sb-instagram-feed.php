@@ -86,6 +86,13 @@ class SB_Instagram_Feed
 	private $report;
 
 	/**
+	 * @var array
+	 *
+	 * @since 2.1.1/5.2.1
+	 */
+	private $resized_images;
+
+	/**
 	 * SB_Instagram_Feed constructor.
 	 *
 	 * @param string $transient_name ID of this feed
@@ -113,6 +120,8 @@ class SB_Instagram_Feed
 
 		// used for errors and the sbi_debug report
 		$this->report = array();
+
+		$this->resized_images = array();
 	}
 
 	/**
@@ -136,10 +145,28 @@ class SB_Instagram_Feed
 	/**
 	 * @return array
 	 *
+	 * @since 2.1.1/5.2.1
+	 */
+	public function set_resized_images( $resized_image_data ) {
+		$this->resized_images = $resized_image_data;
+	}
+
+	/**
+	 * @return array
+	 *
 	 * @since 2.0/5.0
 	 */
 	public function get_next_pages() {
 		return $this->next_pages;
+	}
+
+	/**
+	 * @return array
+	 *
+	 * @since 2.1.1/5.2.1
+	 */
+	public function get_resized_images() {
+		return $this->resized_images;
 	}
 
 	/**
@@ -1193,6 +1220,7 @@ class SB_Instagram_Feed
 		$image_ids = array();
 		$post_index = $offset;
 		$icon_type = $settings['font_method'];
+		$resized_images = $this->get_resized_images();
 
 		foreach ( $posts as $post ) {
 			$image_ids[] = SB_Instagram_Parse::get_post_id( $post );

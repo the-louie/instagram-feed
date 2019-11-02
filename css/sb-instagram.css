@@ -738,3 +738,6 @@
 #sb_instagram.sbi_no_js .sbi_load_btn{
     display: none;
 }
+#sb_instagram #sbi_images .sbi_js_load_disabled .sbi_imgLiquid_ready.sbi_photo {
+    padding-bottom: 0 !important;
+}

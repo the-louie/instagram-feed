@@ -146,6 +146,21 @@ function display_instagram( $atts = array() ) {
 		$post_set->maybe_save_update_and_resize_images_for_posts();
     }
 
+	if ( $settings['disable_js_image_loading'] || $settings['imageres'] !== 'auto' ) {
+		global $sb_instagram_posts_manager;
+		$post_data = $instagram_feed->get_post_data();
+
+		if ( ! $sb_instagram_posts_manager->image_resizing_disabled() ) {
+			$image_ids = array();
+			foreach ( $post_data as $post ) {
+				$image_ids[] = SB_Instagram_Parse::get_post_id( $post );
+			}
+			$resized_images = SB_Instagram_Feed::get_resized_images_source_set( $image_ids, 0, $transient_name );
+
+			$instagram_feed->set_resized_images( $resized_images );
+		}
+	}
+
 	return $instagram_feed->get_the_feed_html( $settings, $atts, $instagram_feed_settings->get_feed_type_and_terms(), $instagram_feed_settings->get_connected_accounts_in_feed() );
 }
 
@@ -281,6 +296,21 @@ function sbi_get_next_post_set() {
 			$instagram_feed->cache_feed_data( $instagram_feed_settings->get_cache_time_in_seconds(), $settings['backup_cache_enabled'] );
 		}
 
+	}
+
+	if ( $settings['disable_js_image_loading'] || $settings['imageres'] !== 'auto' ) {
+		global $sb_instagram_posts_manager;
+		$post_data = array_slice( $instagram_feed->get_post_data(), $offset, $settings['minnum'] );
+
+		if ( ! $sb_instagram_posts_manager->image_resizing_disabled() ) {
+			$image_ids = array();
+			foreach ( $post_data as $post ) {
+				$image_ids[] = SB_Instagram_Parse::get_post_id( $post );
+			}
+			$resized_images = SB_Instagram_Feed::get_resized_images_source_set( $image_ids, 0, $feed_id );
+
+			$instagram_feed->set_resized_images( $resized_images );
+		}
 	}
 
 	$feed_status = array( 'shouldPaginate' => $instagram_feed->should_use_pagination( $settings, $offset ) );
@@ -678,6 +708,17 @@ function sbi_rand_sort( $a, $b ) {
 }
 
 /**
+ * @return string
+ *
+ * @since 2.1.1
+ */
+function sbi_get_resized_uploads_url() {
+	$upload = wp_upload_dir();
+
+	return trailingslashit( $upload['baseurl'] ) . trailingslashit( SBI_UPLOADS_NAME );
+}
+
+/**
  * Converts a hex code to RGB so opacity can be
  * applied more easily
  *
@@ -824,12 +865,10 @@ function sb_instagram_scripts_enqueue() {
 	if ( $font_method === 'fontfile' && ! $disable_font_awesome ) {
 		wp_enqueue_style( 'sb-font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' );
 	}
-
-	$upload = wp_upload_dir();
-	$resized_url = trailingslashit( $upload['baseurl'] ) . trailingslashit( SBI_UPLOADS_NAME );
+	
 	$data = array(
 		'font_method' => $font_method,
-		'resized_url' => $resized_url,
+		'resized_url' => sbi_get_resized_uploads_url(),
 		'placeholder' => trailingslashit( SBI_PLUGIN_URL ) . 'img/placeholder.png'
     );
 	//Pass option to JS file

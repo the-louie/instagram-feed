@@ -106,7 +106,7 @@ class SB_Instagram_Settings {
 				'customtemplates'    => isset( $db['custom_template'] ) ? $db['custom_template'] : '',
 
 			), $atts );
-		
+
 		$this->settings['customtemplates'] = $this->settings['customtemplates'] === 'true' || $this->settings['customtemplates'] === 'on';
 		if ( isset( $_GET['sbi_debug'] ) ) {
 			$this->settings['customtemplates'] = false;
