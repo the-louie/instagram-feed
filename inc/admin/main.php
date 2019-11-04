@@ -77,6 +77,7 @@ function sb_instagram_settings_page() {
 		'sb_instagram_cron'                 => 'no',
 		'sb_instagram_backup' => true,
 		'sb_ajax_initial' => false,
+		'enqueue_css_in_shortcode' => false,
 		'sb_instagram_ajax_theme'           => false,
 		'sb_instagram_disable_resize'       => false,
 		'sb_instagram_favor_local'          => false,
@@ -143,6 +144,7 @@ function sb_instagram_settings_page() {
 	$sb_instagram_cron = $options[ 'sb_instagram_cron' ];
 	$sb_instagram_backup = $options[ 'sb_instagram_backup' ];
 	$sb_ajax_initial = $options[ 'sb_ajax_initial' ];
+	$enqueue_css_in_shortcode = $options[ 'enqueue_css_in_shortcode' ];
 	$sbi_font_method = $options[ 'sbi_font_method' ];
 	$sb_instagram_disable_awesome = $options[ 'sb_instagram_disable_awesome' ];
 	$sb_instagram_custom_template = $options[ 'custom_template' ];
@@ -287,6 +289,7 @@ function sb_instagram_settings_page() {
 				if (isset($_POST[ 'sb_instagram_cron' ]) ) $sb_instagram_cron = $_POST[ 'sb_instagram_cron' ];
 				isset($_POST[ 'sb_instagram_backup' ]) ? $sb_instagram_backup = $_POST[ 'sb_instagram_backup' ] : $sb_instagram_backup = '';
 				isset($_POST[ 'sb_ajax_initial' ]) ? $sb_ajax_initial = $_POST[ 'sb_ajax_initial' ] : $sb_ajax_initial = '';
+				isset($_POST[ 'enqueue_css_in_shortcode' ]) ? $enqueue_css_in_shortcode = $_POST[ 'enqueue_css_in_shortcode' ] : $enqueue_css_in_shortcode = '';
 				isset($_POST[ 'sbi_font_method' ]) ? $sbi_font_method = $_POST[ 'sbi_font_method' ] : $sbi_font_method = 'svg';
 				isset($_POST[ 'sb_instagram_disable_awesome' ]) ? $sb_instagram_disable_awesome = sanitize_text_field( $_POST[ 'sb_instagram_disable_awesome' ] ) : $sb_instagram_disable_awesome = '';
 
@@ -328,6 +331,8 @@ function sb_instagram_settings_page() {
 				$options[ 'sb_ajax_initial' ] = $sb_ajax_initial;
 				$options[ 'sb_instagram_cron' ] = $sb_instagram_cron;
 				$options['sb_instagram_backup'] = $sb_instagram_backup;
+				$options['enqueue_css_in_shortcode'] = $enqueue_css_in_shortcode;
+
 				$options['sbi_font_method'] = $sbi_font_method;
 				$options[ 'sb_instagram_disable_awesome' ] = $sb_instagram_disable_awesome;
 
@@ -1731,6 +1736,15 @@ function sb_instagram_settings_page() {
                         <input type="checkbox" name="enqueue_js_in_head" id="sb_instagram_enqueue_js_in_head" <?php if($enqueue_js_in_head == true) echo 'checked="checked"' ?> />
                         <a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e('What does this mean?', 'instagram-feed'); ?></a>
                         <p class="sbi_tooltip"><?php _e("Check this box if you'd like to enqueue the JavaScript file for the plugin in the head instead of the footer.", 'instagram-feed'); ?></p>
+                    </td>
+                </tr>
+
+                <tr valign="top">
+                    <th scope="row"><label><?php _e('Enqueue CSS file with shortcode', 'instagram-feed'); ?></label></th>
+                    <td>
+                        <input type="checkbox" name="enqueue_css_in_shortcode" id="sb_instagram_enqueue_css_in_shortcode" <?php if($enqueue_css_in_shortcode == true) echo 'checked="checked"' ?> />
+                        <a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e('What does this mean?', 'instagram-feed'); ?></a>
+                        <p class="sbi_tooltip"><?php _e("Check this box if you'd like to only include the CSS file for the plugin when the feed is on the page.", 'instagram-feed'); ?></p>
                     </td>
                 </tr>
 

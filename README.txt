@@ -325,6 +325,8 @@ We understand that sometimes you need help, have issues or just have questions. 
 
 == Changelog ==
 = 2.1.1 =
+* New: Added ability to enqueue the CSS file through the shortcode. This loads the file in the footer of the site, and only on pages that include a feed. Enable on the "Customize" tab.
+* Tweak: Resized images can be used in the page source code when "Disable js image loading" setting is enabled.
 * Fix: HTML for header would still be visible in the source of the page when removing the header using showheader=false in the shortcode
 
 = 2.1 =
