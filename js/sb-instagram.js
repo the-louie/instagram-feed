@@ -720,6 +720,7 @@ if(!sbi_js_exists) {
                     && this.resizedImages[id].id !== 'error'
                     && this.resizedImages[id].id !== 'video'
                     && this.resizedImages[id].id !== 'pending') {
+
                     if (typeof this.resizedImages[id]['sizes'] !== 'undefined') {
                         var foundSizes = [];
                         if (typeof this.resizedImages[id]['sizes']['full'] !== 'undefined') {
@@ -763,7 +764,7 @@ if(!sbi_js_exists) {
                         }
                     }
                 } else if (typeof this.resizedImages[id] === 'undefined'
-                    || this.resizedImages[id] !== 'pending') {
+                    || (typeof this.resizedImages[id]['id'] !== 'undefined' && this.resizedImages[id]['id'] !== 'pending' && this.resizedImages[id]['id'] !== 'error')) {
                     this.addToNeedsResizing(id);
                 }
 
