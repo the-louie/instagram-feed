@@ -31,7 +31,7 @@ $img_alt = SB_Instagram_Parse::get_caption( $post, __( 'Image for post', 'instag
             <span class="sbi-screenreader"><?php echo sprintf( __( 'Instagram post %s', 'instagram-feed' ), $post_id ); ?></span>
             <?php echo $maybe_carousel_icon; ?>
 	        <?php echo $maybe_video_icon; ?>
-            <img src="<?php echo esc_url( $media_url ); ?>" alt="<?php echo esc_attr( $img_alt ); ?>" width="200" height="200">
+            <img src="<?php echo esc_url( $media_url ); ?>" alt="<?php echo esc_attr( $img_alt ); ?>">
         </a>
     </div>
 </div>

@@ -350,7 +350,7 @@ class SB_Instagram_API_Connect
 			if ( $endpoint_slug === 'header' ) {
 				$url = 'https://api.instagram.com/v1/users/' . $connected_account['user_id'] . '?access_token=' . sbi_maybe_clean( $connected_account['access_token'] );
 			} else {
-				$num = min( $num, 33 );
+				$num = $num > 20 ? min( $num, 33 ) : 20; // minimum set at 20 due to IG TV bug
 				$url = 'https://api.instagram.com/v1/users/' . $connected_account['user_id'] . '/media/recent?count='.$num.'&access_token=' . sbi_maybe_clean( $connected_account['access_token'] );
 			}
 		} else {

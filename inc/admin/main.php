@@ -81,6 +81,7 @@ function sb_instagram_settings_page() {
 		'sb_instagram_ajax_theme'           => false,
 		'sb_instagram_disable_resize'       => false,
 		'sb_instagram_favor_local'          => false,
+		'sb_instagram_minnum' => 0,
 		'disable_js_image_loading'          => false,
 		'enqueue_js_in_head'                => false,
 		'enqueue_css_in_shortcode' => false,
@@ -102,6 +103,7 @@ function sb_instagram_settings_page() {
 	$disable_js_image_loading = $options[ 'disable_js_image_loading' ];
 	$sb_instagram_disable_resize = $options[ 'sb_instagram_disable_resize' ];
 	$sb_instagram_favor_local = $options[ 'sb_instagram_favor_local' ];
+	$sb_instagram_minnum = $options[ 'sb_instagram_minnum' ];
 
 	$sb_instagram_cache_time = $options[ 'sb_instagram_cache_time' ];
 	$sb_instagram_cache_time_unit = $options[ 'sb_instagram_cache_time_unit' ];
@@ -285,6 +287,7 @@ function sb_instagram_settings_page() {
 				isset($_POST[ 'disable_js_image_loading' ]) ? $disable_js_image_loading = $_POST[ 'disable_js_image_loading' ] : $disable_js_image_loading = '';
 				isset($_POST[ 'sb_instagram_disable_resize' ]) ? $sb_instagram_disable_resize= sanitize_text_field( $_POST[ 'sb_instagram_disable_resize' ] ) : $sb_instagram_disable_resize = '';
 				isset($_POST[ 'sb_instagram_favor_local' ]) ? $sb_instagram_favor_local = sanitize_text_field( $_POST[ 'sb_instagram_favor_local' ] ) : $sb_instagram_favor_local = '';
+				isset($_POST[ 'sb_instagram_minnum' ]) ? $sb_instagram_minnum = sanitize_text_field( $_POST[ 'sb_instagram_minnum' ] ) : $sb_instagram_minnum = '';
 
 				if (isset($_POST[ 'sb_instagram_cron' ]) ) $sb_instagram_cron = $_POST[ 'sb_instagram_cron' ];
 				isset($_POST[ 'sb_instagram_backup' ]) ? $sb_instagram_backup = $_POST[ 'sb_instagram_backup' ] : $sb_instagram_backup = '';
@@ -328,6 +331,8 @@ function sb_instagram_settings_page() {
 				$options[ 'disable_js_image_loading' ] = $disable_js_image_loading;
 				$options[ 'sb_instagram_disable_resize' ] = $sb_instagram_disable_resize;
 				$options[ 'sb_instagram_favor_local' ] = $sb_instagram_favor_local;
+				$options[ 'sb_instagram_minnum' ] = $sb_instagram_minnum;
+
 				$options[ 'sb_ajax_initial' ] = $sb_ajax_initial;
 				$options[ 'sb_instagram_cron' ] = $sb_instagram_cron;
 				$options['sb_instagram_backup'] = $sb_instagram_backup;
@@ -1727,6 +1732,17 @@ function sb_instagram_settings_page() {
                         <input id="sbi_reset_resized" class="button-secondary" type="submit" value="<?php esc_attr_e( 'Reset Resized Images' ); ?>" style="vertical-align: middle;"/>
                         <a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e('What does this mean?', 'instagram-feed'); ?></a>
                         <p class="sbi_tooltip"><?php _e("The plugin creates and stores resized versions of images in order to serve a more optimized resolution size in the feed. Click this button to clear all data related to resized images. Enable the setting to favor local images to always use a local, resized image if one is available.", 'instagram-feed'); ?></p>
+                    </td>
+                </tr>
+
+                <tr valign="top">
+                    <th scope="row"><label><?php _e('API request size', 'instagram-feed'); ?></label><code class="sbi_shortcode"> minnum
+                            Eg: minnum=25</code></th>
+                    <td>
+                        <input name="sb_instagram_minnum" type="number" min="0" max="100" value="<?php echo esc_attr( $sb_instagram_minnum ); ?>" />
+                        <span class="sbi_note"><?php _e('Leave at "0" for default', 'instagram-feed'); ?></span>
+                        <a class="sbi_tooltip_link" href="JavaScript:void(0);"><?php _e('What does this mean?', 'instagram-feed'); ?></a>
+                        <p class="sbi_tooltip"><?php _e("If your feed contains a lot of IG TV posts or your feed is not displaying any posts despite there being posts available on Instagram.com, try increasing this number to 25 or more.", 'instagram-feed'); ?></p>
                     </td>
                 </tr>
 

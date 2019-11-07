@@ -3,7 +3,7 @@ Contributors: smashballoon, craig-at-smash-balloon
 Tags: Instagram, Instagram feed, Instagram photos, Instagram widget, Instagram gallery
 Requires at least: 3.4
 Tested up to: 5.3
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -324,10 +324,14 @@ We understand that sometimes you need help, have issues or just have questions. 
 * Plus more customization options added all the time!
 
 == Changelog ==
+= 2.1.2 =
+* New: Added setting "API request size" on the "Customize" tab to allow requesting of more posts than are in the feed. Setting this to a high number will prevent no posts being found if you often post IG TV posts and use a personal account.
+* Tweak: Removed width and height attributes from the image element in the feed to prevent notices about serving scaled images in optimization tools.
+
 = 2.1.1 =
 * New: Added ability to enqueue the CSS file through the shortcode. This loads the file in the footer of the site, and only on pages that include a feed. Enable on the "Customize" tab.
 * Tweak: Resized images can be used in the page source code when "Disable js image loading" setting is enabled.
-* Fix: HTML for header would still be visible in the source of the page when removing the header using showheader=false in the shortcode
+* Fix: HTML for header would still be visible in the source of the page when removing the header using showheader=false in the shortcode.
 
 = 2.1 =
 * New: Added the ability to overwrite default templates in your theme. View [this article](https://smashballoon.com/guide-to-creating-custom-templates/) for more information.
