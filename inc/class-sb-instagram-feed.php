@@ -528,7 +528,7 @@ class SB_Instagram_Feed
 		 * @since 2.0/5.0
 		 */
 		$num = apply_filters( 'sbi_num_in_request', $settings['minnum'], $settings );
-
+		$num = max( $num, (int)$settings['apinum'] );
 		$params = array(
 			'num' => $num
 		);

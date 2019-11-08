@@ -75,7 +75,7 @@ class SB_Instagram_Settings {
 				'heightunit'       => isset( $db['sb_instagram_height_unit'] ) ? $db['sb_instagram_height_unit'] : '',
 				'sortby'           => isset( $db['sb_instagram_sort'] ) ? $db['sb_instagram_sort'] : '',
 				'num'              => isset( $db['sb_instagram_num'] ) ? $db['sb_instagram_num'] : '',
-				'minnum'           => isset( $db['sb_instagram_minnum'] ) ? $db['sb_instagram_minnum'] : '',
+				'apinum'           => isset( $db['sb_instagram_minnum'] ) ? $db['sb_instagram_minnum'] : '',
 				'nummobile'        => isset($db[ 'sb_instagram_nummobile' ]) ? $db[ 'sb_instagram_nummobile' ] : '',
 				'cols'             => isset( $db['sb_instagram_cols'] ) ? $db['sb_instagram_cols'] : '',
 				'disablemobile'    => isset( $db['sb_instagram_disable_mobile'] ) ? $db['sb_instagram_disable_mobile'] : '',
@@ -112,7 +112,7 @@ class SB_Instagram_Settings {
 		if ( isset( $_GET['sbi_debug'] ) ) {
 			$this->settings['customtemplates'] = false;
 		}
-		$this->settings['minnum'] = max( (int)$this->settings['num'], (int)$this->settings['nummobile'], (int)$this->settings['minnum'] );
+		$this->settings['minnum'] = max( (int)$this->settings['num'], (int)$this->settings['nummobile'] );
 		$this->settings['showbio'] = $this->settings['showbio'] === 'true' || $this->settings['showbio'] === 'on' || $this->settings['showbio'] === true;
 		if ( isset( $atts['showbio'] ) && $atts['showbio'] === 'false' ) {
 			$this->settings['showbio'] = false;
