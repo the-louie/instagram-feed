@@ -430,11 +430,7 @@ if ( function_exists( 'sb_instagram_feed_init' ) ) {
 		}
 
 		if ( (float) $db_ver < 1.3 ) {
-			$sbi_statuses_option = get_option( 'sbi_statuses', array() );
-			if ( $sbi_statuses_option['first_install'] === 'from_update' ) {
-				$sbi_statuses_option['first_install'] = time() - 60*60*24*23;
-				update_option( 'sbi_statuses', $sbi_statuses_option, false );
-			}
+			// removed code that was giving a one week waiting period before notice appeared
 
 			update_option( 'sbi_db_version', SBI_DBVERSION );
 		}

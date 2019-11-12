@@ -643,7 +643,15 @@ function sbi_notices_html() {
 	$should_show_new_user_discount = false;
 	$has_been_one_month_since_rating_dismissal = isset( $sbi_statuses_option['rating_notice_dismissed'] ) ? ((int)$sbi_statuses_option['rating_notice_dismissed'] + 30*24*60*60) < $current_time + 1: true;
 
-    if ( $in_new_user_month_range && $has_been_one_month_since_rating_dismissal ) {
+	if ( isset( $sbi_statuses_option['first_install'] ) && $sbi_statuses_option['first_install'] === 'from_update' ) {
+		global $current_user;
+		$user_id = $current_user->ID;
+		$ignore_new_user_sale_notice_meta = get_user_meta( $user_id, 'sbi_ignore_new_user_sale_notice' );
+		$ignore_new_user_sale_notice_meta = isset( $ignore_new_user_sale_notice_meta[0] ) ? $ignore_new_user_sale_notice_meta[0] : '';
+		if ( $ignore_new_user_sale_notice_meta !== 'always' ) {
+			$should_show_new_user_discount = true;
+		}
+	} elseif ( $in_new_user_month_range && $has_been_one_month_since_rating_dismissal ) {
 		global $current_user;
 		$user_id = $current_user->ID;
 		$ignore_new_user_sale_notice_meta = get_user_meta( $user_id, 'sbi_ignore_new_user_sale_notice' );
