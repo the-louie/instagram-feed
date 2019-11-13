@@ -586,8 +586,7 @@ function sbi_notices_html() {
 	$is_plugins_page = isset( $current_screen->id ) && $current_screen->id === 'plugins';
 	$page = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : '';
 	//Only show to admins
-	if ( ! current_user_can( 'manage_options' )
-	     || ($page !== 'sb-instagram-feed'  && !$is_plugins_page) ) {
+	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
 
