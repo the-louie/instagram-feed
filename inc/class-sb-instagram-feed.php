@@ -386,7 +386,7 @@ class SB_Instagram_Feed
 		if ( is_array( $num_or_array_of_ids ) ) {
 			$ids = $num_or_array_of_ids;
 
-			$id_string = '"' . implode( '","', $ids ) . '"';
+			$id_string = "'" . implode( "','", $ids ) . "'";
 			$results = $wpdb->get_results( $wpdb->prepare( "
 			SELECT p.media_id, p.instagram_id, p.aspect_ratio, p.sizes
 			FROM $posts_table_name AS p 
